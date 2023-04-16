@@ -1,0 +1,189 @@
+@font-face {
+    font-family: 'NanumGothicCoding';
+    font-weight: 50;
+    src: url("../assets/font/D2CodingBold-Ver1.3.2-20180524.ttf");
+  }
+  @font-face {
+    font-family: 'InterLight';
+    src: url("../assets/font/Inter-Light.ttf");
+  }
+  @font-face {
+    font-family: 'InterMidium';
+    src: url('../assets/font/Inter-Medium.ttf');
+  }
+  @font-face {
+    font-family: 'InterBold';
+    src: url('../assets/font/Inter-Bold.ttf');
+  }
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  .container {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 1920px !important;
+    max-height: 1080px !important;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 16.25rem;
+    height: 100%;
+    position: relative;
+  }
+  .sidebar::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/img/sejong_ai_center.jpeg');
+    background-position: 36%;
+    opacity: 0.3;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+  }
+  .sidebar-nav {
+    position: relative;
+    top: 0;
+    z-index: 1;
+  }
+  
+  .sidebar-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  
+  .sidebar-nav ul li {
+    background-color: #C3002F;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    opacity: 0.5;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+    font-family: 'NanumGothicCoding';
+  }
+  .sidebar-nav ul li:hover {
+    opacity: 1;
+  }
+  .sidebar-header {
+    background-image: url('../assets/img/sejong_text_logo.png');
+    background-size: contain;
+    background-repeat:no-repeat;
+    background-color: white;
+    width: 100%;
+    height: 4.5rem;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    position: absolute;
+    justify-content: space-between;
+    bottom: 0;
+    opacity:0.65;
+  }
+  .content {
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .content-header{
+    width: 100%;
+    height: 3.5rem !important;
+    background-color: #F7F9Fc;
+    display: flex;
+    align-items: center;
+  }
+  .content-content{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .img1, .img2, .img3, .img4, .img5 {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .img1 {
+    background-image: url('../assets/img/octoface.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  .img2 {
+    background-image: url('../assets/img/calendar.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  .img3 {
+    background-image: url('../assets/img/key.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  .img4 {
+    background-image: url('../assets/img/git-compare.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  .img5 {
+    background-image: url('../assets/img/bug.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  .exit {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-size: cover;
+    background-image: url('../assets/img/Misc/sign-in.png');
+    margin-left: auto;
+    margin-right: 2rem;
+  }
+  
+  /* PC , 테블릿 가로 (해상도 768px ~ 1023px)*/ 
+  @media all and (min-width:768px) and (max-width:1023px) { 
+    .sidebar, .sidebar::before {
+    max-width: 260px;
+  }
+  html {
+    font-size: 16px;
+  }
+  } 
+  
+  /* 테블릿 세로 (해상도 768px ~ 1023px)*/ 
+  @media all and (min-width:768px) and (max-width:1023px) { 
+    .sidebar, .sidebar::before {
+    max-width: 200px;
+  }
+  html {
+    font-size: 12px;
+  }
+  } 
+  
+  /* 모바일 가로, 테블릿 세로 (해상도 480px ~ 767px)
+  @media all and (min-width:480px) and (max-width:767px) {
+    .sidebar, .sidebar::before {
+    max-width: 150px;
+  }
+  html {
+    font-size: 8px;
+  }
+  } 
+  
+  /* 모바일 가로, 테블릿 세로 (해상도 ~ 479px)*/ 
+  @media all and (max-width:479px) {
+    .sidebar, .sidebar::before {
+    max-width: 100px;
+  }
+  html {
+    font-size: 4px;
+  }
+  }
