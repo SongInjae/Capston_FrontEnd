@@ -9,11 +9,15 @@ const FormStyled = styled.form`
   top: 3.5rem;
   left: 16.25rem;
   z-index: 1;
-  width: 60rem;
-  height: 40rem;
-  margin: 3rem 7rem;
+  width: 60vw;
+  height: 40vh;
+  margin: 3rem 10rem;
+  flex: 1;
+  display: table;
+  vertical-align: middle;
 `;
 const ImageBlock = styled.div`
+  display: table-cell;
   margin: 0 auto;
   width: 16.5rem;
   height: 12rem;
@@ -32,6 +36,7 @@ const ImageIcon = styled.div`
   background-repeat: no-repeat;
 `;
 const FormBlock = styled.div`
+  display: table-row;
   width: 60vw;
   height: 4rem;
   font-family: 'InterBold';
@@ -56,9 +61,10 @@ const InputBlock = styled.input`
     `}
 `;
 const SubmitButton = styled(Button)`
+  display: table-row;
   width: 5.5rem;
   height: 2.2rem;
-  margin-top: 10rem;
+  margin-top: 1rem;
   text-align: center;
   font-size: 0.9rem !important;
 `;

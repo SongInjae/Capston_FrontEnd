@@ -5,9 +5,12 @@ import BackImage from '../../components/BackImage';
 import UserIcon from '../../assets/img/user.png';
 
 const FormStyled = styled.form`
+  position: absolute;
+  top: 3.5rem;
+  left: 16.25rem;
   width: 20rem;
-  height: 45rem;
-  margin: 7rem auto;
+  height: 30vh;
+  margin: 7rem 27rem;
   opacity: 0.9;
   z-index: 1000;
 `;
@@ -67,7 +70,8 @@ const SubmitButton = styled(Button)`
 
 const AddMember = () => {
   return (
-    <BackImage>
+    <>
+      <BackImage />
       <FormStyled>
         <ImageIcon />
         <FormBlock>
@@ -117,7 +121,7 @@ const AddMember = () => {
         </FormBlock>
         <SubmitButton>Submit</SubmitButton>
       </FormStyled>
-    </BackImage>
+    </>
   );
 };
 
