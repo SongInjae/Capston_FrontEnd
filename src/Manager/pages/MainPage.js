@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './MainPage.css';
 import styled from 'styled-components';
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes, Link, useNavigate } from 'react-router-dom';
 
 import MemberManagementsPage from './MemberManagementsPage';
 import ReservationPage from './ReservationPage';
@@ -29,6 +29,8 @@ const StyledLink = styled(Link)`
 
 const MainPage = () => {
   const [modal, setModal] = useState(false);
+  const movePage = useNavigate();
+
   const onRemoveClick = () => {
     setModal(true);
   };
@@ -37,6 +39,7 @@ const MainPage = () => {
   };
   const onConfirm = () => {
     setModal(false);
+    movePage('/');
   };
 
   return (
@@ -46,23 +49,23 @@ const MainPage = () => {
           <ul>
             <li>
               <div className="img1" />
-              <StyledLink to="/member">회원관리</StyledLink>
+              <StyledLink to="/admin/member">회원관리</StyledLink>
             </li>
             <li>
               <div className="img2" />
-              <StyledLink to="/reserve">예약 확인</StyledLink>
+              <StyledLink to="/admin/reserve">예약 확인</StyledLink>
             </li>
             <li>
               <div className="img3" />
-              <StyledLink to="/room">회의실 관리</StyledLink>
+              <StyledLink to="/admin/room">회의실 관리</StyledLink>
             </li>
             <li>
               <div className="img4" />
-              <StyledLink to="/regular">정기 예약자 관리</StyledLink>
+              <StyledLink to="/admin/regular">정기 예약자 관리</StyledLink>
             </li>
             <li>
               <div className="img5" />
-              <StyledLink to="/improve">이용 환경 개선</StyledLink>
+              <StyledLink to="/admin/improve">이용 환경 개선</StyledLink>
             </li>
           </ul>
         </nav>

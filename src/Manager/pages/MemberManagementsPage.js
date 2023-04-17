@@ -99,7 +99,7 @@ const MemberManagementsPage = () => {
           </NameSearchBlock>
         </NameFliterBlock>
         <ButtonsBlock>
-          <FileBlock to="/member/add">Add</FileBlock>
+          <FileBlock to="/admin/member/add">Add</FileBlock>
           <FileBlock>CSV</FileBlock>
         </ButtonsBlock>
       </FliterAddBlock>

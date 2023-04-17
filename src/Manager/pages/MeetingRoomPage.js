@@ -87,7 +87,7 @@ const MeetingRoomPage = () => {
   return (
     <>
       <FliterAddBlock>
-        <FileBlock to="/room/add">회의실 추가</FileBlock>
+        <FileBlock to="/admin/room/add">회의실 추가</FileBlock>
       </FliterAddBlock>
       <RoomRowBlock>
         <RoomBlock>

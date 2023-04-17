@@ -9,8 +9,8 @@ const FormStyled = styled.form`
   top: 3.5rem;
   left: 16.25rem;
   width: 20rem;
-  height: 30vh;
-  margin: 7rem 27rem;
+  height: 50rem;
+  margin: 3rem 27rem;
   opacity: 0.9;
   z-index: 1000;
 `;
