@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import logo from '/Users/kwon/Capston_FrontEnd/src/User/img/sejong.png';
+import Calendar from '../component/calendar';
 const Header = styled.header`
   margin: 0 auto;
   display: flex;
@@ -20,6 +21,8 @@ const MainTitle = styled.div`
   font-weight: bold;
   font-size: 26px;
   margin-left: 130px;
+  display: flex;
+  align-items: center;
 `;
 
 const UserInfo = styled.div`
@@ -67,7 +70,7 @@ function UserMain() {
     <div>
       <Header>
         <MainTitle>
-          <SejongLogo src={logo}></SejongLogo> 세종대학교 예약시스템
+          <SejongLogo src={logo}></SejongLogo> &nbsp;세종대학교 예약시스템
         </MainTitle>
         <RightComponent>
           <LogoutWrapper>
@@ -81,6 +84,7 @@ function UserMain() {
           </TabWrapper>
         </RightComponent>
       </Header>
+      <Calendar></Calendar>
     </div>
   );
 }
