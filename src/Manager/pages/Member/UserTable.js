@@ -60,6 +60,40 @@ const Td5 = styled.td`
 `;
 
 const UserTable = () => {
+  const infos = [
+    {
+      id: 1,
+      designation: '교수',
+      name: '한동일',
+      number: '12345678',
+      email: 'dsjl@sejong.ac.kr',
+    },
+    {
+      id: 2,
+      designation: '조교',
+      name: '멍멍이',
+      number: '41345678',
+      email: 'dsjl@naver.com',
+    },
+    {
+      id: 3,
+      designation: '학생',
+      name: '송인재',
+      number: '12562678',
+      email: 'jgh@naver.com',
+    },
+  ];
+  const infoList = infos.map((info) => (
+    <TrBlock id={info.id}>
+      <Td1>{info.designation}</Td1>
+      <Td2>{info.name}</Td2>
+      <Td3>{info.number}</Td3>
+      <Td4>{info.email}</Td4>
+      <Td5>
+        <Menu />
+      </Td5>
+    </TrBlock>
+  ));
   return (
     <TableBlock>
       <TheadBlock>
@@ -71,35 +105,7 @@ const UserTable = () => {
           <TheadTd5>Edit</TheadTd5>
         </tr>
       </TheadBlock>
-      <tbody>
-        <TrBlock>
-          <Td1>교수</Td1>
-          <Td2>한동일</Td2>
-          <Td3>12345678</Td3>
-          <Td4>sdfkjj@naver.com</Td4>
-          <Td5>
-            <Menu />
-          </Td5>
-        </TrBlock>
-        <TrBlock>
-          <Td1>조교</Td1>
-          <Td2>멍멍이</Td2>
-          <Td3>12232378</Td3>
-          <Td4>sdfj@sju.ac.kr</Td4>
-          <Td5>
-            <Menu />
-          </Td5>
-        </TrBlock>
-        <TrBlock>
-          <Td1>학생</Td1>
-          <Td2>송인재</Td2>
-          <Td3>18012488</Td3>
-          <Td4>dlswo@daum.net</Td4>
-          <Td5>
-            <Menu />
-          </Td5>
-        </TrBlock>
-      </tbody>
+      <tbody>{infoList}</tbody>
     </TableBlock>
   );
 };

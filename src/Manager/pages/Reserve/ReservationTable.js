@@ -60,6 +60,40 @@ const Td5 = styled.td`
 `;
 
 const ReservationTable = () => {
+  const infos = [
+    {
+      id: 1,
+      date: '4월 16일',
+      name: '한동일',
+      designation: '교수',
+      time: '09:00 - 12:00',
+    },
+    {
+      id: 2,
+      date: '4월 19일',
+      name: '멍멍이',
+      designation: '조교',
+      time: '18:00 - 20:00',
+    },
+    {
+      id: 3,
+      date: '5월 11일',
+      name: '송인재',
+      designation: '학생',
+      time: '15:00 - 16:00',
+    },
+  ];
+  const infoList = infos.map((info) => (
+    <TrBlock id={info.id}>
+      <Td1>{info.date}</Td1>
+      <Td2>{info.name}</Td2>
+      <Td3>{info.designation}</Td3>
+      <Td4>{info.time}</Td4>
+      <Td5>
+        <Menu />
+      </Td5>
+    </TrBlock>
+  ));
   return (
     <TableBlock>
       <TheadBlock>
@@ -71,35 +105,7 @@ const ReservationTable = () => {
           <TheadTd5>Edit</TheadTd5>
         </tr>
       </TheadBlock>
-      <tbody>
-        <TrBlock>
-          <Td1>4월 16일</Td1>
-          <Td2>한동일</Td2>
-          <Td3>교수</Td3>
-          <Td4>09:00 - 12:00</Td4>
-          <Td5>
-            <Menu />
-          </Td5>
-        </TrBlock>
-        <TrBlock>
-          <Td1>4월 20일</Td1>
-          <Td2>멍멍이</Td2>
-          <Td3>조교</Td3>
-          <Td4>12:00 - 14:00</Td4>
-          <Td5>
-            <Menu />
-          </Td5>
-        </TrBlock>
-        <TrBlock>
-          <Td1>5월 11일</Td1>
-          <Td2>송인재</Td2>
-          <Td3>학생</Td3>
-          <Td4>11:00 - 12:00</Td4>
-          <Td5>
-            <Menu />
-          </Td5>
-        </TrBlock>
-      </tbody>
+      <tbody>{infoList}</tbody>
     </TableBlock>
   );
 };

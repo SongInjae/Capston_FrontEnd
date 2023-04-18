@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './MainPage.css';
 import styled from 'styled-components';
 import { Route, Routes, Link, useNavigate } from 'react-router-dom';
@@ -29,6 +29,13 @@ const StyledLink = styled(Link)`
 
 const MainPage = () => {
   const [modal, setModal] = useState(false);
+  const menus = [
+    { id: 1, text: '회원관리', img: 1, address: '/admin/member' },
+    { id: 2, text: '예약확인', img: 2, address: '/admin/reserve' },
+    { id: 3, text: '회의실 관리', img: 3, address: '/admin/room' },
+    { id: 4, text: '정기예약자 관리', img: 4, address: '/admin/regular' },
+    { id: 5, text: '이용환경 개선', img: 5, address: '/admin/improve' },
+  ];
   const movePage = useNavigate();
 
   const onRemoveClick = () => {
@@ -42,32 +49,17 @@ const MainPage = () => {
     movePage('/');
   };
 
+  const menuList = menus.map((menu) => (
+    <li key={menu.id}>
+      <div className={'img' + menu.img} />
+      <StyledLink to={menu.address}>{menu.text}</StyledLink>
+    </li>
+  ));
   return (
     <div className="container">
       <div className="sidebar">
         <nav className="sidebar-nav">
-          <ul>
-            <li>
-              <div className="img1" />
-              <StyledLink to="/admin/member">회원관리</StyledLink>
-            </li>
-            <li>
-              <div className="img2" />
-              <StyledLink to="/admin/reserve">예약 확인</StyledLink>
-            </li>
-            <li>
-              <div className="img3" />
-              <StyledLink to="/admin/room">회의실 관리</StyledLink>
-            </li>
-            <li>
-              <div className="img4" />
-              <StyledLink to="/admin/regular">정기 예약자 관리</StyledLink>
-            </li>
-            <li>
-              <div className="img5" />
-              <StyledLink to="/admin/improve">이용 환경 개선</StyledLink>
-            </li>
-          </ul>
+          <ul>{menuList}</ul>
         </nav>
         <div className="sidebar-header" />
       </div>
@@ -101,3 +93,29 @@ const MainPage = () => {
 };
 
 export default MainPage;
+/*
+            <li>
+              <div className="img1" />
+              <StyledLink to="/admin/member">회원관리</StyledLink>
+            </li>
+            <li>
+              <div className="img2" />
+              <StyledLink to="/admin/reserve">예약 확인</StyledLink>
+            </li>
+            <li>
+              <div className="img3" />
+              <StyledLink to="/admin/room">회의실 관리</StyledLink>
+            </li>
+            <li>
+              <div className="img4" />
+              <StyledLink to="/admin/regular">정기 예약자 관리</StyledLink>
+            </li>
+            <li>
+              <div className="img5" />
+              <StyledLink to="/admin/improve">이용 환경 개선</StyledLink>
+            </li>
+            const [names, setNames] = useState([
+              {id: ??, text: ??},
+              {??}
+            ]);
+*/

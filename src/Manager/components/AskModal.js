@@ -33,6 +33,7 @@ const AskModalBlock = styled.div`
 `;
 
 const StyledButton = styled(Button)`
+  width: 3rem;
   height: 2rem;
   & + & {
     margin-left: 0.75rem;

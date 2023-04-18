@@ -60,6 +60,40 @@ const Td5 = styled.td`
 `;
 
 const RegularUserTable = () => {
+  const infos = [
+    {
+      id: 1,
+      designation: '교수',
+      name: '한동일',
+      day: '월, 화, 수, 목, 금',
+      time: '09:00 - 12:00',
+    },
+    {
+      id: 2,
+      designation: '조교',
+      name: '멍멍이',
+      day: '월, 화, 수, 목, 금',
+      time: '09:00 - 12:00',
+    },
+    {
+      id: 3,
+      designation: '교수',
+      name: '송인재',
+      day: '월, 화, 수, 목, 금',
+      time: '15:00 - 16:00',
+    },
+  ];
+  const infoList = infos.map((info) => (
+    <TrBlock id={info.id}>
+      <Td1>{info.designation}</Td1>
+      <Td2>{info.name}</Td2>
+      <Td3>{info.day}</Td3>
+      <Td4>{info.time}</Td4>
+      <Td5>
+        <Menu />
+      </Td5>
+    </TrBlock>
+  ));
   return (
     <TableBlock>
       <TheadBlock>
@@ -71,35 +105,7 @@ const RegularUserTable = () => {
           <TheadTd5>Edit</TheadTd5>
         </tr>
       </TheadBlock>
-      <tbody>
-        <TrBlock>
-          <Td1>교수</Td1>
-          <Td2>한동일</Td2>
-          <Td3>월, 화, 수, 목, 금</Td3>
-          <Td4>PM 15:00 ~ 16:30</Td4>
-          <Td5>
-            <Menu />
-          </Td5>
-        </TrBlock>
-        <TrBlock>
-          <Td1>조교</Td1>
-          <Td2>멍멍이</Td2>
-          <Td3>화, 목</Td3>
-          <Td4>AM 11:00 ~ 13:00</Td4>
-          <Td5>
-            <Menu />
-          </Td5>
-        </TrBlock>
-        <TrBlock>
-          <Td1>학생</Td1>
-          <Td2>송인재</Td2>
-          <Td3>금</Td3>
-          <Td4>PM 19:00 ~ 21:00</Td4>
-          <Td5>
-            <Menu />
-          </Td5>
-        </TrBlock>
-      </tbody>
+      <tbody>{infoList}</tbody>
     </TableBlock>
   );
 };
