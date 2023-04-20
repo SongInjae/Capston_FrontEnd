@@ -29,7 +29,7 @@ const StyledLink = styled(Link)`
 
 const MainPage = () => {
   const [modal, setModal] = useState(false);
-  let [btnActive, setBtnActive] = useState('');
+  let [btnActive, setBtnActive] = useState(0);
   const menus = [
     { id: 1, text: '회원관리', img: 1, address: '/admin/member' },
     { id: 2, text: '예약확인', img: 2, address: '/admin/reserve' },
@@ -84,6 +84,7 @@ const MainPage = () => {
         </div>
         <div className="content-content">
           <Routes>
+            <Route path="/" element={<MemberManagementsPage />} />
             <Route path="/member">
               <Route index element={<MemberManagementsPage />} />
               <Route path="add" element={<AddMember />} />
