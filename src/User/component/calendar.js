@@ -1,47 +1,49 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { format, addMonths, subMonths, startOfMonth, endOfMonth, endOfWeek, isSameMonth, isSameDay, parse, addDays } from "date-fns";
+import { format, addMonths, subMonths, startOfMonth, endOfMonth, endOfWeek, isSameMonth, isSameDay, parse, addDays, startOfWeek } from "date-fns";
 import { BsFillCaretLeftFill, BsFillCaretRightFill } from "react-icons/bs";
 
 const CalendarWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 const CalendarHeader = styled.div`
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
 `;
 const MonthText = styled.div`
-    font-weight: bold;
-    font-size: 1.5rem;
+  font-weight: bold;
+  font-size: 1.5rem;
 `;
+
 const MoveRight = styled(BsFillCaretRightFill)`
-    font-size: 1.1rem;
-    margin-left: 10px;
-`
+  font-size: 1.1rem;
+  margin-left: 10px;
+`;
 const MoveLeft = styled(BsFillCaretLeftFill)`
-    font-size: 1.1rem;
-    margin-right: 10px;
-`
+  font-size: 1.1rem;
+  margin-right: 10px;
+`;
 const DaysWrapper = styled.div`
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 `;
-const Days = styled.div`justify-content : center;
-    font-size: 0.8rem;
-    width : 8.4rem;
-    border-radius: 6px;
-    background-color: #FFE9E9;
-    margin: 2px;
-    padding-left: 0.5rem;
-    padding-top: 3px;
-    padding-bottom: 3px;
+const Days = styled.div`
+  justify-content: center;
+  font-size: 0.8rem;
+  width: 8.4rem;
+  border-radius: 6px;
+  background-color: #ffe9e9;
+  margin: 2px;
+  padding-left: 0.5rem;
+  padding-top: 3px;
+  padding-bottom: 3px;
 `;
+
 
 const DayCellsWrapper = styled.div`
     display: flex;
@@ -56,16 +58,25 @@ const Day = styled.div`
     padding-left: 0.5rem;
     border-color: grey;
 `;
+
+const HoliDay = styled(Day)`
+    color : red;
+`
+const OtherMonthDay = styled(Day)`
+    color : #BFBFBF;
+`
+
 const WeekWrapper = styled.div`
     display: flex;
 `
 
-
 function DaysComponent() {
-    const dayList = ["Sun", "Mon", "Tue", "Wen", "Thrs", "Fri", "Sat"];
+    const dayList = ['Sun', 'Mon', 'Tue', 'Wen', 'Thrs', 'Fri', 'Sat'];
     return (
         <DaysWrapper>
-            {dayList.map((day) => (<Days>{day}</Days>))}
+            {dayList.map((day) => (
+                <Days>{day}</Days>
+            ))}
         </DaysWrapper>
     );
 }
@@ -73,7 +84,7 @@ function DaysComponent() {
 function Bodys({ currentMonth, selectedDate, onDateClick }) {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
-    const startDate = startOfMonth(monthStart);
+    const startDate = startOfWeek(monthStart);
     const endDate = endOfWeek(monthEnd);
 
     const rows = [];
@@ -85,32 +96,23 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
         for (let i = 0; i < 7; i++) {
             formattedDate = format(day, 'd');
             const cloneday = day;
-            days.push(
-                <Day>{formattedDate}</Day>
-                // <div
-                //     className={`col cell ${!isSameMonth(day, monthStart)
-                //         ? 'disabled'
-                //         : isSameDay(day, selectedDate)
-                //             ? 'selected'
-                //             : format(currentMonth, 'M') !== format(day, 'M')
-                //                 ? 'not-valid'
-                //                 : 'valid'
-                //         }`}
-                //     key={day}
-                //     onClick={() => onDateClick(parse(cloneDay))}
-                // >
-                //     <span
-                //         className={
-                //             format(currentMonth, 'M') !== format(day, 'M')
-                //                 ? 'text not-valid'
-                //                 : ''
-                //         }
-                //     >
-                //         {formattedDate}
-                //     </span>
-                // </div>,
-            );
+
+            if (day.getDay() === 0 || day.getDay() === 6) {
+                if (!isSameMonth(currentMonth, day)) {
+                    days.push(<OtherMonthDay>{formattedDate}</OtherMonthDay>)
+                } else {
+                    days.push(<HoliDay>{formattedDate}</HoliDay>)
+                }
+
+            } else {
+                if (!isSameMonth(currentMonth, day)) {
+                    days.push(<OtherMonthDay>{formattedDate}</OtherMonthDay>)
+                } else {
+                    days.push(<Day>{formattedDate}</Day>)
+                }
+            }
             day = addDays(day, 1);
+
         }
         rows.push(
             <WeekWrapper>{days}</WeekWrapper>
@@ -120,15 +122,15 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
     return <DayCellsWrapper>{rows}</DayCellsWrapper>;
 }
 
+
+
 function UserCalendar() {
     const [current, setCurrent] = useState(new Date());
     const [selectDate, setSelectedDate] = useState(new Date());
 
-
     const onClickMonthMove = (direction) => {
-        if (direction === "left") {
+        if (direction === 'left') {
             setCurrent(subMonths(current, 1));
-
         } else {
             setCurrent(addMonths(current, 1));
         }

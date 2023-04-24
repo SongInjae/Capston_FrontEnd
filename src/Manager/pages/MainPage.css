@@ -20,7 +20,7 @@
     margin: 0;
     box-sizing: border-box;
   }
-  
+
   .container {
     margin: 0 !important;
     padding: 0 !important;
@@ -61,7 +61,6 @@
     padding: 0;
     text-align: center;
   }
-  
   .sidebar-nav ul li {
     background-color: #C3002F;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
@@ -72,9 +71,10 @@
     padding-left: 1rem;
     font-family: 'NanumGothicCoding';
   }
-  .sidebar-nav ul li:hover {
-    opacity: 1;
+  .active{
+    opacity: 1 !important;
   }
+
   .sidebar-header {
     background-image: url('../assets/img/sejong_text_logo.png');
     background-size: contain;
