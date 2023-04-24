@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { format, addMonths, subMonths } from "date-fns";
+import { format, addMonths, subMonths, startOfMonth, endOfMonth, endOfWeek, isSameMonth, isSameDay, parse, addDays } from "date-fns";
 import { BsFillCaretLeftFill, BsFillCaretRightFill } from "react-icons/bs";
+
 const CalendarWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -42,6 +43,23 @@ const Days = styled.div`justify-content : center;
     padding-bottom: 3px;
 `;
 
+const DayCellsWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const Day = styled.div` 
+    margin: 2px;
+    width : 8.4rem;
+    height : 90px;
+    border-radius : 6px;
+    padding-left: 0.5rem;
+    border-color: grey;
+`;
+const WeekWrapper = styled.div`
+    display: flex;
+`
+
 
 function DaysComponent() {
     const dayList = ["Sun", "Mon", "Tue", "Wen", "Thrs", "Fri", "Sat"];
@@ -52,10 +70,59 @@ function DaysComponent() {
     );
 }
 
+function Bodys({ currentMonth, selectedDate, onDateClick }) {
+    const monthStart = startOfMonth(currentMonth);
+    const monthEnd = endOfMonth(monthStart);
+    const startDate = startOfMonth(monthStart);
+    const endDate = endOfWeek(monthEnd);
+
+    const rows = [];
+    let days = [];
+    let day = startDate;
+    let formattedDate = '';
+
+    while (day <= endDate) {
+        for (let i = 0; i < 7; i++) {
+            formattedDate = format(day, 'd');
+            const cloneday = day;
+            days.push(
+                <Day>{formattedDate}</Day>
+                // <div
+                //     className={`col cell ${!isSameMonth(day, monthStart)
+                //         ? 'disabled'
+                //         : isSameDay(day, selectedDate)
+                //             ? 'selected'
+                //             : format(currentMonth, 'M') !== format(day, 'M')
+                //                 ? 'not-valid'
+                //                 : 'valid'
+                //         }`}
+                //     key={day}
+                //     onClick={() => onDateClick(parse(cloneDay))}
+                // >
+                //     <span
+                //         className={
+                //             format(currentMonth, 'M') !== format(day, 'M')
+                //                 ? 'text not-valid'
+                //                 : ''
+                //         }
+                //     >
+                //         {formattedDate}
+                //     </span>
+                // </div>,
+            );
+            day = addDays(day, 1);
+        }
+        rows.push(
+            <WeekWrapper>{days}</WeekWrapper>
+        );
+        days = [];
+    }
+    return <DayCellsWrapper>{rows}</DayCellsWrapper>;
+}
 
 function UserCalendar() {
     const [current, setCurrent] = useState(new Date());
-    const [selectDate, setSelectDate] = useState(new Date());
+    const [selectDate, setSelectedDate] = useState(new Date());
 
 
     const onClickMonthMove = (direction) => {
@@ -67,14 +134,20 @@ function UserCalendar() {
         }
     };
 
+    const onDateClick = (day) => {
+        setSelectedDate(day);
+    };
+
     return (
         <CalendarWrapper>
             <CalendarHeader>
                 <MoveLeft onClick={() => { onClickMonthMove("left") }}></MoveLeft>
                 <MonthText>{format(current, 'yyyy')}.{format(current, 'M')}</MonthText>
                 <MoveRight onClick={() => { onClickMonthMove("right") }}></MoveRight>
+
             </CalendarHeader>
             <DaysComponent></DaysComponent>
+            <Bodys currentMonth={current} selectedDate={selectDate} onDateClick={onDateClick}></Bodys>
         </CalendarWrapper>
     );
 }
