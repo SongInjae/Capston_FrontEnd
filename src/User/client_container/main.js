@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from '../img/sejong.png';
-import Calendar from '../component/calendar';
+import logo from '/Users/kwon/Capston_FrontEnd/src/User/img/sejong.png';
+import UserCalendar from '../component/calendar';
 const Header = styled.header`
   margin: 0 auto;
   display: flex;
@@ -84,7 +84,7 @@ function UserMain() {
           </TabWrapper>
         </RightComponent>
       </Header>
-      <Calendar></Calendar>
+      <UserCalendar></UserCalendar>
     </div>
   );
 }

@@ -56,7 +56,8 @@ const Day = styled.div`
     height : 90px;
     border-radius : 6px;
     padding-left: 0.5rem;
-    border-color: grey;
+    padding-top: 0.3rem;
+    background-color: ${props => props.color};
 `;
 
 const HoliDay = styled(Day)`
@@ -99,16 +100,16 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
 
             if (day.getDay() === 0 || day.getDay() === 6) {
                 if (!isSameMonth(currentMonth, day)) {
-                    days.push(<OtherMonthDay>{formattedDate}</OtherMonthDay>)
+                    days.push(<OtherMonthDay color={isSameDay(selectedDate, cloneday) ? 'red' : 'white'} onClick={() => { onDateClick(cloneday) }}>{formattedDate}</OtherMonthDay>)
                 } else {
-                    days.push(<HoliDay>{formattedDate}</HoliDay>)
+                    days.push(<HoliDay color={isSameDay(selectedDate, cloneday) ? 'red' : 'white'} onClick={() => { onDateClick(cloneday) }}>{formattedDate}</HoliDay>)
                 }
 
             } else {
                 if (!isSameMonth(currentMonth, day)) {
-                    days.push(<OtherMonthDay>{formattedDate}</OtherMonthDay>)
+                    days.push(<OtherMonthDay color={isSameDay(selectedDate, cloneday) ? 'red' : 'white'} onClick={() => { onDateClick(cloneday) }}>{formattedDate}</OtherMonthDay>)
                 } else {
-                    days.push(<Day>{formattedDate}</Day>)
+                    days.push(<Day color={isSameDay(selectedDate, cloneday) ? 'red' : 'white'} onClick={() => { onDateClick(cloneday) }}>{formattedDate}</Day>)
                 }
             }
             day = addDays(day, 1);
