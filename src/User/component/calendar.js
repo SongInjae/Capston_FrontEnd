@@ -147,7 +147,6 @@ function UserCalendar() {
                 <MoveLeft onClick={() => { onClickMonthMove("left") }}></MoveLeft>
                 <MonthText>{format(current, 'yyyy')}.{format(current, 'M')}</MonthText>
                 <MoveRight onClick={() => { onClickMonthMove("right") }}></MoveRight>
-
             </CalendarHeader>
             <DaysComponent></DaysComponent>
             <Bodys currentMonth={current} selectedDate={selectDate} onDateClick={onDateClick}></Bodys>
