@@ -70,12 +70,11 @@ const RightComponent = styled.div`
 const RoomsWrapper = styled.div`
   display : grid;
   grid-template-columns: repeat(2, 0.5fr);
-  padding-left : 16%;
-  padding-right : 16%;
-  align-content	:center;
-  justify-content: center; 
-  align-items: center;
-
+  margin-top : 20px;
+  place-items: center;
+  margin-left: 16%;
+  margin-right: 16%;
+  margin-top : 10px;
 `;
 
 function UserMain() {

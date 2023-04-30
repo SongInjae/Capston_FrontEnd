@@ -9,8 +9,8 @@ const Room = styled.div`
     border-radius: 8px;
     padding : 15px;
     display: flex;
-    width : 26rem;
-  
+    width : 29rem;
+    margin : 10px;
     @media only screen and (max-width: 768px) {
     width: 45%;
     }
