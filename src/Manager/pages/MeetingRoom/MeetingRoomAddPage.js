@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import Button from '../../components/Button';
 import BackImage from '../../components/BackImage';
@@ -42,7 +42,7 @@ const FormBlock = styled.div`
   font-family: 'InterBold';
   font-weight: 400;
 `;
-const NameBlock = styled.div`
+const LabelBlock = styled.label`
   width: 100%;
   height: 1.5rem;
 `;
@@ -53,12 +53,14 @@ const InputBlock = styled.input`
   border-radius: 0.25rem;
   padding-left: 0.2rem;
   background-color: white;
-
-  ${(props) =>
-    props.long &&
-    css`
-      height: 12rem;
-    `}
+`;
+const TextareaBlock = styled.textarea`
+  width: 100%;
+  border: 1px solid gray;
+  border-radius: 0.25rem;
+  padding-left: 0.2rem;
+  background-color: white;
+  padding-top: 0.1rem;
 `;
 const SubmitButton = styled(Button)`
   display: table-row;
@@ -78,19 +80,27 @@ const MeetingRoomAddPage = () => {
           <ImageIcon />
         </ImageBlock>
         <FormBlock>
-          <NameBlock>회의실 이름</NameBlock>
-          <InputBlock type="text" placeholder="ex) 대양AI센터 835호" />
-        </FormBlock>
-        <FormBlock>
-          <NameBlock>편의시설</NameBlock>
-          <InputBlock type="text" placeholder="ex) 빔프로젝트, 컴퓨터 2대" />
-        </FormBlock>
-        <FormBlock>
-          <NameBlock>유의사항</NameBlock>
+          <LabelBlock for="name">회의실 이름</LabelBlock>
           <InputBlock
-            long={true}
             type="text"
+            placeholder="ex) 대양AI센터 835호"
+            id="name"
+          />
+        </FormBlock>
+        <FormBlock>
+          <LabelBlock for="facility">편의시설</LabelBlock>
+          <InputBlock
+            type="text"
+            placeholder="ex) 빔프로젝트, 컴퓨터 2대"
+            id="facility"
+          />
+        </FormBlock>
+        <FormBlock>
+          <LabelBlock for="consider">유의사항</LabelBlock>
+          <TextareaBlock
+            rows="8"
             placeholder="유의사항을 입력하세요."
+            id="consider"
           />
         </FormBlock>
         <SubmitButton>Submit</SubmitButton>

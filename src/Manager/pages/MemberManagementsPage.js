@@ -23,7 +23,7 @@ const NameFliterBlock = styled.div`
   display: flex;
   align-items: center;
 `;
-const NameBlock = styled.div`
+const LabelBlock = styled.label`
   width: 4rem;
   height: 100%;
   font-size: 0.8rem;
@@ -92,10 +92,10 @@ const MemberManagementsPage = () => {
     <>
       <FliterAddBlock>
         <NameFliterBlock>
-          <NameBlock>Name</NameBlock>
+          <LabelBlock for="name">Name</LabelBlock>
           <NameSearchBlock>
             <SearchImage />
-            <SearchBlock placeholder="Search" />
+            <SearchBlock placeholder="Search" id="name" />
           </NameSearchBlock>
         </NameFliterBlock>
         <ButtonsBlock>
