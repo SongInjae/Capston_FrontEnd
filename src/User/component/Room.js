@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
+import { useNavigate } from "react-router-dom";
 const Room = styled.div`
     position: relative;
     border: solid;
@@ -46,12 +46,18 @@ const ReserveBtn = styled.button`
 `;
 
 function RoomComponent({ roomInfo }) {
+    const navigate = useNavigate();
+
+    const clickReserveBtn = () => {
+        navigate('/reserve');
+    }
+
     return (
         <Room>
             <RoomImage>
             </RoomImage>
             <RoomName>{roomInfo}</RoomName>
-            <ReserveBtn>예약하기</ReserveBtn>
+            <ReserveBtn onClick={clickReserveBtn}>예약하기</ReserveBtn>
         </Room>
     );
 }
