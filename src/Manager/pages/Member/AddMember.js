@@ -26,7 +26,7 @@ const ImageIcon = styled.div`
   height: 8rem;
   margin: 0 auto;
 `;
-const NameBlock = styled.div`
+const LabelBlock = styled.label`
   width: 100%;
   height: 1.5rem;
 `;
@@ -75,47 +75,55 @@ const AddMember = () => {
       <FormStyled>
         <ImageIcon />
         <FormBlock>
-          <NameBlock>이름</NameBlock>
-          <NameInputBlock type="text" placeholder="이름을 입력하세요." />
+          <LabelBlock for="name">이름</LabelBlock>
+          <NameInputBlock
+            type="text"
+            placeholder="이름을 입력하세요."
+            id="name"
+          />
         </FormBlock>
         <FormBlock>
-          <NameBlock>학번 / 교번</NameBlock>
+          <LabelBlock for="number">학번 / 교번</LabelBlock>
           <NameInputBlock
             type="number"
             placeholder="학번 혹은 교번을 입력하세요."
+            id="number"
           />
         </FormBlock>
         <FormBlock>
-          <NameBlock>비밀번호</NameBlock>
+          <LabelBlock for="pwd">비밀번호</LabelBlock>
           <NameInputBlock
             type="password"
             placeholder="비밀번호를 입력하세요."
+            id="pwd"
           />
         </FormBlock>
         <FormBlock>
-          <NameBlock>비밀번호 확인</NameBlock>
+          <LabelBlock for="pwdCheck">비밀번호 확인</LabelBlock>
           <NameInputBlock
             type="password"
             placeholder="위와 같은 비밀번호를 입력하세요."
+            id="pwdCheck"
           />
         </FormBlock>
         <FormBlock>
-          <NameBlock>이메일 주소</NameBlock>
+          <LabelBlock for="mail">이메일 주소</LabelBlock>
           <NameInputBlock
             type="email"
             placeholder="이메일 주소를 입력하세요."
+            id="mail"
           />
         </FormBlock>
         <FormBlock>
-          <NameBlock>소속</NameBlock>
+          <LabelBlock for="belong">소속</LabelBlock>
           <CheckBoxBlock>
-            <CheckBlock type="checkbox" />
+            <CheckBlock type="radio" name="belong" value="professor" />
             <CheckNameBlock>교수</CheckNameBlock>
-            <CheckBlock type="checkbox" />
+            <CheckBlock type="radio" name="belong" value="assistant" />
             <CheckNameBlock>조교</CheckNameBlock>
-            <CheckBlock type="checkbox" />
+            <CheckBlock type="radio" name="belong" value="senior" />
             <CheckNameBlock>대학원생</CheckNameBlock>
-            <CheckBlock type="checkbox" />
+            <CheckBlock type="radio" name="belong" value="junior" />
             <CheckNameBlock>학생</CheckNameBlock>
           </CheckBoxBlock>
         </FormBlock>

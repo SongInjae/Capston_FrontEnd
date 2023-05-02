@@ -5,25 +5,32 @@ import RoomComponent from '../component/Room';
 import Header from '../component/header';
 
 const RoomsWrapper = styled.div`
-  display : grid;
+  display: grid;
   grid-template-columns: repeat(2, 0.5fr);
-  margin-top : 20px;
-  place-items: center;
-  margin-left: 16%;
-  margin-right: 16%;
-  margin-top : 10px;
+
+  padding-left: 16%;
+  padding-right: 16%;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 `;
 
 
 function UserMain() {
-  const roomInfo = ["대양 AI센터 835호", "대양 AI센터 836호", "대양 AI센터 837호"];
+  const roomInfo = [
+    '대양 AI센터 835호',
+    '대양 AI센터 836호',
+    '대양 AI센터 837호',
+  ];
 
   return (
     <div>
       <Header></Header>
       <UserCalendar></UserCalendar>
       <RoomsWrapper>
-        {roomInfo.map((room) => (<RoomComponent roomInfo={room}></RoomComponent>))}
+        {roomInfo.map((room) => (
+          <RoomComponent roomInfo={room}></RoomComponent>
+        ))}
       </RoomsWrapper>
     </div>
   );
