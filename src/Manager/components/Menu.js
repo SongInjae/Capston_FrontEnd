@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { remove } from '../store/modules/addmember';
+
 import MenuIconURL from '../assets/img/menu.png';
 import CorrectIconURL from '../assets/img/correct.png';
 import TrashIconURL from '../assets/img/trash.png';
@@ -31,12 +34,14 @@ const TrashIcon = styled.div`
   height: 1.3rem;
 `;
 
-const Menu = () => {
+const Menu = ({ info }) => {
+  const dispatch = useDispatch();
+  const onRemove = (id) => dispatch(remove(id));
   return (
     <DivBlock>
       <MenuIcon />
       <CorrectIcon />
-      <TrashIcon />
+      <TrashIcon onClick={() => onRemove(info.id)} />
     </DivBlock>
   );
 };

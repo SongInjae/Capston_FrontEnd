@@ -68,62 +68,92 @@ const SubmitButton = styled(Button)`
   align-items: center;
 `;
 
-const AddMember = () => {
+const AddMember = ({ onChange, onSubmit, onInsert }) => {
   return (
     <>
       <BackImage />
-      <FormStyled>
+      <FormStyled onSubmit={onSubmit}>
         <ImageIcon />
         <FormBlock>
-          <LabelBlock for="name">이름</LabelBlock>
+          <LabelBlock htmlFor="name">이름</LabelBlock>
           <NameInputBlock
             type="text"
             placeholder="이름을 입력하세요."
-            id="name"
+            name="name"
+            onChange={onChange}
+            required
           />
         </FormBlock>
         <FormBlock>
-          <LabelBlock for="number">학번 / 교번</LabelBlock>
+          <LabelBlock htmlFor="number">학번 / 교번</LabelBlock>
           <NameInputBlock
             type="number"
             placeholder="학번 혹은 교번을 입력하세요."
-            id="number"
+            name="number"
+            onChange={onChange}
+            required
           />
         </FormBlock>
         <FormBlock>
-          <LabelBlock for="pwd">비밀번호</LabelBlock>
+          <LabelBlock htmlFor="pwd">비밀번호</LabelBlock>
           <NameInputBlock
             type="password"
             placeholder="비밀번호를 입력하세요."
-            id="pwd"
+            name="pwd"
+            onChange={onChange}
+            required
           />
         </FormBlock>
         <FormBlock>
-          <LabelBlock for="pwdCheck">비밀번호 확인</LabelBlock>
+          <LabelBlock htmlFor="pwdCheck">비밀번호 확인</LabelBlock>
           <NameInputBlock
             type="password"
             placeholder="위와 같은 비밀번호를 입력하세요."
-            id="pwdCheck"
+            name="pwdCheck"
+            onChange={onChange}
+            required
           />
         </FormBlock>
         <FormBlock>
-          <LabelBlock for="mail">이메일 주소</LabelBlock>
+          <LabelBlock htmlFor="mail">이메일 주소</LabelBlock>
           <NameInputBlock
             type="email"
             placeholder="이메일 주소를 입력하세요."
-            id="mail"
+            name="email"
+            onChange={onChange}
+            required
           />
         </FormBlock>
         <FormBlock>
-          <LabelBlock for="belong">소속</LabelBlock>
+          <LabelBlock htmlFor="belong">소속</LabelBlock>
           <CheckBoxBlock>
-            <CheckBlock type="radio" name="belong" value="professor" />
+            <CheckBlock
+              type="radio"
+              name="designation"
+              onChange={onChange}
+              value="교수"
+            />
             <CheckNameBlock>교수</CheckNameBlock>
-            <CheckBlock type="radio" name="belong" value="assistant" />
+            <CheckBlock
+              type="radio"
+              name="designation"
+              onChange={onChange}
+              value="조교"
+            />
             <CheckNameBlock>조교</CheckNameBlock>
-            <CheckBlock type="radio" name="belong" value="senior" />
+            <CheckBlock
+              type="radio"
+              name="designation"
+              onChange={onChange}
+              value="대학원생"
+            />
             <CheckNameBlock>대학원생</CheckNameBlock>
-            <CheckBlock type="radio" name="belong" value="junior" />
+            <CheckBlock
+              type="radio"
+              name="designation"
+              onChange={onChange}
+              value="학생"
+            />
             <CheckNameBlock>학생</CheckNameBlock>
           </CheckBoxBlock>
         </FormBlock>

@@ -63,7 +63,7 @@ const RegularReservagionPage = () => {
     <>
       <FliterBlock>
         <NameFliterBlock>
-          <LabelBlock for="name">Name</LabelBlock>
+          <LabelBlock htmlFor="name">Name</LabelBlock>
           <NameSearchBlock>
             <SearchImage />
             <SearchBlock placeholder="Search" id="name" />

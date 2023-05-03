@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 import Menu from '../../components/Menu';
 
@@ -60,37 +61,16 @@ const Td5 = styled.td`
 `;
 
 const UserTable = () => {
-  const infos = [
-    {
-      id: 1,
-      designation: '교수',
-      name: '한동일',
-      number: '12345678',
-      email: 'dsjl@sejong.ac.kr',
-    },
-    {
-      id: 2,
-      designation: '조교',
-      name: '멍멍이',
-      number: '41345678',
-      email: 'dsjl@naver.com',
-    },
-    {
-      id: 3,
-      designation: '학생',
-      name: '송인재',
-      number: '12562678',
-      email: 'jgh@naver.com',
-    },
-  ];
+  const infos = useSelector(({ addmembers }) => addmembers.info);
+
   const infoList = infos.map((info) => (
-    <TrBlock id={info.id}>
+    <TrBlock key={info.id}>
       <Td1>{info.designation}</Td1>
       <Td2>{info.name}</Td2>
       <Td3>{info.number}</Td3>
       <Td4>{info.email}</Td4>
       <Td5>
-        <Menu />
+        <Menu info={info} />
       </Td5>
     </TrBlock>
   ));
