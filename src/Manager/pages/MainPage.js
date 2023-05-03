@@ -10,7 +10,8 @@ import RegularReservagionPage from './RegularReservagionPage';
 import ImprovementPage from './ImprovementPage';
 
 import LogoutModal from '../components/AskModal';
-import AddMember from './Member/AddMember';
+//import AddMember from './Member/AddMember';
+import InfoForm from '../store/InfoForm';
 import MeetingRoomAddPage from './MeetingRoom/MeetingRoomAddPage';
 
 const StyledLink = styled(Link)`
@@ -56,6 +57,7 @@ const MainPage = () => {
 
   const menuList = menus.map((menu, idx) => (
     <li
+      key={menu.id}
       value={idx}
       className={parseInt(idx) === parseInt(btnActive) ? 'active' : ''}
       onClick={toggleActive}
@@ -87,7 +89,7 @@ const MainPage = () => {
             <Route path="/" element={<MemberManagementsPage />} />
             <Route path="/member">
               <Route index element={<MemberManagementsPage />} />
-              <Route path="add" element={<AddMember />} />
+              <Route path="add" element={<InfoForm />} />
             </Route>
             <Route path="/reserve" element={<ReservationPage />} />
             <Route path="/room">
