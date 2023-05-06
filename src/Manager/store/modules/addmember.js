@@ -24,7 +24,18 @@ export const insert = createAction(
     pwd,
   }),
 );
-export const change = createAction(CHANGE, (id) => id);
+export const change = createAction(
+  CHANGE,
+  ({ idx, id, designation, name, number, email, pwd }) => ({
+    idx,
+    id,
+    designation,
+    name,
+    number,
+    email,
+    pwd,
+  }),
+);
 export const remove = createAction(REMOVE, (id) => id);
 
 const initialState = {
@@ -64,12 +75,24 @@ const addmembers = handleActions(
       }),
     [INSERT]: (state, { payload: info }) =>
       produce(state, (draft) => {
+        console.log(info);
         draft.info.push(info);
       }),
     [REMOVE]: (state, { payload: id }) =>
       produce(state, (draft) => {
         const index = draft.info.findIndex((info) => info.id === id);
         draft.info.splice(index, 1);
+      }),
+    [CHANGE]: (
+      state,
+      { payload: { idx, id, designation, name, number, email, pwd } },
+    ) =>
+      produce(state, (draft) => {
+        for (let i = 0; i < draft.info.length; i++) {
+          if (draft.info[i].id === idx) {
+            draft.info[i] = { id, designation, name, number, email, pwd };
+          }
+        }
       }),
   },
   initialState,

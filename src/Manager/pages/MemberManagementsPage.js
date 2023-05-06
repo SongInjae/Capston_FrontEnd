@@ -1,8 +1,16 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { insert } from '../store/modules/addmember';
 
 import sea_img from '../assets/img/search.png';
 import UserTable from './Member/UserTable';
+
+import {
+  read,
+  utils,
+} from 'https://cdn.sheetjs.com/xlsx-latest/package/xlsx.mjs';
 
 const FliterAddBlock = styled.div`
   display: flex;
@@ -86,8 +94,71 @@ const FileBlock = styled(Link)`
     background: rgba(105, 0, 47, 0.1);
   }
 `;
+const LabelCsvBlock = styled.label`
+  line-height: 1.5rem;
+  box-sizing: border-box;
+  font-family: 'InterLight';
+  font-size: 0.9rem;
+  margin-right: 1rem;
+  padding-top: 0.5rem;
+  width: 6rem;
+  height: 2rem;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  padding: 0.25rem 1rem;
+  color: white;
+  cursor: pointer;
+  background-color: rgb(195, 0, 47);
+  &:hover {
+    background: rgba(105, 0, 47, 0.1);
+  }
+`;
+
+const CsvBlock = styled.input`
+  display: none;
+`;
 
 const MemberManagementsPage = () => {
+  const infos = useSelector(({ addmembers }) => addmembers.info);
+  const [userInput, setUserInput] = useState('');
+  const dispatch = useDispatch();
+
+  const onChange = (e) => {
+    setUserInput(e.target.value);
+  };
+
+  const filterInfo = infos.filter((info) => {
+    return info.name.includes(userInput);
+  });
+
+  const onChangeFile = (e) => {
+    let input = e.target;
+    let reader = new FileReader();
+    let designation = null;
+    let name = null;
+    let number = null;
+    let email = null;
+    let pwd = 3;
+
+    reader.onload = function () {
+      let data = reader.result;
+      let workBook = read(data, { type: 'binary' });
+
+      workBook.SheetNames.forEach(function (sheetName) {
+        let rows = utils.sheet_to_json(workBook.Sheets[sheetName]);
+        for (let i = 0; i < rows.length; i++) {
+          designation = rows[i].designation;
+          name = rows[i].name;
+          number = rows[i].number;
+          email = rows[i].email;
+          dispatch(insert({ designation, name, number, email, pwd }));
+        }
+      });
+    };
+    reader.readAsBinaryString(input.files[0]);
+  };
+
   return (
     <>
       <FliterAddBlock>
@@ -95,16 +166,22 @@ const MemberManagementsPage = () => {
           <LabelBlock htmlFor="name">Name</LabelBlock>
           <NameSearchBlock>
             <SearchImage />
-            <SearchBlock placeholder="Search" id="name" />
+            <SearchBlock placeholder="Search" id="name" onChange={onChange} />
           </NameSearchBlock>
         </NameFliterBlock>
         <ButtonsBlock>
           <FileBlock to="/admin/member/add">Add</FileBlock>
-          <FileBlock>CSV</FileBlock>
+          <LabelCsvBlock htmlFor="memberCsv">CSV</LabelCsvBlock>
+          <CsvBlock
+            type="file"
+            id="memberCsv"
+            accept=".xlsx"
+            onChange={onChangeFile}
+          />
         </ButtonsBlock>
       </FliterAddBlock>
       <ContentBlock>
-        <UserTable />
+        <UserTable infos={filterInfo} />
       </ContentBlock>
     </>
   );
