@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 const Room = styled.div`
-    position: relative;
     border: solid;
     border-width: 2px;
     border-color: lightgray;
