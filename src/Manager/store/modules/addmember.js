@@ -75,7 +75,6 @@ const addmembers = handleActions(
       }),
     [INSERT]: (state, { payload: info }) =>
       produce(state, (draft) => {
-        console.log(info);
         draft.info.push(info);
       }),
     [REMOVE]: (state, { payload: id }) =>
