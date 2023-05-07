@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Menu from '../../components/Menu';
+import Button from '../../components/Button';
 
 const TableBlock = styled.table`
   width: 100%;
@@ -58,6 +58,10 @@ const Td5 = styled.td`
   width: 28%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
+const ButtonBlock = styled(Button)`
+  width: 80%;
+  height: 80%;
+`;
 
 const ReservationTable = () => {
   const infos = [
@@ -90,7 +94,7 @@ const ReservationTable = () => {
       <Td3>{info.designation}</Td3>
       <Td4>{info.time}</Td4>
       <Td5>
-        <Menu />
+        <ButtonBlock>삭제</ButtonBlock>
       </Td5>
     </TrBlock>
   ));

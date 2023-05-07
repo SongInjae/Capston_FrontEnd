@@ -10,7 +10,7 @@ import RegularReservagionPage from './RegularReservagionPage';
 import ImprovementPage from './ImprovementPage';
 
 import LogoutModal from '../components/AskModal';
-//import AddMember from './Member/AddMember';
+import CorrectForm from '../store/CorrectForm';
 import InfoForm from '../store/InfoForm';
 import MeetingRoomAddPage from './MeetingRoom/MeetingRoomAddPage';
 
@@ -90,6 +90,7 @@ const MainPage = () => {
             <Route path="/member">
               <Route index element={<MemberManagementsPage />} />
               <Route path="add" element={<InfoForm />} />
+              <Route path="correct/:id" element={<CorrectForm />} />
             </Route>
             <Route path="/reserve" element={<ReservationPage />} />
             <Route path="/room">

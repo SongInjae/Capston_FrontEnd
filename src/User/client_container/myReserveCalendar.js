@@ -1,7 +1,18 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { format, addMonths, subMonths, startOfMonth, endOfMonth, endOfWeek, isSameMonth, isSameDay, addDays, startOfWeek } from "date-fns";
-import { BsFillCaretLeftFill, BsFillCaretRightFill } from "react-icons/bs";
+import { useState } from 'react';
+import styled, { css } from 'styled-components';
+import {
+  format,
+  addMonths,
+  subMonths,
+  startOfMonth,
+  endOfMonth,
+  endOfWeek,
+  isSameMonth,
+  isSameDay,
+  addDays,
+  startOfWeek,
+} from 'date-fns';
+import { BsFillCaretLeftFill, BsFillCaretRightFill } from 'react-icons/bs';
 
 const CalendarWrapper = styled.div`
   display: flex;
@@ -59,6 +70,19 @@ const Day = styled.div`
   background-color: ${(props) => props.color};
 `;
 
+const ReserveTimeBlock = styled.div`
+  width: 100%;
+  height: 25%;
+  display: block;
+  color: white;
+
+  ${(props) =>
+    props.reser &&
+    css`
+      background: rgba(195, 0, 47, 0.5);
+    `}
+`;
+
 const HoliDay = styled(Day)`
   color: red;
 `;
@@ -81,7 +105,7 @@ function DaysComponent() {
   );
 }
 
-function Bodys({ currentMonth, selectedDate, onDateClick }) {
+function Bodys({ infos, currentMonth, selectedDate, onDateClick }) {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
@@ -96,6 +120,18 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
     for (let i = 0; i < 7; i++) {
       formattedDate = format(day, 'd');
       const cloneday = day;
+      let reserveTime = '';
+      let reser = false;
+
+      infos.forEach((info) => {
+        if (
+          info.month === cloneday.getMonth() + 1 &&
+          info.day === cloneday.getDate()
+        ) {
+          reserveTime = info.time;
+          reser = true;
+        }
+      });
 
       if (day.getDay() === 0 || day.getDay() === 6) {
         if (!isSameMonth(currentMonth, day)) {
@@ -107,6 +143,7 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
               }}
             >
               {formattedDate}
+              <ReserveTimeBlock reser={reser}>{reserveTime}</ReserveTimeBlock>
             </OtherMonthDay>,
           );
         } else {
@@ -118,6 +155,7 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
               }}
             >
               {formattedDate}
+              <ReserveTimeBlock reser={reser}>{reserveTime}</ReserveTimeBlock>
             </HoliDay>,
           );
         }
@@ -131,6 +169,7 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
               }}
             >
               {formattedDate}
+              <ReserveTimeBlock reser={reser}>{reserveTime}</ReserveTimeBlock>
             </OtherMonthDay>,
           );
         } else {
@@ -142,6 +181,7 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
               }}
             >
               {formattedDate}
+              <ReserveTimeBlock reser={reser}>{reserveTime}</ReserveTimeBlock>
             </Day>,
           );
         }
@@ -154,7 +194,7 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
   return <DayCellsWrapper>{rows}</DayCellsWrapper>;
 }
 
-function UserCalendar() {
+const MyReserveCalendar = ({ infos }) => {
   const [current, setCurrent] = useState(new Date());
   const [selectDate, setSelectedDate] = useState(new Date());
 
@@ -192,9 +232,10 @@ function UserCalendar() {
         currentMonth={current}
         selectedDate={selectDate}
         onDateClick={onDateClick}
+        infos={infos}
       ></Bodys>
     </CalendarWrapper>
   );
-}
+};
 
-export default UserCalendar;
+export default MyReserveCalendar;

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 
 import Menu from '../../components/Menu';
 
@@ -18,15 +17,19 @@ const TheadBlock = styled.thead`
 `;
 const TheadTd1 = styled.td`
   width: 12%;
+  border-right: 0.1px solid white;
 `;
 const TheadTd2 = styled.td`
   width: 20%;
+  border-right: 0.1px solid white;
 `;
 const TheadTd3 = styled.td`
   width: 16%;
+  border-right: 0.1px solid white;
 `;
 const TheadTd4 = styled.td`
   width: 24%;
+  border-right: 0.1px solid white;
 `;
 const TheadTd5 = styled.td`
   width: 28%;
@@ -40,7 +43,7 @@ const TrBlock = styled.tr`
 `;
 
 const Td1 = styled.td`
-  width: 12%;
+  width: 15%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
 const Td2 = styled.td`
@@ -48,21 +51,19 @@ const Td2 = styled.td`
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
 const Td3 = styled.td`
-  width: 16%;
+  width: 20%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
 const Td4 = styled.td`
-  width: 24%;
+  width: 25%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
 const Td5 = styled.td`
-  width: 28%;
+  width: 20%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
 
-const UserTable = () => {
-  const infos = useSelector(({ addmembers }) => addmembers.info);
-
+const UserTable = ({ infos }) => {
   const infoList = infos.map((info) => (
     <TrBlock key={info.id}>
       <Td1>{info.designation}</Td1>

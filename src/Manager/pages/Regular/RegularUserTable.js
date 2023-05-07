@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Menu from '../../components/Menu';
+import Button from '../../components/Button';
 
 const TableBlock = styled.table`
   width: 100%;
@@ -36,6 +36,11 @@ const TrBlock = styled.tr`
   &:hover {
     background: #eceaea;
   }
+`;
+
+const ButtonBlock = styled(Button)`
+  width: 80%;
+  height: 80%;
 `;
 
 const Td1 = styled.td`
@@ -90,7 +95,7 @@ const RegularUserTable = () => {
       <Td3>{info.day}</Td3>
       <Td4>{info.time}</Td4>
       <Td5>
-        <Menu />
+        <ButtonBlock>삭제</ButtonBlock>
       </Td5>
     </TrBlock>
   ));

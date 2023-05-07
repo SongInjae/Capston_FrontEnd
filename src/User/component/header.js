@@ -178,6 +178,63 @@ const UserInfoChageBtn = styled.button`
     }
 `;
 
+function MyPage(props) {
+  return (
+    <Background>
+      <ModalContainer>
+        <ModalHeader>
+          <ModalMainTitle>
+            <SejongLogo src={logo}></SejongLogo> &nbsp;세종대학교 예약시스템
+          </ModalMainTitle>
+          <GrClose onClick={props.onXbtnClick} color='blue'></GrClose>
+        </ModalHeader>
+
+        <TitleWrapper>
+          <span>비밀번호 변경</span>
+          <span>비밀번호 변경시, 기존 비밀번호를 입력하셔야 합니다.</span>
+
+        </TitleWrapper>
+        <TextFieldWrapper>
+          <TextFieldClass>기존 비밀번호</TextFieldClass>
+          <TextField type="password"></TextField>
+        </TextFieldWrapper>
+        <TextFieldWrapper>
+          <TextFieldClass>변경할 비밀번호</TextFieldClass>
+          <TextField type="password"></TextField>
+        </TextFieldWrapper>
+        <TextFieldWrapper>
+          <TextFieldClass>비밀번호 재확인</TextFieldClass>
+          <TextField type="password"></TextField>
+        </TextFieldWrapper>
+        <PwdChageBtn>비밀번호 변경</PwdChageBtn>
+        <TitleWrapper>
+          <span>회원정보 변경</span>
+
+
+        </TitleWrapper>
+        <TextFieldWrapper>
+          <TextFieldClass>이름</TextFieldClass>
+          <TextField ></TextField>
+        </TextFieldWrapper>
+        <TextFieldWrapper>
+          <TextFieldClass>학번/교번</TextFieldClass>
+          <TextField ></TextField>
+        </TextFieldWrapper>
+        <TextFieldWrapper>
+          <TextFieldClass>이메일</TextFieldClass>
+          <TextField type="email"></TextField>
+        </TextFieldWrapper>
+        <TextFieldWrapper>
+          <TextFieldClass>전화번호</TextFieldClass>
+          <TextField ></TextField>
+        </TextFieldWrapper>
+        <UserInfoChageBtn>회원정보 변경</UserInfoChageBtn>
+      </ModalContainer>
+    </Background>
+
+  );
+}
+
 
 function Header() {
   const [modal, setModal] = useState(false);
@@ -204,57 +261,7 @@ function Header() {
           <HeaderTab onClick={clickMyPageBtn}>마이페이지</HeaderTab>
           {
             modal === true ?
-              <Background>
-                <ModalContainer>
-                  <ModalHeader>
-                    <ModalMainTitle>
-                      <SejongLogo src={logo}></SejongLogo> &nbsp;세종대학교 예약시스템
-                    </ModalMainTitle>
-                    <GrClose onClick={clickXModalBtn} color='blue'></GrClose>
-                  </ModalHeader>
-
-                  <TitleWrapper>
-                    <span>비밀번호 변경</span>
-                    <span>비밀번호 변경시, 기존 비밀번호를 입력하셔야 합니다.</span>
-
-                  </TitleWrapper>
-                  <TextFieldWrapper>
-                    <TextFieldClass>기존 비밀번호</TextFieldClass>
-                    <TextField type="password"></TextField>
-                  </TextFieldWrapper>
-                  <TextFieldWrapper>ㄴ
-                    <TextFieldClass>변경할 비밀번호</TextFieldClass>
-                    <TextField type="password"></TextField>
-                  </TextFieldWrapper>
-                  <TextFieldWrapper>
-                    <TextFieldClass>비밀번호 재확인</TextFieldClass>
-                    <TextField type="password"></TextField>
-                  </TextFieldWrapper>
-                  <PwdChageBtn>비밀번호 변경</PwdChageBtn>
-                  <TitleWrapper>
-                    <span>회원정보 변경</span>
-
-
-                  </TitleWrapper>
-                  <TextFieldWrapper>
-                    <TextFieldClass>이름</TextFieldClass>
-                    <TextField ></TextField>
-                  </TextFieldWrapper>
-                  <TextFieldWrapper>
-                    <TextFieldClass>학번/교번</TextFieldClass>
-                    <TextField ></TextField>
-                  </TextFieldWrapper>
-                  <TextFieldWrapper>
-                    <TextFieldClass>이메일</TextFieldClass>
-                    <TextField type="email"></TextField>
-                  </TextFieldWrapper>
-                  <TextFieldWrapper>
-                    <TextFieldClass>전화번호</TextFieldClass>
-                    <TextField ></TextField>
-                  </TextFieldWrapper>
-                  <UserInfoChageBtn>회원정보 변경</UserInfoChageBtn>
-                </ModalContainer>
-              </Background> : null
+              <MyPage onXbtnClick={clickXModalBtn}></MyPage> : null
           }
         </TabWrapper>
       </RightComponent>
