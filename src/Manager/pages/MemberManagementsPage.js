@@ -163,7 +163,7 @@ const MemberManagementsPage = () => {
         for (let i = 0; i < rows.length; i++) {
           designation = rows[i].designation;
           name = rows[i].name;
-          number = rows[i].number;
+          number = rows[i].number.toString();
           email = rows[i].email;
           dispatch(insert({ designation, name, number, email, pwd }));
         }

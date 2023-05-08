@@ -88,18 +88,27 @@ const ReservationTable = ({ infos }) => {
   const dispatch = useDispatch();
   const onRemove = (id) => dispatch(remove(id));
 
-  const infoList = infos.map((info) => (
-    <TrBlock id={info.id}>
-      <Td1>{info.date}</Td1>
-      <Td2>{info.name}</Td2>
-      <Td3>{info.designation}</Td3>
-      <Td4>{info.time}</Td4>
-      <Td5>{info.email}</Td5>
-      <Td6>
-        <TrashIcon onClick={() => onRemove(info.id)} />
-      </Td6>
-    </TrBlock>
-  ));
+  const infoList =
+    infos.length > 0 ? (
+      infos.map((info) => (
+        <TrBlock id={info.id}>
+          <Td1>
+            {info.date_year}.{info.date_month}.{info.date_day}
+          </Td1>
+          <Td2>{info.name}</Td2>
+          <Td3>{info.designation}</Td3>
+          <Td4>{info.time}</Td4>
+          <Td5>{info.email}</Td5>
+          <Td6>
+            <TrashIcon onClick={() => onRemove(info.id)} />
+          </Td6>
+        </TrBlock>
+      ))
+    ) : (
+      <tr>
+        <td>게시물이 없습니다.</td>
+      </tr>
+    );
   return (
     <TableBlock>
       <TheadBlock>

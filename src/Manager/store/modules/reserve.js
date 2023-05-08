@@ -9,7 +9,9 @@ const initialState = {
   infos: [
     {
       id: 1,
-      date: '4월 16일',
+      date_year: 2023,
+      date_month: 4,
+      date_day: 16,
       name: '한동일',
       designation: '교수',
       time: '09:00 - 12:00',
@@ -17,7 +19,9 @@ const initialState = {
     },
     {
       id: 2,
-      date: '4월 19일',
+      date_year: 2023,
+      date_month: 4,
+      date_day: 10,
       name: '멍멍이',
       designation: '조교',
       time: '18:00 - 20:00',
@@ -25,7 +29,9 @@ const initialState = {
     },
     {
       id: 3,
-      date: '5월 11일',
+      date_year: 2023,
+      date_month: 5,
+      date_day: 11,
       name: '송인재',
       designation: '학생',
       time: '15:00 - 16:00',
