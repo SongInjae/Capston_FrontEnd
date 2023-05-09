@@ -24,14 +24,23 @@ const RoomImage = styled.div`
     border-radius: 8px;
 `;
 
+const RoomNameWrapper = styled.div`
+    width : 14rem;
+`
+
 const RoomName = styled.span`
     font-size: 1.2rem;
     font-weight: bold;
     padding-left: 10px;
 `;
+const ReserveBtnWrapper = styled.div`
+    display : flex;
+    flex-direction: column;
 
+    
+`;
 const ReserveBtn = styled.button`
-    position : absolute;
+    margin-top: auto;
     bottom: 10px;
     right : 10px;
     font-weight: 500;
@@ -53,10 +62,14 @@ function RoomComponent({ roomInfo }) {
 
     return (
         <Room>
-            <RoomImage>
-            </RoomImage>
-            <RoomName>{roomInfo}</RoomName>
-            <ReserveBtn onClick={clickReserveBtn}>예약하기</ReserveBtn>
+            <RoomImage />
+            <RoomNameWrapper>
+                <RoomName>{roomInfo}</RoomName>
+            </RoomNameWrapper>
+            <ReserveBtnWrapper>
+                <ReserveBtn onClick={clickReserveBtn}>예약하기</ReserveBtn>
+            </ReserveBtnWrapper>
+
         </Room>
     );
 }
