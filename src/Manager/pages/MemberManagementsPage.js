@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { insert } from '../store/modules/addmember';
 
+import { insert } from '../store/modules/addmember';
+import Paging from '../components/Paging';
 import sea_img from '../assets/img/search.png';
 import UserTable from './Member/UserTable';
 
@@ -120,18 +121,30 @@ const CsvBlock = styled.input`
 `;
 
 const MemberManagementsPage = () => {
-  const infos = useSelector(({ addmembers }) => addmembers.info);
-  const [userInput, setUserInput] = useState('');
-  const dispatch = useDispatch();
+  const infos = useSelector(({ addmembers }) => addmembers.info); //info 불러오기
+  const [userInput, setUserInput] = useState(''); //필터링 input
+  const dispatch = useDispatch(); //redux dispatch 불러오기
 
+  const [count, setCount] = useState(0); //아이템 총 개수
+  const [currentPage, setCurrentPage] = useState(1); //현재 페이지
+  const [indexOfLastPost, setIndexOfLastPost] = useState(0); //마지막 포스트의 index
+  const [indexOfFirstPost, setIndexOfFirstPost] = useState(0); //첫번째 포스트의 index
+  const [currentPosts, setCurrentPosts] = useState(0); //현재 포스트
+
+  //필터링 input 변화 감지
   const onChange = (e) => {
     setUserInput(e.target.value);
   };
 
-  const filterInfo = infos.filter((info) => {
-    return info.name.includes(userInput);
-  });
+  //필터링 된 이름 내보내기
+  const filterInfo = useCallback(
+    infos.filter((info) => {
+      return info.number.includes(userInput);
+    }),
+    [userInput, infos],
+  );
 
+  // 파일 읽기
   const onChangeFile = (e) => {
     let input = e.target;
     let reader = new FileReader();
@@ -150,7 +163,7 @@ const MemberManagementsPage = () => {
         for (let i = 0; i < rows.length; i++) {
           designation = rows[i].designation;
           name = rows[i].name;
-          number = rows[i].number;
+          number = rows[i].number.toString();
           email = rows[i].email;
           dispatch(insert({ designation, name, number, email, pwd }));
         }
@@ -159,11 +172,23 @@ const MemberManagementsPage = () => {
     reader.readAsBinaryString(input.files[0]);
   };
 
+  //페이지네이션
+  useEffect(() => {
+    setCount(filterInfo.length);
+    setIndexOfLastPost(currentPage * 12);
+    setIndexOfFirstPost(indexOfLastPost - 12);
+    setCurrentPosts(filterInfo.slice(indexOfFirstPost, indexOfLastPost));
+  }, [currentPage, indexOfFirstPost, indexOfLastPost, filterInfo]);
+
+  const setPage = (e) => {
+    setCurrentPage(e);
+  };
+
   return (
     <>
       <FliterAddBlock>
         <NameFliterBlock>
-          <LabelBlock htmlFor="name">Name</LabelBlock>
+          <LabelBlock htmlFor="name">학번</LabelBlock>
           <NameSearchBlock>
             <SearchImage />
             <SearchBlock placeholder="Search" id="name" onChange={onChange} />
@@ -181,8 +206,14 @@ const MemberManagementsPage = () => {
         </ButtonsBlock>
       </FliterAddBlock>
       <ContentBlock>
-        <UserTable infos={filterInfo} />
+        <UserTable infos={currentPosts} />
       </ContentBlock>
+      <Paging
+        page={currentPage}
+        maxcntItem={12}
+        count={count}
+        setPage={setPage}
+      />
     </>
   );
 };

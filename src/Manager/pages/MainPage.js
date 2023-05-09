@@ -89,7 +89,7 @@ const MainPage = () => {
             <Route path="/" element={<MemberManagementsPage />} />
             <Route path="/member">
               <Route index element={<MemberManagementsPage />} />
-              <Route path="add" element={<InfoForm />} />
+              <Route path="add/*" element={<InfoForm />} />
               <Route path="correct/:id" element={<CorrectForm />} />
             </Route>
             <Route path="/reserve" element={<ReservationPage />} />

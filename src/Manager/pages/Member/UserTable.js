@@ -16,7 +16,7 @@ const TheadBlock = styled.thead`
   background-color: #51626f;
 `;
 const TheadTd1 = styled.td`
-  width: 12%;
+  width: 15%;
   border-right: 0.1px solid white;
 `;
 const TheadTd2 = styled.td`
@@ -24,15 +24,15 @@ const TheadTd2 = styled.td`
   border-right: 0.1px solid white;
 `;
 const TheadTd3 = styled.td`
-  width: 16%;
+  width: 20%;
   border-right: 0.1px solid white;
 `;
 const TheadTd4 = styled.td`
-  width: 24%;
+  width: 25%;
   border-right: 0.1px solid white;
 `;
 const TheadTd5 = styled.td`
-  width: 28%;
+  width: 20%;
 `;
 
 const TrBlock = styled.tr`
@@ -64,17 +64,24 @@ const Td5 = styled.td`
 `;
 
 const UserTable = ({ infos }) => {
-  const infoList = infos.map((info) => (
-    <TrBlock key={info.id}>
-      <Td1>{info.designation}</Td1>
-      <Td2>{info.name}</Td2>
-      <Td3>{info.number}</Td3>
-      <Td4>{info.email}</Td4>
-      <Td5>
-        <Menu info={info} />
-      </Td5>
-    </TrBlock>
-  ));
+  const infoList =
+    infos.length > 0 ? (
+      infos.map((info) => (
+        <TrBlock key={info.id}>
+          <Td1>{info.designation}</Td1>
+          <Td2>{info.name}</Td2>
+          <Td3>{info.number}</Td3>
+          <Td4>{info.email}</Td4>
+          <Td5>
+            <Menu info={info} />
+          </Td5>
+        </TrBlock>
+      ))
+    ) : (
+      <tr>
+        <td>게시물이 없습니다.</td>
+      </tr>
+    );
   return (
     <TableBlock>
       <TheadBlock>

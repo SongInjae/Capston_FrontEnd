@@ -1,6 +1,8 @@
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
-import Button from '../../components/Button';
+import { remove } from '../../store/modules/reserve';
+import TrashIconURL from '../../assets/img/trash.png';
 
 const TableBlock = styled.table`
   width: 100%;
@@ -16,19 +18,27 @@ const TheadBlock = styled.thead`
   background-color: #51626f;
 `;
 const TheadTd1 = styled.td`
-  width: 12%;
+  width: 10%;
+  border-right: 0.1px solid white;
 `;
 const TheadTd2 = styled.td`
-  width: 20%;
+  width: 15%;
+  border-right: 0.1px solid white;
 `;
 const TheadTd3 = styled.td`
-  width: 16%;
+  width: 15%;
+  border-right: 0.1px solid white;
 `;
 const TheadTd4 = styled.td`
-  width: 24%;
+  width: 25%;
+  border-right: 0.1px solid white;
 `;
 const TheadTd5 = styled.td`
-  width: 28%;
+  width: 25%;
+  border-right: 0.1px solid white;
+`;
+const TheadTd6 = styled.td`
+  width: 10%;
 `;
 
 const TrBlock = styled.tr`
@@ -39,65 +49,66 @@ const TrBlock = styled.tr`
 `;
 
 const Td1 = styled.td`
-  width: 12%;
+  width: 10%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
 const Td2 = styled.td`
-  width: 20%;
+  width: 15%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
 const Td3 = styled.td`
-  width: 16%;
+  width: 15%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
 const Td4 = styled.td`
-  width: 24%;
+  width: 25%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
 const Td5 = styled.td`
-  width: 28%;
+  width: 25%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
-const ButtonBlock = styled(Button)`
-  width: 80%;
-  height: 80%;
+const Td6 = styled.td`
+  width: 20%;
+  border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
+  text-align: center;
 `;
 
-const ReservationTable = () => {
-  const infos = [
-    {
-      id: 1,
-      date: '4월 16일',
-      name: '한동일',
-      designation: '교수',
-      time: '09:00 - 12:00',
-    },
-    {
-      id: 2,
-      date: '4월 19일',
-      name: '멍멍이',
-      designation: '조교',
-      time: '18:00 - 20:00',
-    },
-    {
-      id: 3,
-      date: '5월 11일',
-      name: '송인재',
-      designation: '학생',
-      time: '15:00 - 16:00',
-    },
-  ];
-  const infoList = infos.map((info) => (
-    <TrBlock id={info.id}>
-      <Td1>{info.date}</Td1>
-      <Td2>{info.name}</Td2>
-      <Td3>{info.designation}</Td3>
-      <Td4>{info.time}</Td4>
-      <Td5>
-        <ButtonBlock>삭제</ButtonBlock>
-      </Td5>
-    </TrBlock>
-  ));
+const TrashIcon = styled.div`
+  background-image: url(${TrashIconURL});
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 1.3rem;
+  height: 1.3rem;
+  display: inline-block;
+  cursor: pointer;
+`;
+
+const ReservationTable = ({ infos }) => {
+  const dispatch = useDispatch();
+  const onRemove = (id) => dispatch(remove(id));
+
+  const infoList =
+    infos.length > 0 ? (
+      infos.map((info) => (
+        <TrBlock id={info.id}>
+          <Td1>
+            {info.date_year}.{info.date_month}.{info.date_day}
+          </Td1>
+          <Td2>{info.name}</Td2>
+          <Td3>{info.designation}</Td3>
+          <Td4>{info.time}</Td4>
+          <Td5>{info.email}</Td5>
+          <Td6>
+            <TrashIcon onClick={() => onRemove(info.id)} />
+          </Td6>
+        </TrBlock>
+      ))
+    ) : (
+      <tr>
+        <td>게시물이 없습니다.</td>
+      </tr>
+    );
   return (
     <TableBlock>
       <TheadBlock>
@@ -106,7 +117,8 @@ const ReservationTable = () => {
           <TheadTd2>Name</TheadTd2>
           <TheadTd3>Designation</TheadTd3>
           <TheadTd4>Time</TheadTd4>
-          <TheadTd5>Edit</TheadTd5>
+          <TheadTd5>Email</TheadTd5>
+          <TheadTd6>Edit</TheadTd6>
         </tr>
       </TheadBlock>
       <tbody>{infoList}</tbody>
