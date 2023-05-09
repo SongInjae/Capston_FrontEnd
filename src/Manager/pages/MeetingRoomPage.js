@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { remove } from '../store/modules/rooms';
 
 const FliterAddBlock = styled.div`
   width: 100%;
@@ -32,14 +35,14 @@ const FileBlock = styled(Link)`
 
 const RoomRowBlock = styled.div`
   display: flex;
-  justify-content: space-around;
   width: 70rem;
-  height: 22rem;
-  margin-top: 1rem;
+  height: 20rem;
+  margin-top: 0.5rem;
 `;
 const RoomBlock = styled.div`
   width: 20rem;
-  height: 22rem;
+  height: 20rem;
+  margin: 0 2rem;
 `;
 const RoomImage = styled.img`
   width: 100%;
@@ -66,7 +69,7 @@ const RoomName = styled.div`
   font-family: 'InterBold';
 `;
 const RoomInfoCorrectBtn = styled(Link)`
-  width: 5rem;
+  width: 4rem;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -84,34 +87,39 @@ const RoomInfoCorrectBtn = styled(Link)`
 `;
 
 const MeetingRoomPage = () => {
+  const rooms = useSelector(({ rooms }) => rooms.rooms);
+  const dispatch = useDispatch();
+  const onRemove = (id) => dispatch(remove(id));
+
+  let roomsInfos = [];
+  for (let i = 0; i <= rooms.length; i += 3) {
+    let room = [];
+    for (let j = 0; j < 3; j++) {
+      if (i + j === rooms.length) break;
+      room.push(
+        <RoomBlock>
+          <RoomImage />
+          <RoomInfoBlock>
+            <RoomName>{rooms[i + j].room_name}</RoomName>
+            <RoomInfoCorrectBtn to={`/admin/room/correct/${rooms[i + j].id}`}>
+              수정
+            </RoomInfoCorrectBtn>
+            <RoomInfoCorrectBtn onClick={() => onRemove(rooms[i + j].id)}>
+              삭제
+            </RoomInfoCorrectBtn>
+          </RoomInfoBlock>
+        </RoomBlock>,
+      );
+    }
+    roomsInfos.push(<RoomRowBlock>{room}</RoomRowBlock>);
+  }
+
   return (
     <>
       <FliterAddBlock>
         <FileBlock to="/admin/room/add">회의실 추가</FileBlock>
       </FliterAddBlock>
-      <RoomRowBlock>
-        <RoomBlock>
-          <RoomImage />
-          <RoomInfoBlock>
-            <RoomName>대양AI센터835호</RoomName>
-            <RoomInfoCorrectBtn>수정</RoomInfoCorrectBtn>
-          </RoomInfoBlock>
-        </RoomBlock>
-        <RoomBlock>
-          <RoomImage />
-          <RoomInfoBlock>
-            <RoomName>대양AI센터836호</RoomName>
-            <RoomInfoCorrectBtn>수정</RoomInfoCorrectBtn>
-          </RoomInfoBlock>
-        </RoomBlock>
-        <RoomBlock>
-          <RoomImage />
-          <RoomInfoBlock>
-            <RoomName>대양AI센터837호</RoomName>
-            <RoomInfoCorrectBtn>수정</RoomInfoCorrectBtn>
-          </RoomInfoBlock>
-        </RoomBlock>
-      </RoomRowBlock>
+      {roomsInfos}
     </>
   );
 };

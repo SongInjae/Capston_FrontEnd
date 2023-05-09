@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { changeField, change } from './modules/addmember';
 import CorrectMember from '../pages/Member/CorrectMember';
-import { useNavigate } from 'react-router-dom';
 
 const CorrectForm = () => {
   const params = useParams();

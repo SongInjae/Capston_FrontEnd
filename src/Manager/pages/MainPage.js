@@ -12,7 +12,8 @@ import ImprovementPage from './ImprovementPage';
 import LogoutModal from '../components/AskModal';
 import CorrectForm from '../store/CorrectForm';
 import InfoForm from '../store/InfoForm';
-import MeetingRoomAddPage from './MeetingRoom/MeetingRoomAddPage';
+import RoomAddForm from '../store/RoomAddForm';
+import RoomCorrectForm from '../store/RoomCorrectForm';
 
 const StyledLink = styled(Link)`
   width: 100%;
@@ -89,13 +90,14 @@ const MainPage = () => {
             <Route path="/" element={<MemberManagementsPage />} />
             <Route path="/member">
               <Route index element={<MemberManagementsPage />} />
-              <Route path="add/*" element={<InfoForm />} />
+              <Route path="add" element={<InfoForm />} />
               <Route path="correct/:id" element={<CorrectForm />} />
             </Route>
             <Route path="/reserve" element={<ReservationPage />} />
             <Route path="/room">
               <Route index element={<MeetingRoomPage />} />
-              <Route path="add" element={<MeetingRoomAddPage />} />
+              <Route path="add" element={<RoomAddForm />} />
+              <Route path="correct/:id" element={<RoomCorrectForm />} />
             </Route>
             <Route path="/regular" element={<RegularReservagionPage />} />
             <Route path="/improve" element={<ImprovementPage />} />
