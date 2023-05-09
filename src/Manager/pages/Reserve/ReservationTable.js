@@ -69,7 +69,7 @@ const Td5 = styled.td`
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
 const Td6 = styled.td`
-  width: 20%;
+  width: 10%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
   text-align: center;
 `;
