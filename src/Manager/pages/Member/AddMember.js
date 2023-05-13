@@ -79,7 +79,7 @@ const AddMember = ({ onChange, onSubmit }) => {
           <NameInputBlock
             type="text"
             placeholder="이름을 입력하세요."
-            name="name"
+            id="name"
             onChange={onChange}
             required
           />
@@ -89,7 +89,7 @@ const AddMember = ({ onChange, onSubmit }) => {
           <NameInputBlock
             type="number"
             placeholder="학번 혹은 교번을 입력하세요."
-            name="number"
+            id="number"
             onChange={onChange}
             required
           />
@@ -99,7 +99,7 @@ const AddMember = ({ onChange, onSubmit }) => {
           <NameInputBlock
             type="password"
             placeholder="비밀번호를 입력하세요."
-            name="pwd"
+            id="pwd"
             onChange={onChange}
             required
           />
@@ -109,7 +109,7 @@ const AddMember = ({ onChange, onSubmit }) => {
           <NameInputBlock
             type="password"
             placeholder="위와 같은 비밀번호를 입력하세요."
-            name="pwdCheck"
+            id="pwdCheck"
             onChange={onChange}
             required
           />
@@ -119,7 +119,7 @@ const AddMember = ({ onChange, onSubmit }) => {
           <NameInputBlock
             type="email"
             placeholder="이메일 주소를 입력하세요."
-            name="email"
+            id="email"
             onChange={onChange}
             required
           />
@@ -129,28 +129,28 @@ const AddMember = ({ onChange, onSubmit }) => {
           <CheckBoxBlock>
             <CheckBlock
               type="radio"
-              name="designation"
+              id="designation"
               onChange={onChange}
               value="교수"
             />
             <CheckNameBlock>교수</CheckNameBlock>
             <CheckBlock
               type="radio"
-              name="designation"
+              id="designation"
               onChange={onChange}
               value="조교"
             />
             <CheckNameBlock>조교</CheckNameBlock>
             <CheckBlock
               type="radio"
-              name="designation"
+              id="designation"
               onChange={onChange}
               value="대학원생"
             />
             <CheckNameBlock>대학원생</CheckNameBlock>
             <CheckBlock
               type="radio"
-              name="designation"
+              id="designation"
               onChange={onChange}
               value="학생"
             />

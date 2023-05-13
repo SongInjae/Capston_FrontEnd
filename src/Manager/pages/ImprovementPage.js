@@ -1,18 +1,18 @@
 import styled from 'styled-components';
 
 import Penalty from './Improve/Penalty';
-import Discomfort from './Improve/Discomfort';
+import Notify from './Improve/Notify';
 
 const BoardBlock = styled.div`
-  display: flex;
-  margin-top: 2rem;
+  //display: flex;
+  margin: 2rem;
 `;
 
 const ImprovementPage = () => {
   return (
     <BoardBlock>
+      <Notify />
       <Penalty />
-      <Discomfort />
     </BoardBlock>
   );
 };
