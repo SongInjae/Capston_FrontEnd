@@ -7,7 +7,6 @@ import Header from '../component/header';
 const RoomsWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 0.5fr);
-
   padding-left: 16%;
   padding-right: 16%;
   align-content: center;

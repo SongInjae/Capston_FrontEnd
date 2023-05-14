@@ -74,23 +74,22 @@ const TitleBlock = styled.h2`
 const ReserveInfoBlock = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 1rem auto;
   border: 2px solid lightgray;
   border-radius: 8px;
   width: 35rem;
-  height: 8rem;
-  padding-top: 0.9rem;
+  height: 9rem;
 `;
 const RoomInfoBlock = styled.div`
   width: 33rem;
-  height: 100%;
-  padding-left: 2rem;
   display: flex;
 `;
 const RoomImageBlock = styled.div`
-  background-color: gray;
-  width: 6rem;
-  height: 6rem;
+  background-color: lightgray;
+  border-radius: 7px;
+  width: 7rem;
+  height: 7rem;
 `;
 const RoomTextBlock = styled.div`
   margin-left: 1rem;
@@ -107,9 +106,18 @@ const Roomtext = styled.div`
     `}
 `;
 const CancelButton = styled(Button)`
-  width: 4.5rem;
-  height: 1.7rem;
-  float: right;
+    margin-top: auto;
+    float : right;
+    bottom: 10px;
+    right : 10px;
+    font-weight: 500;
+    font-size: 1.0rem;
+    color: white;
+    width: 5.5rem;
+    height : 2.7rem;
+    border-radius: 8px;
+    border-width: 0px;
+    background-color: #a31432;
 `;
 
 const MyReservation = () => {
@@ -167,7 +175,7 @@ const MyReservation = () => {
         </RightComponent>
       </Header>
       <MyReserveCalendar infos={infos} />
-      <hr />
+
       <TitleBlock>나의 예약목록</TitleBlock>
       {infoList}
     </div>

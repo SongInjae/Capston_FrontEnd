@@ -67,15 +67,15 @@ const Day = styled.div`
   border-radius: 6px;
   padding-left: 0.5rem;
   padding-top: 0.3rem;
-  background-color: ${(props) => props.color};
+  border-style: solid;
+  border-color: ${(props) => props.color};
 `;
-
 const ReserveTimeBlock = styled.div`
   width: 100%;
   height: 25%;
   display: block;
   color: white;
-
+  
   ${(props) =>
     props.reser &&
     css`

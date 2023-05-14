@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../component/header";
+import format from "date-fns/format";
+import { useDispatch, useSelector } from "react-redux";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineAddCircle } from "react-icons/md";
 import { AiFillWarning } from "react-icons/ai"
@@ -59,8 +61,8 @@ const ToolTitle = styled.div`
     width: 4rem;
     margin-top: 0.1rem;
     text-align: center;
-    font-size: 0.1rem;
-    font-weight: bold;
+    font-size: 12px;
+    font-weight: 500;
 `
 const DatePickWrapper = styled.div`
     display: flex;
@@ -69,6 +71,7 @@ const DatePickWrapper = styled.div`
 ;
 `
 const DatePickButton = styled.div`
+
     background-color: #F4F4F4;
     color : #373737;
     padding-left: 10rem;
@@ -84,10 +87,10 @@ const DropdownIcon = styled(IoIosArrowDown)`
 `;
 
 const TimePickbtn = styled.div`
+    width : 40vw;
     border-style: solid;
     border-color: lightgray;
     border-radius: 10px;
-    width : 40vw;
     margin-bottom: 5px;
 `
 const TimeTitle = styled.div`
@@ -108,7 +111,7 @@ const MeetingNameInput = styled.input`
     padding-left: 0.5rem;
     margin-bottom : 10px;
     width : 40vw;
-    height : 40px;
+    height : 48px;
     border-radius: 10px;
     border-style: solid;
     border-color: lightgrey;
@@ -116,30 +119,37 @@ const MeetingNameInput = styled.input`
 `;
 
 const MemberTitle = styled.div`
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
     width: 40vw;
-    font-size: 18px;
+    font-size: 1.2rem;
     font-weight: bold;
 `
 const AddMemberButton = styled.div`
-    display: flex;
-    width: 40vw;
-    margin-top: 5px;
     align-items: center;
     font-size: 13px;
 `
 const AddMemberIcon = styled(MdOutlineAddCircle)`
-    width : 15px;
-    height : 15px;
+    width : 1.4rem;
+    height : 1.4rem;
+    margin-left : 10px;
 `
 const MemberWrapper = styled.div`
+    display: flex;
+    align-items: center;
     width: 40vw;
     font-size: 12px;
     padding-top: 5px;
     padding-bottom: 5px;
 `
+
+
 const Member = styled.span`
-    padding-left: 5px;
-    padding-right: 5px;
+    font-size: 15px;
+    font-weight: 500;
+    margin-left: 5px;
+    margin-right: 5px;
 `
 const WarningIcon = styled(AiFillWarning)`
 `
@@ -147,12 +157,25 @@ const WarningTitle = styled.div`
     display: flex;
     align-items: center;
     width : 40vw;
-    font-size: 18px;
+    font-size: 1.2rem;
     font-weight: bold;
+    margin-bottom: 0.5rem;
 `
 const Warning = styled.div`
+    display: flex;
+    flex-direction:column;
+    background-color: #F2F2F2;
     width : 40vw;
     font-size: 14px;
+    padding : 1rem;
+    border-radius: 10px;
+    
+`
+const WarningMsg = styled.span`
+    margin-top : 0.3rem;
+    margin-bottom : 0.3rem;
+    font-size: 0.9rem;
+    font-weight: 500;
 `
 
 const ReservationButton = styled.button`
@@ -163,6 +186,8 @@ const ReservationButton = styled.button`
     font-size: large;
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
+    margin-bottom: 1rem;
+    margin-top : 1rem;
     border-radius: 8px;
     border-radius: 10;
     border: none;
@@ -228,6 +253,8 @@ function ReservingPage() {
     const [isTimeBtnClicked, setIsTimeBtnClicked] = useState(false);
     const [isAddMemeberClicked, setIsAddMemeberClicked] = useState(false);
     const [selectedTime, setSelectedTime] = useState("시간을 선택하세요");
+    const selectedDate = useSelector(state => state.dateReducer.date);
+    const selectedRoom = useSelector(state => state.roomReducer.room);
     const clickTimePickBtn = (time) => {
         setSelectedTime(time);
         setIsTimeBtnClicked(!isTimeBtnClicked);
@@ -237,7 +264,7 @@ function ReservingPage() {
             <Header></Header>
             <ReserveWrapper>
                 <RoomImage ></RoomImage>
-                <RoomTitle>대양 AI 센터 835호</RoomTitle>
+                <RoomTitle>{selectedRoom}</RoomTitle>
                 <ToolWrapper>
                     {toolList.map((tool) => (
 
@@ -249,15 +276,17 @@ function ReservingPage() {
                 </ToolWrapper>
                 <Divider></Divider>
                 <DatePickWrapper>
-                    <DatePickButton>2022년 10월 11일 <DropdownIcon></DropdownIcon></DatePickButton>
+                    <DatePickButton>
+                        {format(selectedDate, 'yyyy')}년 {format(selectedDate, 'M')}월 {format(selectedDate, 'dd')}일<DropdownIcon></DropdownIcon></DatePickButton>
                 </DatePickWrapper>
                 <TimePickbtn><TimeTitle onClick={() => setIsTimeBtnClicked(!isTimeBtnClicked)}>{selectedTime}</TimeTitle>{
                     isTimeBtnClicked === true ? TimeList.map((time) => (<TimeTitle onClick={() => clickTimePickBtn(time)}>{time}</TimeTitle>)) : null
                 }</TimePickbtn>
                 <MeetingNameInput placeholder="회의명을 입력하세요(선택)"></MeetingNameInput>
                 <Divider></Divider>
-                <MemberTitle>참석멤버</MemberTitle>
-                <AddMemberButton onClick={() => setIsAddMemeberClicked(!isAddMemeberClicked)}><AddMemberIcon></AddMemberIcon>참석멤버 추가</AddMemberButton>
+                <MemberTitle>참석멤버
+                </MemberTitle>
+
                 {isAddMemeberClicked === true ?
                     <Background>
                         <ModalContainer>
@@ -267,12 +296,24 @@ function ReservingPage() {
                             </ModalHeader>
                         </ModalContainer>
                     </Background> : null}
+
                 <MemberWrapper>    {
                     members.map((member) => (<Member>{member}</Member>))
-                }</MemberWrapper>
+                }
+                    <AddMemberButton onClick={() => setIsAddMemeberClicked(!isAddMemeberClicked)}>
+                        <AddMemberIcon></AddMemberIcon>
+                    </AddMemberButton>
+                </MemberWrapper>
+
                 <Divider></Divider>
                 <WarningTitle><WarningIcon></WarningIcon>유의사항</WarningTitle>
-                <Warning>1. 첫번째 유의사항 <br></br>2. 두번째 유의사항 <br></br>3. 세번째 유의사항</Warning>
+                <Warning>
+                    <WarningMsg>1. 첫번째 유의사항입니다.</WarningMsg>
+                    <WarningMsg>2. 두번째 유의사항입니다.</WarningMsg>
+                    <WarningMsg>3. 세번째 유의사항입니다.</WarningMsg>
+                    <WarningMsg>4. 네번째 유의사항입니다.</WarningMsg>
+                    <WarningMsg>5. 다섯번째 유의사항입니다.</WarningMsg>
+                </Warning>
                 <ReservationButton>예약하기</ReservationButton>
             </ReserveWrapper>
         </div>
