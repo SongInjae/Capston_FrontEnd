@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeField, insert } from './modules/notify';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +17,11 @@ const NotifyAddForm = () => {
   }));
   const dispatch = useDispatch();
 
+  const onChangeField = useCallback(
+    (payload) => dispatch(changeField(payload)),
+    [],
+  );
+
   const onChange = (e) => {
     const { value, id } = e.target;
     dispatch(
@@ -31,7 +37,13 @@ const NotifyAddForm = () => {
     navigate(-1);
   };
 
-  return <NotifyAdd onChange={onChange} onSubmit={onSubmit} />;
+  return (
+    <NotifyAdd
+      onChange={onChange}
+      onSubmit={onSubmit}
+      onChangeField={onChangeField}
+    />
+  );
 };
 
 export default NotifyAddForm;

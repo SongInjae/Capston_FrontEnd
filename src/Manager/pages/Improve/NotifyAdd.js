@@ -1,3 +1,5 @@
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import styled from 'styled-components';
 
 import BackImage from '../../components/BackImage';
@@ -7,60 +9,90 @@ const FormStyled = styled.form`
   position: absolute;
   top: 3.5rem;
   left: 16.25rem;
-  width: 20rem;
-  height: 50rem;
-  margin: 3rem 27rem;
-  opacity: 0.9;
+  width: 65vw;
+  height: 40rem;
+  background-color: white;
+  margin: 3rem 7rem;
+  border-radius: 0.25rem;
   z-index: 1000;
+  text-align: center;
 `;
-
 const FormBlock = styled.div`
-  width: 100%;
-  height: 4em;
+  display: flex;
+  width: 60vw;
+  height: 4rem;
   font-family: 'InterBold';
   font-weight: 400;
+  margin-top: 1rem;
 `;
 const LabelBlock = styled.label`
-  width: 100%;
+  width: 10%;
   height: 1.5rem;
 `;
-const InputBlock = styled.input`
-  width: 100%;
-  height: 1.7rem;
+const TitleInput = styled.input`
+  width: 90%;
   border-radius: 0.25rem;
   padding-left: 0.2rem;
   border: 1px solid gray;
+
+  font-size: 1rem;
+  outline: none;
+  padding-bottom: 0.5rem;
+  border: none;
+  border-bottom: 1px solid gray;
+  margin-bottom: 2rem;
 `;
-const TextareaBlock = styled.textarea`
-  width: 100%;
-  border: 1px solid gray;
-  border-radius: 0.25rem;
-  padding-left: 0.2rem;
+const QuillWrapper = styled.div`
+  text-align: start;
   background-color: white;
-  padding-top: 0.1rem;
+  z-index: 10;
+  .ql-editor {
+    padding: 0;
+    min-height: 50vh;
+    max-height: 50vh;
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
+  .ql-editor .ql-blank::before {
+    left: 0px;
+  }
 `;
 const SubmitButton = styled(Button)`
   width: 5rem;
   height: 2rem;
   margin-top: 1rem;
-  margin: 8rem auto;
 `;
 
-const NotifyAdd = ({ onChange, onSubmit }) => {
+const NotifyAdd = ({ onChange, onSubmit, onChangeField }) => {
+  const onChnageHtml = (e) => {
+    onChangeField({ key: 'text', value: e });
+  };
   return (
     <>
       <BackImage />
       <FormStyled onSubmit={onSubmit}>
         <FormBlock>
           <LabelBlock htmlFor="title">제목</LabelBlock>
-          <InputBlock
+          <TitleInput
             type="text"
-            placeholder="이름을 입력하세요."
+            placeholder="제목을 입력하세요."
             id="title"
             onChange={onChange}
             required
           />
         </FormBlock>
+        <QuillWrapper>
+          <ReactQuill onChange={onChnageHtml} />
+        </QuillWrapper>
+        <SubmitButton>Submit</SubmitButton>
+      </FormStyled>
+    </>
+  );
+};
+
+export default NotifyAdd;
+
+/*
         <FormBlock>
           <LabelBlock htmlFor="text">내용</LabelBlock>
           <TextareaBlock
@@ -71,10 +103,4 @@ const NotifyAdd = ({ onChange, onSubmit }) => {
             required
           />
         </FormBlock>
-        <SubmitButton>Submit</SubmitButton>
-      </FormStyled>
-    </>
-  );
-};
-
-export default NotifyAdd;
+        */
