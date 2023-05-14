@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { pickRoom } from "../user_store/room";
 const Room = styled.div`
     border: solid;
     border-width: 2px;
@@ -50,15 +52,18 @@ const ReserveBtn = styled.button`
     height : 2.7rem;
     border-radius: 8px;
     border-width: 0px;
-    background-color: black;
+    background-color: #a31432;
 `;
 
 function RoomComponent({ roomInfo }) {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const clickReserveBtn = () => {
+    const clickReserveBtn = (selectedRoom) => {
         navigate('/reserve');
+        dispatch(pickRoom(selectedRoom));
     }
+
 
     return (
         <Room>
@@ -67,7 +72,7 @@ function RoomComponent({ roomInfo }) {
                 <RoomName>{roomInfo}</RoomName>
             </RoomNameWrapper>
             <ReserveBtnWrapper>
-                <ReserveBtn onClick={clickReserveBtn}>예약하기</ReserveBtn>
+                <ReserveBtn onClick={() => clickReserveBtn(roomInfo)}>예약하기</ReserveBtn>
             </ReserveBtnWrapper>
 
         </Room>

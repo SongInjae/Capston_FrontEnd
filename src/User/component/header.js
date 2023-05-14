@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import logo from '../img/sejong.png';
 import { GrClose } from 'react-icons/gr';
+import { useNavigate } from 'react-router-dom';
 const HeaderWrapper = styled.header`
   margin: 0 auto;
   display: flex;
@@ -111,6 +112,19 @@ const TitleWrapper = styled.div`
   padding-left: 30px;
   align-items: baseline;
 `;
+
+const InfoTitle = styled.span`
+  font-size: 1.3rem;
+  font-weight: bold;
+`
+
+const PwdInfoTitle = styled.span`
+  font-size: 0.3rem;
+  font-weight: 500;
+  color : gray;
+`
+
+
 const TextFieldWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -187,8 +201,8 @@ function MyPage(props) {
         </ModalHeader>
 
         <TitleWrapper>
-          <span>비밀번호 변경</span>
-          <span>비밀번호 변경시, 기존 비밀번호를 입력하셔야 합니다.</span>
+          <InfoTitle>비밀번호 변경</InfoTitle>
+          <PwdInfoTitle>비밀번호 변경시, 기존 비밀번호를 입력하셔야 합니다.</PwdInfoTitle>
         </TitleWrapper>
         <TextFieldWrapper>
           <TextFieldClass>기존 비밀번호</TextFieldClass>
@@ -204,7 +218,7 @@ function MyPage(props) {
         </TextFieldWrapper>
         <PwdChageBtn>비밀번호 변경</PwdChageBtn>
         <TitleWrapper>
-          <span>회원정보 변경</span>
+          <InfoTitle>회원정보 변경</InfoTitle>
         </TitleWrapper>
         <TextFieldWrapper>
           <TextFieldClass>이름</TextFieldClass>
@@ -230,6 +244,10 @@ function MyPage(props) {
 
 function Header() {
   const [modal, setModal] = useState(false);
+  const navigate = useNavigate();
+  const clickSearchMyReservation = () => {
+    navigate('/main/reserve');
+  }
 
   const clickMyPageBtn = () => {
     setModal(true);
@@ -249,7 +267,7 @@ function Header() {
         </LogoutWrapper>
         <TabWrapper>
           <HeaderTab>공지사항</HeaderTab>
-          <HeaderTab>내 예약현황 조회</HeaderTab>
+          <HeaderTab onClick={clickSearchMyReservation}>내 예약현황 조회</HeaderTab>
           <HeaderTab onClick={clickMyPageBtn}>마이페이지</HeaderTab>
           {modal === true ? (
             <MyPage onXbtnClick={clickXModalBtn}></MyPage>
