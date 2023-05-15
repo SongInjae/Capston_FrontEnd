@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import logo from '../img/sejong.png';
+import logo from '../assets/sejong.png';
 import MyReserveCalendar from './myReserveCalendar';
 import Button from '../../Manager/components/Button';
 

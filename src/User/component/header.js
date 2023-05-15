@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import logo from '../img/sejong.png';
+import logo from '../assets/sejong.png';
 import { GrClose } from 'react-icons/gr';
 import { useNavigate } from 'react-router-dom';
 const HeaderWrapper = styled.header`
