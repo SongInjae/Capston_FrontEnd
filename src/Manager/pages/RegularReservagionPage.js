@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import sea_img from '../assets/img/search.png';
 import RegularUserTable from './Regular/RegularUserTable';
@@ -59,6 +61,21 @@ const ContentBlock = styled.div`
 `;
 
 const RegularReservagionPage = () => {
+  const infos = useSelector(({ regular }) => regular.regularInfo); //info 불러오기
+  const [filterInfo, setFilterInfo] = useState(infos);
+  const [userInput, setUserInput] = useState(''); //필터링 input
+  //필터링 input 변화 감지
+  const onChange = (e) => {
+    setUserInput(e.target.value);
+  };
+  //이름 필터링
+  useEffect(() => {
+    setFilterInfo(
+      infos.filter((info) => {
+        return info.name.includes(userInput);
+      }),
+    );
+  }, [userInput, infos]);
   return (
     <>
       <FliterBlock>
@@ -66,12 +83,12 @@ const RegularReservagionPage = () => {
           <LabelBlock htmlFor="name">Name</LabelBlock>
           <NameSearchBlock>
             <SearchImage />
-            <SearchBlock placeholder="Search" id="name" />
+            <SearchBlock placeholder="Search" id="name" onChange={onChange} />
           </NameSearchBlock>
         </NameFliterBlock>
       </FliterBlock>
       <ContentBlock>
-        <RegularUserTable />
+        <RegularUserTable infos={filterInfo} />
       </ContentBlock>
     </>
   );

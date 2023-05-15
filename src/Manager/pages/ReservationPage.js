@@ -126,19 +126,6 @@ const ReservationPage = () => {
       }),
     );
   }, [year, month, day]);
-  /*
-  filterInfo = useCallback(
-    filterInfo.filter((info) => {
-      return year === null
-        ? filterInfo
-        : info.date_year === year &&
-          info.date_month === month &&
-          info.date_day === day
-        ? info
-        : '';
-    }),
-    [year, month, day],
-  );*/
 
   //페이지네이션
   useEffect(() => {

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useState, useEffect, useCallback } from 'react';
 
 import Button from '../../components/Button';
 import BackImage from '../../components/BackImage';
@@ -71,7 +72,35 @@ const SubmitButton = styled(Button)`
   font-size: 0.9rem !important;
 `;
 
-const MeetingRoomAddPage = ({ onChange, onSubmit }) => {
+const CorrectRoomPage = ({ room, onChange, onSubmit }) => {
+  let id = room.id;
+  let [roomName, setRoomName] = useState(room.room_name);
+  let [facility, setFacility] = useState(room.facility);
+  let [text, setText] = useState(room.text);
+
+  useEffect(() => {
+    onChange('id', id);
+  }, [onChange, id]);
+  useEffect(() => {
+    onChange('room_name', roomName);
+  }, [onChange, roomName]);
+  useEffect(() => {
+    onChange('facility', facility);
+  }, [onChange, facility]);
+  useEffect(() => {
+    onChange('text', text);
+  }, [onChange, text]);
+
+  const onUpdateName = useCallback((e) => {
+    setRoomName(e.target.value);
+  }, []);
+  const onUpdateFacility = useCallback((e) => {
+    setFacility(e.target.value);
+  }, []);
+  const onUpdateText = useCallback((e) => {
+    setText(e.target.value);
+  }, []);
+
   return (
     <>
       <BackImage />
@@ -85,7 +114,8 @@ const MeetingRoomAddPage = ({ onChange, onSubmit }) => {
             type="text"
             placeholder="ex) 대양AI센터 835호"
             id="room_name"
-            onChange={onChange}
+            onChange={onUpdateName}
+            value={roomName}
             required
           />
         </FormBlock>
@@ -95,7 +125,8 @@ const MeetingRoomAddPage = ({ onChange, onSubmit }) => {
             type="text"
             placeholder="ex) 빔프로젝트, 컴퓨터 2대"
             id="facility"
-            onChange={onChange}
+            onChange={onUpdateFacility}
+            value={facility}
             required
           />
         </FormBlock>
@@ -105,14 +136,15 @@ const MeetingRoomAddPage = ({ onChange, onSubmit }) => {
             rows="8"
             placeholder="유의사항을 입력하세요."
             id="text"
-            onChange={onChange}
+            onChange={onUpdateText}
+            value={text}
             required
           />
         </FormBlock>
-        <SubmitButton>Submit</SubmitButton>
+        <SubmitButton>Correct</SubmitButton>
       </FormStyled>
     </>
   );
 };
 
-export default MeetingRoomAddPage;
+export default CorrectRoomPage;

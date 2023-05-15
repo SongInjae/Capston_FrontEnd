@@ -17,10 +17,10 @@ const InfoForm = () => {
   const navigate = useNavigate();
 
   const onChange = (e) => {
-    const { value, name } = e.target;
+    const { value, id } = e.target;
     dispatch(
       changeField({
-        key: name,
+        key: id,
         value,
       }),
     );
