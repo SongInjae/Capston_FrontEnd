@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
+import { useDispatch } from "react-redux";
+import { login } from "../user_store/login";
 const SignInWrapper = styled.div`
   width:600px;
   height:500px;
@@ -81,7 +82,7 @@ function SignIn() {
     const [isAuthenticated, setAuth] = useState(false);
     const [id, setId] = useState("");
     const [pwd, setPwd] = useState("");
-
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const onChangeId = (e) => {
@@ -107,6 +108,7 @@ function SignIn() {
     },);
 
     const onClickLoginBtn = () => {
+        dispatch(login(id, pwd))
         if (!isValidate()) {
             alert('아이디 또는 패스워드를 입력하세요.');
             return;
