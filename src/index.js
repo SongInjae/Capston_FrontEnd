@@ -4,12 +4,30 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-//import { composeWithDevTools } from '@redux-devtools/extension';
+import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import rootReducer from './Manager/store/modules';
+import rootReducer, { rootSaga } from './Manager/store/modules';
+import createSagaMiddleware from 'redux-saga';
+import { tempSetUser } from './User/store/modules/auth';
 
-const store = createStore(rootReducer, composeWithDevTools());
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(sagaMiddleware)),
+);
+
+function loadUser() {
+  localStorage.removeItem('user');
+  try {
+    const user = localStorage.getItem('user');
+    if (!user) return;
+    store.dispatch(tempSetUser(JSON.parse(user)));
+  } catch (e) {
+    console.log('localStorage is not working');
+  }
+}
+sagaMiddleware.run(rootSaga);
+loadUser();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
