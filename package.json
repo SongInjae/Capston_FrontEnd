@@ -27,6 +27,7 @@
     "redux": "^4.2.1",
     "redux-actions": "^3.0.0",
     "redux-devtools-extension": "^2.13.9",
+    "redux-saga": "^1.2.3",
     "styled-components": "^5.3.9",
     "web-vitals": "^2.1.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
@@ -54,5 +55,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://3.35.38.254:8000/"
 }

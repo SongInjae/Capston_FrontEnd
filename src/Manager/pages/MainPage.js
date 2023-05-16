@@ -2,6 +2,8 @@ import { useState } from 'react';
 import './MainPage.css';
 import styled from 'styled-components';
 import { Route, Routes, Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../User/store/modules/auth';
 
 import MemberManagementsPage from './MemberManagementsPage';
 import ReservationPage from './ReservationPage';
@@ -32,6 +34,7 @@ const StyledLink = styled(Link)`
 `;
 
 const MainPage = () => {
+  const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
   let [btnActive, setBtnActive] = useState(0);
   const menus = [
@@ -41,7 +44,7 @@ const MainPage = () => {
     { id: 4, text: '정기예약자 관리', img: 4, address: '/admin/regular' },
     { id: 5, text: '이용환경 개선', img: 5, address: '/admin/improve' },
   ];
-  const movePage = useNavigate();
+  const navigate = useNavigate();
 
   const onRemoveClick = () => {
     setModal(true);
@@ -51,7 +54,8 @@ const MainPage = () => {
   };
   const onConfirm = () => {
     setModal(false);
-    movePage('/');
+    dispatch(logout());
+    navigate('/');
   };
 
   const toggleActive = (e) => {

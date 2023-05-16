@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import logo from '../assets/sejong.png';
 import { GrClose } from 'react-icons/gr';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../store/modules/auth';
+
 const HeaderWrapper = styled.header`
   margin: 0 auto;
   display: flex;
@@ -255,6 +258,13 @@ function Header() {
   const clickXModalBtn = () => {
     setModal(false);
   };
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const onLogout = () => {
+    dispatch(logout());
+    navigate('/');
+  };
   return (
     <HeaderWrapper>
       <MainTitle>
@@ -263,7 +273,7 @@ function Header() {
       <RightComponent>
         <LogoutWrapper>
           <UserInfo>17011582 권형석</UserInfo>
-          <LogoutBtn>로그아웃</LogoutBtn>
+          <LogoutBtn onClick={onLogout}>로그아웃</LogoutBtn>
         </LogoutWrapper>
         <TabWrapper>
           <HeaderTab>공지사항</HeaderTab>
