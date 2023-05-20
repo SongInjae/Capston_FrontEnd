@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import UserCalendar from '../component/calendar';
 import RoomComponent from '../component/Room';
 import Header from '../component/header';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { getRooms } from '../store/modules/room';
 const RoomsWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 0.5fr);
@@ -16,6 +17,15 @@ const RoomsWrapper = styled.div`
 
 
 function UserMain() {
+  const roomsInfo = useSelector(state => state.roomReducer.roomsInfo);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (roomsInfo !== []) return;
+    dispatch(getRooms());
+  }, [roomsInfo, dispatch]);
+
+
   const roomInfo = [
     '대양 AI센터 835호',
     '대양 AI센터 836호',

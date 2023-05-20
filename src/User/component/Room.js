@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { pickRoom } from "../user_store/room";
+import { pickRoom } from "../store/modules/room";
 const Room = styled.div`
     border: solid;
     border-width: 2px;

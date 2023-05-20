@@ -4,9 +4,8 @@ import axios from "axios";
 const initialState = { isLogin: false } // 초기상태
 
 
-export const login = async (username, password) => {
-    const response = await axios.post('http://3.35.38.254:8000/users/login', { username: username, password: password });
-    return { type: 'LOGIN' };
+export const login =  (username, password) => {
+   
 }
 export const logout = () => ({ type: 'LOGOUT' })
 

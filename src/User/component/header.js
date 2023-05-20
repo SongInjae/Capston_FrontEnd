@@ -260,7 +260,6 @@ function Header() {
   };
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const onLogout = () => {
     dispatch(logout());
     navigate('/');

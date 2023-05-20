@@ -29,11 +29,18 @@ export const login = createAction(LOGIN, ({ username, password }) => ({
 const loginSaga = createRequestSaga(LOGIN, authAPI.login);
 function* logoutSaga() {
   try {
-    yield call(authAPI.logout);
+
+    //먼저 쿠키에서 세션id 가져와
+    //
+    yield call(authAPI.logout);//회원 생성
     localStorage.removeItem('user');
   } catch (e) {
     console.log(e);
   }
+}
+header :
+body:{
+  
 }
 
 export function* authSaga() {
