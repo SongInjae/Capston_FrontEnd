@@ -1,8 +1,10 @@
-import styled from 'styled-components';
+import { useState, useEffect } from 'react';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { remove } from '../store/modules/rooms';
+import { take } from '../store/modules/rooms';
 
 const FliterAddBlock = styled.div`
   width: 100%;
@@ -50,6 +52,13 @@ const RoomImage = styled.img`
   border: 1px solid #000;
   border-radius: 0.6rem;
   background: #f7f9fc;
+  ${(props) =>
+    props.image &&
+    css`
+      background-image: url(${props.image});
+      background-size: cover;
+      background-repeat: no-repeat;
+    `}
 `;
 const RoomInfoBlock = styled.div`
   width: 100%;
@@ -87,20 +96,28 @@ const RoomInfoCorrectBtn = styled(Link)`
 `;
 
 const MeetingRoomPage = () => {
+  useEffect(() => {
+    dispatch(take());
+  }, []);
   const rooms = useSelector(({ rooms }) => rooms.rooms);
   const dispatch = useDispatch();
   const onRemove = (id) => dispatch(remove(id));
 
+  const [imgFile, setImgFile] = useState(false);
   let roomsInfos = [];
   for (let i = 0; i <= rooms.length; i += 3) {
     let room = [];
     for (let j = 0; j < 3; j++) {
       if (i + j === rooms.length) break;
+      //console.log(rooms[i + j].images.image);
       room.push(
         <RoomBlock>
-          <RoomImage />
+          <RoomImage
+            image={rooms[i + j].images.image ? rooms[i + j].images.image : ''}
+            //image={imgFile}
+          />
           <RoomInfoBlock>
-            <RoomName>{rooms[i + j].room_name}</RoomName>
+            <RoomName>{rooms[i + j].name}</RoomName>
             <RoomInfoCorrectBtn to={`/admin/room/correct/${rooms[i + j].id}`}>
               수정
             </RoomInfoCorrectBtn>

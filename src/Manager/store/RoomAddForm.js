@@ -4,10 +4,11 @@ import MeetingRoomAddPage from '../pages/MeetingRoom/MeetingRoomAddPage';
 import { useNavigate } from 'react-router-dom';
 
 const RoomAddForm = () => {
-  const { room_name, facility, text } = useSelector(({ rooms }) => ({
-    room_name: rooms.room_name,
-    facility: rooms.facility,
-    text: rooms.text,
+  const { name, amenities, discription, images } = useSelector(({ rooms }) => ({
+    name: rooms.name,
+    amenities: rooms.amenities,
+    discription: rooms.discription,
+    images: rooms.images,
   }));
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,9 +22,15 @@ const RoomAddForm = () => {
       }),
     );
   };
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('amenities', amenities);
+  formData.append('discription', discription);
+  formData.append('images', images);
+
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(insert({ room_name, facility, text }));
+    dispatch(insert(formData));
     navigate(-1);
   };
   return <MeetingRoomAddPage onChange={onChange} onSubmit={onSubmit} />;

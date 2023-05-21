@@ -20,10 +20,21 @@ const CorrectForm = () => {
   );
 
   let Id = parseInt(params.id);
+  /*
   const { info } = useSelector(({ addmembers }) => ({
     info: addmembers.info[Id - 1],
   }));
-
+  */
+  const { infos } = useSelector(({ addmembers }) => ({
+    infos: addmembers.info,
+  }));
+  let info = null;
+  for (let i = 0; i <= infos.length; i++) {
+    if (infos[i].id === Id) {
+      info = infos[i];
+      break;
+    }
+  }
   const onChange = useCallback(
     (name, value) => {
       dispatch(

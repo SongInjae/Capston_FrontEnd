@@ -1,18 +1,34 @@
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeField, insert } from './modules/addmember';
 import AddMember from '../pages/Member/AddMember';
 import { useNavigate } from 'react-router-dom';
 
 const InfoForm = () => {
-  const { name, number, email, pwd, designation } = useSelector(
+  const [pwd, setPwd] = useState();
+  const [chkPwd, setChkPwd] = useState();
+  const [error, setError] = useState(false);
+
+  const { name, user_no, email, password, user_type, pwdCheck } = useSelector(
     ({ addmembers }) => ({
-      designation: addmembers.designation,
+      user_type: addmembers.user_type,
       name: addmembers.name,
-      number: addmembers.number,
+      user_no: addmembers.user_no,
       email: addmembers.email,
-      pwd: addmembers.pwd,
+      password: addmembers.password,
+      pwdCheck: addmembers.pwdCheck,
     }),
   );
+  useEffect(() => {
+    setPwd(password);
+    setChkPwd(pwdCheck);
+    if (pwd !== chkPwd) {
+      setError('비밀번호가 다릅니다');
+    } else {
+      setError(false);
+    }
+  }, [pwd, password, chkPwd, pwdCheck]);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -27,11 +43,11 @@ const InfoForm = () => {
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(insert({ designation, name, number, email, pwd }));
+    dispatch(insert({ user_type, name, user_no, email, password }));
     navigate(-1);
   };
 
-  return <AddMember onChange={onChange} onSubmit={onSubmit} />;
+  return <AddMember error={error} onChange={onChange} onSubmit={onSubmit} />;
 };
 
 export default InfoForm;

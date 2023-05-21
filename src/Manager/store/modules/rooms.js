@@ -1,50 +1,79 @@
 import { createAction, handleActions } from 'redux-actions';
 import { produce } from 'immer';
+import { takeLatest } from 'redux-saga/effects';
+import createRequestSaga, {
+  createRequestActionTypes,
+} from '../../saga/createRequestSaga';
+import * as roomAPI from '../../api/room';
 
 const CHANGE_FIELD = 'rooms/CHANGE_FIELD';
-
-const INSERT = 'rooms/INSERT';
-const CHANGE = 'rooms/CHANGE';
-const REMOVE = 'rooms/REMOVE';
+const [TAKE, TAKE_SUCCESS, TAKE_FAILURE] =
+  createRequestActionTypes('rooms/take');
+const [INSERT, INSERT_SUCCESS, INSERT_FAILURE] =
+  createRequestActionTypes('rooms/INSERT');
+const [REMOVE, REMOVE_SUCCESS, REMOVE_FAILURE] =
+  createRequestActionTypes('rooms/REMOVE');
+const [CHANGE, CHANGE_SUCCESS, CHANGE_FAILURE] =
+  createRequestActionTypes('rooms/CHANGE');
 
 export const changeField = createAction(CHANGE_FIELD, ({ key, value }) => ({
   key,
   value,
 }));
-let id = 3;
-export const insert = createAction(INSERT, ({ room_name, facility, text }) => ({
-  id: id++,
-  room_name,
-  facility,
-  text,
-}));
+
+export const take = createAction(TAKE);
+
+export const insert = createAction(INSERT, (formdata) => formdata);
 export const change = createAction(
   CHANGE,
-  ({ idx, id, room_name, facility, text }) => ({
+  ({ idx, id, name, amenities, discription, images }) => ({
     idx,
     id,
-    room_name,
-    facility,
-    text,
+    name,
+    amenities,
+    discription,
+    images,
   }),
 );
 export const remove = createAction(REMOVE, (id) => id);
+
+const takeSaga = createRequestSaga(TAKE, roomAPI.takeAllInfo);
+const addSaga = createRequestSaga(INSERT, roomAPI.addInfo);
+const removeSaga = createRequestSaga(REMOVE, roomAPI.removeInfo);
+const changeSaga = createRequestSaga(CHANGE, roomAPI.changeInfo);
+
+export function* roomSaga() {
+  yield takeLatest(TAKE, takeSaga);
+  yield takeLatest(INSERT, addSaga);
+  yield takeLatest(REMOVE, removeSaga);
+  yield takeLatest(CHANGE, changeSaga);
+}
 
 const initialState = {
   rooms: [
     {
       id: 1,
-      room_name: '대양AI센터 835호',
-      facility: '빔프로젝트, 컴퓨터 2대',
-      text: '뒷정리 잘하고 갈 것',
+      name: '대양AI센터 835호',
+      amenities: '빔프로젝트, 컴퓨터 2대',
+      discription: '뒷정리 잘하고 갈 것',
+      images: {
+        image: '',
+      },
     },
     {
       id: 2,
-      room_name: '대양AI센터 836호',
-      facility: '빔프로젝트, 컴퓨터 1대',
-      text: '뒷정리 잘하고 갈 것',
+      name: '대양AI센터 836호',
+      amenities: '빔프로젝트, 컴퓨터 1대',
+      discription: '뒷정리 잘하고 갈 것',
+      images: {
+        image: '',
+      },
     },
   ],
+  takeError: null,
+  insertError: null,
+  removeError: null,
+  changeError: null,
 };
 
 const rooms = handleActions(
@@ -53,23 +82,48 @@ const rooms = handleActions(
       produce(state, (draft) => {
         draft[key] = value;
       }),
-    [INSERT]: (state, { payload: room }) =>
+    [TAKE_SUCCESS]: (state, { payload: rooms }) => ({
+      ...state,
+      takeError: null,
+      rooms,
+    }),
+    [TAKE_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      takeError: error,
+    }),
+    [INSERT_SUCCESS]: (state, { payload: { room } }) =>
       produce(state, (draft) => {
-        draft.rooms.push(room);
+        //draft.rooms.push(room);
+        console.log(room);
       }),
-    [REMOVE]: (state, { payload: id }) =>
+    [INSERT_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      insertError: error,
+    }),
+    [REMOVE_SUCCESS]: (state, { payload: id }) =>
       produce(state, (draft) => {
         const index = draft.rooms.findIndex((room) => room.id === id);
         draft.rooms.splice(index, 1);
       }),
-    [CHANGE]: (state, { payload: { idx, id, room_name, facility, text } }) =>
+    [REMOVE_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      removeError: error,
+    }),
+    [CHANGE_SUCCESS]: (
+      state,
+      //{ payload: { idx, id, name, amenities, discription, images } },
+    ) =>
       produce(state, (draft) => {
-        for (let i = 0; i < draft.rooms.length; i++) {
+        /*for (let i = 0; i < draft.rooms.length; i++) {
           if (draft.rooms[i].id === idx) {
-            draft.rooms[i] = { id, room_name, facility, text };
+            draft.rooms[i] = { id, name, amenities, discription, images };
           }
-        }
+        }*/
       }),
+    [CHANGE_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      removeError: error,
+    }),
   },
   initialState,
 );

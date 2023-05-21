@@ -67,8 +67,12 @@ const SubmitButton = styled(Button)`
   justify-content: center;
   align-items: center;
 `;
+const ErrorBlock = styled.div`
+  color: red;
+  font-size: 0.875rem;
+`;
 
-const AddMember = ({ onChange, onSubmit }) => {
+const AddMember = ({ error, onChange, onSubmit }) => {
   return (
     <>
       <BackImage />
@@ -89,7 +93,7 @@ const AddMember = ({ onChange, onSubmit }) => {
           <NameInputBlock
             type="number"
             placeholder="학번 혹은 교번을 입력하세요."
-            id="number"
+            id="user_no"
             onChange={onChange}
             required
           />
@@ -99,7 +103,7 @@ const AddMember = ({ onChange, onSubmit }) => {
           <NameInputBlock
             type="password"
             placeholder="비밀번호를 입력하세요."
-            id="pwd"
+            id="password"
             onChange={onChange}
             required
           />
@@ -114,6 +118,7 @@ const AddMember = ({ onChange, onSubmit }) => {
             required
           />
         </FormBlock>
+        <ErrorBlock>{error}</ErrorBlock>
         <FormBlock>
           <LabelBlock htmlFor="mail">이메일 주소</LabelBlock>
           <NameInputBlock
@@ -129,32 +134,25 @@ const AddMember = ({ onChange, onSubmit }) => {
           <CheckBoxBlock>
             <CheckBlock
               type="radio"
-              id="designation"
+              id="user_type"
               onChange={onChange}
-              value="교수"
+              value="2"
             />
             <CheckNameBlock>교수</CheckNameBlock>
             <CheckBlock
               type="radio"
-              id="designation"
+              id="user_type"
               onChange={onChange}
-              value="조교"
-            />
-            <CheckNameBlock>조교</CheckNameBlock>
-            <CheckBlock
-              type="radio"
-              id="designation"
-              onChange={onChange}
-              value="대학원생"
+              value="3"
             />
             <CheckNameBlock>대학원생</CheckNameBlock>
             <CheckBlock
               type="radio"
-              id="designation"
+              id="user_type"
               onChange={onChange}
-              value="학생"
+              value="4"
             />
-            <CheckNameBlock>학생</CheckNameBlock>
+            <CheckNameBlock>학부생</CheckNameBlock>
           </CheckBoxBlock>
         </FormBlock>
         <SubmitButton>Submit</SubmitButton>

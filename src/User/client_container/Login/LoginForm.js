@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeField, login } from '../../store/modules/auth';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const LoginFormBlock = styled.div``;
 
@@ -48,6 +49,7 @@ const ErrorMessage = styled.div`
 
 const LoginForm = () => {
   const [error, setError] = useState(null);
+  const [cookies, setCookie] = useCookies(['id']);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { form, auth, authError } = useSelector(({ auth }) => ({
@@ -63,8 +65,8 @@ const LoginForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { username, password } = form;
-    dispatch(login({ username, password }));
+    const { user_no, password } = form;
+    dispatch(login({ user_no, password }));
   };
 
   useEffect(() => {
@@ -75,16 +77,17 @@ const LoginForm = () => {
       return;
     }
     if (auth) {
-      console.log(form.username);
+      console.log(form.user_no);
       console.log('로그인 성공');
-      if (form.username !== '') {
-        if (form.username === 'admin') {
+      if (form.user_no !== '') {
+        if (form.user_no === 'admin') {
           navigate('admin');
         } else {
           navigate('main');
         }
         try {
           localStorage.setItem('user', JSON.stringify(auth));
+          setCookie('user', auth);
         } catch (e) {
           console.log('localStorage is not working');
         }
@@ -92,18 +95,17 @@ const LoginForm = () => {
         dispatch(changeField({ key: 'password', value: '' }));
       }
     }
-  }, [auth, authError, dispatch, form.username, navigate]);
-
+  }, [auth, authError, dispatch, form.user_no, navigate]);
   return (
     <>
       <LoginFormBlock>
         <form onSubmit={onSubmit}>
           <StyledInput
-            autoComplete="username"
-            name="username"
+            autoComplete="user_no"
+            name="user_no"
             placeholder="아이디"
             onChange={onChange}
-            value={form.username}
+            value={form.user_no}
           />
           <StyledInput
             autoComplete="password"

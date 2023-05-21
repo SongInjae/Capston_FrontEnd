@@ -9,6 +9,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import rootReducer, { rootSaga } from './Manager/store/modules';
 import createSagaMiddleware from 'redux-saga';
 import { tempSetUser } from './User/store/modules/auth';
+import { CookiesProvider } from 'react-cookie';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
@@ -17,7 +18,6 @@ const store = createStore(
 );
 
 function loadUser() {
-  localStorage.removeItem('user');
   try {
     const user = localStorage.getItem('user');
     if (!user) return;
@@ -31,11 +31,13 @@ loadUser();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>,
+  <CookiesProvider>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </CookiesProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function

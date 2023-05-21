@@ -9,17 +9,27 @@ const RoomCorrectForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { id, room_name, facility, text } = useSelector(({ rooms }) => ({
-    id: rooms.id,
-    room_name: rooms.room_name,
-    facility: rooms.facility,
-    text: rooms.text,
-  }));
+  const { id, name, amenities, discription, images } = useSelector(
+    ({ rooms }) => ({
+      id: rooms.id,
+      name: rooms.name,
+      amenities: rooms.amenities,
+      discription: rooms.discription,
+      images: rooms.images,
+    }),
+  );
 
   let Id = parseInt(params.id);
-  const { room } = useSelector(({ rooms }) => ({
-    room: rooms.rooms[Id - 1],
+  const { rooms } = useSelector(({ rooms }) => ({
+    rooms: rooms.rooms,
   }));
+  let room = null;
+  for (let i = 0; i <= rooms.length; i++) {
+    if (rooms[i].id === Id) {
+      room = rooms[i];
+      break;
+    }
+  }
 
   const onChange = useCallback(
     (name, value) => {
@@ -30,7 +40,7 @@ const RoomCorrectForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     const idx = Id;
-    dispatch(change({ idx, id, room_name, facility, text }));
+    dispatch(change({ idx, id, name, amenities, discription, images }));
     navigate(-1);
   };
   return (
