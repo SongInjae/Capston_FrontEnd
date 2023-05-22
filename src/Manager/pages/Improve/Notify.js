@@ -1,7 +1,8 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { remove } from '../../store/modules/notify';
+import { remove, take } from '../../store/modules/notify';
 
 import Button from '../../components/Button';
 
@@ -115,6 +116,10 @@ const DeleteButton = styled(Button)`
 `;
 
 const Notify = () => {
+  useEffect(() => {
+    dispatch(take());
+    console.log('11');
+  }, []);
   const infos = useSelector(({ notify }) => notify.infos);
   const dispatch = useDispatch();
   const onRemove = (id) => {

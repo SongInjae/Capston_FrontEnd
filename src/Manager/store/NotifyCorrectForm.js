@@ -24,6 +24,11 @@ const NotifyCorrectForm = () => {
     notify: notify.infos[Id - 1],
   }));
 
+  const onChangeField = useCallback(
+    (payload) => dispatch(changeField(payload)),
+    [],
+  );
+
   const onChange = useCallback(
     (name, value) => {
       dispatch(changeField({ key: name, value }));
@@ -38,7 +43,12 @@ const NotifyCorrectForm = () => {
   };
 
   return (
-    <NotifyCorrect notify={notify} onChange={onChange} onSubmit={onSubmit} />
+    <NotifyCorrect
+      notify={notify}
+      onChange={onChange}
+      onSubmit={onSubmit}
+      onChangeField={onChangeField}
+    />
   );
 };
 

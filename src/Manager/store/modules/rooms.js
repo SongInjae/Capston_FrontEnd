@@ -4,6 +4,7 @@ import { takeLatest } from 'redux-saga/effects';
 import createRequestSaga, {
   createRequestActionTypes,
 } from '../../saga/createRequestSaga';
+import createRequestRoomSaga from '../../saga/createRequestRoomSaga';
 import * as roomAPI from '../../api/room';
 
 const CHANGE_FIELD = 'rooms/CHANGE_FIELD';
@@ -24,14 +25,14 @@ export const changeField = createAction(CHANGE_FIELD, ({ key, value }) => ({
 export const take = createAction(TAKE);
 
 export const insert = createAction(INSERT, (formdata) => formdata);
-export const change = createAction(CHANGE, ({ id, formdata }) => ({
+export const change = createAction(CHANGE, ({ id, formData }) => ({
   id,
-  formdata,
+  formData,
 }));
 export const remove = createAction(REMOVE, (id) => id);
 
 const takeSaga = createRequestSaga(TAKE, roomAPI.takeAllInfo);
-const addSaga = createRequestSaga(INSERT, roomAPI.addInfo);
+const addSaga = createRequestRoomSaga(INSERT, roomAPI.addInfo);
 const removeSaga = createRequestSaga(REMOVE, roomAPI.removeInfo);
 const changeSaga = createRequestSaga(CHANGE, roomAPI.changeInfo);
 
@@ -115,7 +116,7 @@ const rooms = handleActions(
       }),
     [CHANGE_FAILURE]: (state, { payload: error }) => ({
       ...state,
-      removeError: error,
+      changeError: error,
     }),
   },
   initialState,

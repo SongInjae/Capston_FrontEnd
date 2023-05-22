@@ -8,13 +8,13 @@ const RoomCorrectForm = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  /*
   const { id, name, amenities, discription } = useSelector(({ rooms }) => ({
     id: rooms.id,
     name: rooms.name,
     amenities: rooms.amenities,
     discription: rooms.discription,
-  }));
+  }));*/
 
   let Id = parseInt(params.id);
   const { rooms } = useSelector(({ rooms }) => ({
@@ -29,13 +29,16 @@ const RoomCorrectForm = () => {
   }
 
   const formData = new FormData();
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(false);
+  const [name, setName] = useState(false);
+  const [amenities, setAmenities] = useState(false);
+  const [discription, setDiscription] = useState(false);
 
   useEffect(() => {
-    formData.append('name', name);
-    formData.append('amenities', amenities);
-    formData.append('discription', discription);
-    formData.append('image', file);
+    if (name !== false) formData.append('name', name);
+    if (amenities !== false) formData.append('amenities', amenities);
+    if (discription !== false) formData.append('discription', discription);
+    if (file !== false) formData.append('image', file);
   }, [name, amenities, discription, file]);
 
   const onChange = useCallback(
@@ -45,8 +48,13 @@ const RoomCorrectForm = () => {
     [dispatch],
   );
   const onSubmit = (e) => {
+    let entries = formData.entries();
+    for (const pair of entries) {
+      console.log(pair[0] + ', ' + pair[1]);
+    }
+    console.log(room.id);
     e.preventDefault();
-    dispatch(change({ id, formData }));
+    dispatch(change({ id: room.id, formData }));
     navigate(-1);
     dispatch(take());
   };
@@ -54,7 +62,10 @@ const RoomCorrectForm = () => {
     <CorrectRoomPage
       room={room}
       setFile={setFile}
-      onChange={onChange}
+      setNamea={setName}
+      setAmenitiesa={setAmenities}
+      setDiscriptiona={setDiscription}
+      //onChange={onChange}
       onSubmit={onSubmit}
     />
   );

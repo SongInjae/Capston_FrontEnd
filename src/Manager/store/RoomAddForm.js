@@ -38,7 +38,6 @@ const RoomAddForm = () => {
     e.preventDefault();
     dispatch(insert(formData));
     navigate(-1);
-    dispatch(take());
   };
 
   return (

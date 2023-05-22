@@ -88,7 +88,14 @@ const SubmitButton = styled(Button)`
   font-size: 0.9rem !important;
 `;
 
-const CorrectRoomPage = ({ room, setFile, onChange, onSubmit }) => {
+const CorrectRoomPage = ({
+  room,
+  setFile,
+  setNamea,
+  setAmenitiesa,
+  setDiscriptiona,
+  onSubmit,
+}) => {
   let id = room.id;
   let [name, setName] = useState(room.name);
   let [amenities, setAmenities] = useState(room.amenities);
@@ -106,29 +113,22 @@ const CorrectRoomPage = ({ room, setFile, onChange, onSubmit }) => {
   };
 
   useEffect(() => {
-    onChange('id', id);
-  }, [onChange, id]);
-  useEffect(() => {
-    onChange('name', name);
-  }, [onChange, name]);
-  useEffect(() => {
-    onChange('amenities', amenities);
-  }, [onChange, amenities]);
-  useEffect(() => {
-    onChange('discription', discription);
-  }, [onChange, discription]);
-  useEffect(() => {
-    setFile(images);
-  }, [setFile, images]);
+    setNamea(name);
+    setAmenitiesa(amenities);
+    setDiscriptiona(discription);
+  }, []);
 
   const onUpdateName = useCallback((e) => {
     setName(e.target.value);
+    setNamea(e.target.value);
   }, []);
   const onUpdateAmenities = useCallback((e) => {
     setAmenities(e.target.value);
+    setAmenitiesa(e.target.value);
   }, []);
   const onUpdateDiscription = useCallback((e) => {
     setDiscription(e.target.value);
+    setDiscriptiona(e.target.value);
   }, []);
 
   return (

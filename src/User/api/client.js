@@ -6,5 +6,6 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 const client = axios.create();
 export const manager = axios.create();
 export const room = axios.create();
+export const notify = axios.create();
 
 export default client;
