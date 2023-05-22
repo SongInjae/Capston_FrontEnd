@@ -10,9 +10,12 @@ const CHANGE_FIELD = 'discomfort/CHANGE_FIELD';
 
 const [TAKE, TAKE_SUCCESS, TAKE_FAILURE] =
   createRequestActionTypes('notify/Take');
-const INSERT = 'discomfort/INSERT';
-const CHANGE = 'discomfort/CHANGE';
-const REMOVE = 'discomfort/REMOVE';
+const [INSERT, INSERT_SUCCESS, INSERT_FAILURE] =
+  createRequestActionTypes('notify/INSERT');
+const [REMOVE, REMOVE_SUCCESS, REMOVE_FAILURE] =
+  createRequestActionTypes('notify/REMOVE');
+const [CHANGE, CHANGE_SUCCESS, CHANGE_FAILURE] =
+  createRequestActionTypes('notify/CHANGE');
 
 let id = 4;
 
@@ -21,28 +24,23 @@ export const changeField = createAction(CHANGE_FIELD, ({ key, value }) => ({
   key,
   value,
 }));
-export const insert = createAction(INSERT, ({ title, text, date }) => ({
-  id: id++,
-  title,
-  text,
-  date,
-}));
-export const change = createAction(
-  CHANGE,
-  ({ idx, id, title, text, date }) => ({
-    idx,
-    id,
-    title,
-    text,
-    date,
-  }),
-);
+export const insert = createAction(INSERT, (formData) => formData);
 export const remove = createAction(REMOVE, (id) => id);
+export const change = createAction(CHANGE, ({ id, formData }) => ({
+  id,
+  formData,
+}));
 
 const takeSaga = createRequestSaga(TAKE, notifyAPI.takeAllInfo);
+const addSaga = createRequestSaga(INSERT, notifyAPI.addInfo);
+const removeSaga = createRequestSaga(REMOVE, notifyAPI.removeInfo);
+const changeSaga = createRequestSaga(CHANGE, notifyAPI.changeInfo);
 
 export function* notifySaga() {
   yield takeLatest(TAKE, takeSaga);
+  yield takeLatest(INSERT, addSaga);
+  yield takeLatest(REMOVE, removeSaga);
+  yield takeLatest(CHANGE, changeSaga);
 }
 
 const initialState = {
@@ -50,23 +48,26 @@ const initialState = {
     {
       id: 1,
       title: '이것은 첫번째 공지사항입니다.',
-      text: '<p>1번째 공지사항</p>',
+      content: '<p>1번째 공지사항</p>',
       date: '2022.03.14',
     },
     {
       id: 2,
       title: '이것은 두번째 공지사항입니다.',
-      text: '<p>2번째 공지사항</p>',
+      content: '<p>2번째 공지사항</p>',
       date: '2022.05.16',
     },
     {
       id: 3,
       title: '이것은 세번째 공지사항입니다.',
-      text: '<p>3번째 공지사항</p>',
+      content: '<p>3번째 공지사항</p>',
       date: '2022.08.14',
     },
   ],
   takeError: null,
+  insertError: null,
+  removeError: null,
+  changeError: null,
 };
 
 const notify = handleActions(
@@ -84,23 +85,38 @@ const notify = handleActions(
       ...state,
       takeError: error,
     }),
-    [INSERT]: (state, { payload: info }) =>
+    [INSERT_SUCCESS]: (state, { payload: info }) =>
       produce(state, (draft) => {
-        draft.infos.push(info);
+        //draft.infos.push(info);
       }),
-    [CHANGE]: (state, { payload: { idx, id, title, text, date } }) =>
-      produce(state, (draft) => {
-        for (let i = 0; i < draft.infos.length; i++) {
-          if (draft.infos[i].id === idx) {
-            draft.infos[i] = { id, title, text, date };
-          }
-        }
-      }),
-    [REMOVE]: (state, { payload: id }) =>
+    [INSERT_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      insertError: error,
+    }),
+    [REMOVE_SUCCESS]: (state, { payload: id }) =>
       produce(state, (draft) => {
         const index = draft.infos.findIndex((info) => info.id === id);
         draft.infos.splice(index, 1);
       }),
+    [REMOVE_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      removeError: error,
+    }),
+    [CHANGE_SUCCESS]: (
+      state,
+      //{ payload: { idx, id, title, content, date } }
+    ) =>
+      produce(state, (draft) => {
+        /*for (let i = 0; i < draft.infos.length; i++) {
+          if (draft.infos[i].id === idx) {
+            draft.infos[i] = { id, title, content, date };
+          }
+        }*/
+      }),
+    [CHANGE_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      changeError: error,
+    }),
   },
   initialState,
 );

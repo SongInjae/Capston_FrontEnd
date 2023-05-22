@@ -65,7 +65,7 @@ const SubmitButton = styled(Button)`
 
 const NotifyAdd = ({ onChange, onSubmit, onChangeField }) => {
   const onChangeHtml = (e) => {
-    onChangeField({ key: 'text', value: e });
+    onChangeField({ key: 'content', value: e });
   };
   return (
     <>

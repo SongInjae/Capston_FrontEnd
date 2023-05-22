@@ -68,7 +68,7 @@ const SubmitButton = styled(Button)`
 const NotifyCorrect = ({ notify, onChange, onSubmit, onChangeField }) => {
   let id = notify.id;
   let [title, setTitle] = useState(notify.title);
-  let [text, setText] = useState(notify.text);
+  let [content, setContent] = useState(notify.content);
   useEffect(() => {
     onChange('id', id);
   }, [onChange, id]);
@@ -77,15 +77,15 @@ const NotifyCorrect = ({ notify, onChange, onSubmit, onChangeField }) => {
     onChange('title', title);
   }, [onChange, title]);
   useEffect(() => {
-    onChange('text', text);
-  }, [onChange, text]);
+    onChange('content', content);
+  }, [onChange, content]);
 
   const onUpdateTitle = useCallback((e) => {
     setTitle(e.target.value);
   }, []);
   const onChangeHtml = (e) => {
-    setText(e);
-    onChangeField({ key: 'text', value: e });
+    setContent(e);
+    onChangeField({ key: 'content', value: e });
   };
   return (
     <>
@@ -103,7 +103,7 @@ const NotifyCorrect = ({ notify, onChange, onSubmit, onChangeField }) => {
           />
         </FormBlock>
         <QuillWrapper>
-          <ReactQuill onChange={onChangeHtml} value={text} required />
+          <ReactQuill onChange={onChangeHtml} value={content} required />
         </QuillWrapper>
         <SubmitButton>Submit</SubmitButton>
       </FormStyled>

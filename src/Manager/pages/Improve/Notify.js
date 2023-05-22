@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { remove, take } from '../../store/modules/notify';
+import { format } from 'date-fns';
 
 import Button from '../../components/Button';
 
@@ -130,7 +131,7 @@ const Notify = () => {
     <TBodyTrBlock id={info.id}>
       <Td0>{idx + 1}.</Td0>
       <Td1>{info.title}</Td1>
-      <Td2>{info.date}</Td2>
+      <Td2>{info.end}</Td2>
       <Td3>
         <DivBlock>
           <CorrectLink to={`/admin/improve/notify/correct/${info.id}`}>
