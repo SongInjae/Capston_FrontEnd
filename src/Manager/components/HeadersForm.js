@@ -1,11 +1,13 @@
 import cookie from 'react-cookies';
 
-function headerForm() {
+function HeaderForm() {
+  const token = cookie.load('token');
+  console.log('form token', token);
   const headers = {
-    'X-CSRFToken': cookie.load('csrftoken'),
+    Authorization: `Token ${token}`,
     'Content-Type': 'multipart/form-data',
   };
   return headers;
 }
 
-export default headerForm;
+export default HeaderForm;

@@ -1,10 +1,13 @@
 import cookie from 'react-cookies';
 
-function header() {
+function Header() {
+  const token = cookie.load('token');
+  console.log('token', token);
   const headers = {
-    'X-CSRFToken': cookie.load('csrftoken'),
+    Authorization: `Token ${token}`,
   };
+  console.log(headers);
   return headers;
 }
 
-export default header;
+export default Header;

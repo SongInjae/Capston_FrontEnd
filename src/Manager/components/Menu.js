@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { remove } from '../store/modules/addmember';
+import { remove, take } from '../store/modules/addmember';
 import { Link } from 'react-router-dom';
 
 //import MenuIconURL from '../assets/img/menu.png';
@@ -38,7 +38,10 @@ const TrashIcon = styled.div`
 
 const Menu = ({ info }) => {
   const dispatch = useDispatch();
-  const onRemove = (id) => dispatch(remove(id));
+  const onRemove = (id) => {
+    dispatch(remove(id));
+    dispatch(take());
+  };
   const userId = info.id;
   return (
     <DivBlock>

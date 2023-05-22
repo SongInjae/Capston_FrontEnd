@@ -1,7 +1,5 @@
 import styled, { css } from 'styled-components';
-import { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { changeField } from '../../store/modules/rooms';
+import { useState } from 'react';
 
 import Button from '../../components/Button';
 import BackImage from '../../components/BackImage';
@@ -90,21 +88,17 @@ const SubmitButton = styled(Button)`
   font-size: 0.9rem !important;
 `;
 
-const MeetingRoomAddPage = ({ onChange, onSubmit }) => {
-  const dispatch = useDispatch();
+const MeetingRoomAddPage = ({ setFile, onChange, onSubmit }) => {
   const [imgFile, setImgFile] = useState(false);
-  const imgRef = useRef();
 
-  const saveImgFile = () => {
-    const file = imgRef.current.files[0];
+  const saveImgFile = (e) => {
+    const files = e.target.files[0];
     const reader = new FileReader();
-    console.log(file);
-    //dispatch(changeField({ key: 'images', value: file }));
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(files);
     reader.onloadend = () => {
       setImgFile(reader.result);
-      dispatch(changeField({ key: 'images', value: reader.result }));
     };
+    setFile(e.target.files[0]);
   };
   return (
     <>
@@ -118,7 +112,6 @@ const MeetingRoomAddPage = ({ onChange, onSubmit }) => {
           id="images"
           accept="image/*"
           onChange={saveImgFile}
-          ref={imgRef}
         />
         <FormBlock>
           <LabelBlock htmlFor="room_name">회의실 이름</LabelBlock>

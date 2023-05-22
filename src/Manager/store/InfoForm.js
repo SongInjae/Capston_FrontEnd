@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeField, insert } from './modules/addmember';
+import { changeField, insert, take } from './modules/addmember';
 import AddMember from '../pages/Member/AddMember';
 import { useNavigate } from 'react-router-dom';
 
@@ -41,13 +41,25 @@ const InfoForm = () => {
       }),
     );
   };
+  const onTypeChange = (e) => {
+    const value = e.target.value;
+    dispatch(changeField({ key: 'user_type', value }));
+  };
   const onSubmit = (e) => {
     e.preventDefault();
     dispatch(insert({ user_type, name, user_no, email, password }));
     navigate(-1);
+    dispatch(take());
   };
 
-  return <AddMember error={error} onChange={onChange} onSubmit={onSubmit} />;
+  return (
+    <AddMember
+      error={error}
+      onChange={onChange}
+      onTypeChange={onTypeChange}
+      onSubmit={onSubmit}
+    />
+  );
 };
 
 export default InfoForm;

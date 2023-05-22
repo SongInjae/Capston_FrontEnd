@@ -1,7 +1,5 @@
 import styled, { css } from 'styled-components';
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { changeField } from '../../store/modules/rooms';
+import { useState, useEffect, useCallback } from 'react';
 
 import Button from '../../components/Button';
 import BackImage from '../../components/BackImage';
@@ -90,25 +88,21 @@ const SubmitButton = styled(Button)`
   font-size: 0.9rem !important;
 `;
 
-const CorrectRoomPage = ({ room, onChange, onSubmit }) => {
+const CorrectRoomPage = ({ room, setFile, onChange, onSubmit }) => {
   let id = room.id;
   let [name, setName] = useState(room.name);
   let [amenities, setAmenities] = useState(room.amenities);
   let [discription, setDiscription] = useState(room.discription);
   let [images, setImages] = useState(room.images.image);
-  const imgRef = useRef();
-  const dispatch = useDispatch();
 
-  const saveImgFile = () => {
-    const file = imgRef.current.files[0];
-    console.log(imgRef, imgRef.current, imgRef.current.files);
-    dispatch(changeField({ key: 'images', value: imgRef.current }));
+  const saveImgFile = (e) => {
+    const files = e.target.files[0];
     const reader = new FileReader();
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(files);
     reader.onloadend = () => {
       setImages(reader.result);
-      //dispatch(changeField({ key: 'images', value: reader.result }));
     };
+    setFile(e.target.files[0]);
   };
 
   useEffect(() => {
@@ -123,6 +117,9 @@ const CorrectRoomPage = ({ room, onChange, onSubmit }) => {
   useEffect(() => {
     onChange('discription', discription);
   }, [onChange, discription]);
+  useEffect(() => {
+    setFile(images);
+  }, [setFile, images]);
 
   const onUpdateName = useCallback((e) => {
     setName(e.target.value);
@@ -146,7 +143,6 @@ const CorrectRoomPage = ({ room, onChange, onSubmit }) => {
           id="images"
           accept="image/*"
           onChange={saveImgFile}
-          ref={imgRef}
         />
         <FormBlock>
           <LabelBlock htmlFor="room_name">회의실 이름</LabelBlock>

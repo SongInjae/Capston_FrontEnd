@@ -24,17 +24,10 @@ export const changeField = createAction(CHANGE_FIELD, ({ key, value }) => ({
 export const take = createAction(TAKE);
 
 export const insert = createAction(INSERT, (formdata) => formdata);
-export const change = createAction(
-  CHANGE,
-  ({ idx, id, name, amenities, discription, images }) => ({
-    idx,
-    id,
-    name,
-    amenities,
-    discription,
-    images,
-  }),
-);
+export const change = createAction(CHANGE, ({ id, formdata }) => ({
+  id,
+  formdata,
+}));
 export const remove = createAction(REMOVE, (id) => id);
 
 const takeSaga = createRequestSaga(TAKE, roomAPI.takeAllInfo);

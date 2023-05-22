@@ -21,8 +21,8 @@ export const changeField = createAction(CHANGE_FIELD, ({ key, value }) => ({
   value,
 }));
 
-export const login = createAction(LOGIN, ({ user_no, password }) => ({
-  user_no,
+export const login = createAction(LOGIN, ({ username, password }) => ({
+  username,
   password,
 }));
 
@@ -43,7 +43,7 @@ export function* authSaga() {
 
 const initialState = {
   login: {
-    user_no: '',
+    username: '',
     password: '',
   },
   auth: null,

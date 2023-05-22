@@ -2,8 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import cookie from 'react-cookies';
-import header from '../components/Headers';
 
 import { take } from '../store/modules/addmember';
 import { insert } from '../store/modules/addmember';
@@ -126,9 +124,6 @@ const CsvBlock = styled.input`
 
 const MemberManagementsPage = () => {
   useEffect(() => {
-    //const headers = header();
-    //dispatch(take(headers));
-    //console.log(headers);
     dispatch(take());
   }, []);
 

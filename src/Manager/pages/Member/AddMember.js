@@ -72,7 +72,7 @@ const ErrorBlock = styled.div`
   font-size: 0.875rem;
 `;
 
-const AddMember = ({ error, onChange, onSubmit }) => {
+const AddMember = ({ error, onChange, onTypeChange, onSubmit }) => {
   return (
     <>
       <BackImage />
@@ -130,28 +130,13 @@ const AddMember = ({ error, onChange, onSubmit }) => {
           />
         </FormBlock>
         <FormBlock>
-          <LabelBlock htmlFor="belong">소속</LabelBlock>
+          <LabelBlock>소속</LabelBlock>
           <CheckBoxBlock>
-            <CheckBlock
-              type="radio"
-              id="user_type"
-              onChange={onChange}
-              value="2"
-            />
-            <CheckNameBlock>교수</CheckNameBlock>
-            <CheckBlock
-              type="radio"
-              id="user_type"
-              onChange={onChange}
-              value="3"
-            />
+            <CheckBlock type="radio" onChange={onTypeChange} value="2" />
+            <CheckNameBlock>교직원</CheckNameBlock>
+            <CheckBlock type="radio" onChange={onTypeChange} value="3" />
             <CheckNameBlock>대학원생</CheckNameBlock>
-            <CheckBlock
-              type="radio"
-              id="user_type"
-              onChange={onChange}
-              value="4"
-            />
+            <CheckBlock type="radio" onChange={onTypeChange} value="4" />
             <CheckNameBlock>학부생</CheckNameBlock>
           </CheckBoxBlock>
         </FormBlock>

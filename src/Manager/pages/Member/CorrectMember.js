@@ -74,7 +74,7 @@ const CorrectMember = ({ info, onChange, onSubmit }) => {
   let [name, setName] = useState(info.name);
   let [user_no, setUser_no] = useState(info.user_no);
   let [email, setEmail] = useState(info.email);
-  let [user_type, setUser_type] = useState(info.user_type.name);
+  let [user_type, setUser_type] = useState(info.user_type.id);
   useEffect(() => {
     onChange('id', id);
   }, [onChange, id]);
@@ -82,13 +82,13 @@ const CorrectMember = ({ info, onChange, onSubmit }) => {
     onChange('name', name);
   }, [onChange, name]);
   useEffect(() => {
-    onChange('number', user_no);
+    onChange('user_no', user_no);
   }, [onChange, user_no]);
   useEffect(() => {
     onChange('email', email);
   }, [onChange, email]);
   useEffect(() => {
-    onChange('designation', user_type);
+    onChange('user_type', user_type);
   }, [onChange, user_type]);
 
   const onUpdateName = useCallback((e) => {
@@ -101,7 +101,7 @@ const CorrectMember = ({ info, onChange, onSubmit }) => {
     setEmail(e.target.value);
   }, []);
   const onUpdateUsertype = useCallback((e) => {
-    setUser_type(e.target.value);
+    setUser_type(parseInt(e.target.value));
   }, []);
 
   return (
@@ -143,30 +143,27 @@ const CorrectMember = ({ info, onChange, onSubmit }) => {
           />
         </FormBlock>
         <FormBlock>
-          <LabelBlock htmlFor="belong">소속</LabelBlock>
+          <LabelBlock>소속</LabelBlock>
           <CheckBoxBlock>
             <CheckBlock
               type="radio"
-              id="user_type"
               onChange={onUpdateUsertype}
-              value="교수"
-              checked={user_type === '교수' ? true : false}
+              value="2"
+              checked={user_type === 2 ? true : false}
             />
             <CheckNameBlock>교수</CheckNameBlock>
             <CheckBlock
               type="radio"
-              id="user_type"
               onChange={onUpdateUsertype}
-              value="대학원생"
-              checked={user_type === '대학원생' ? true : false}
+              value="3"
+              checked={user_type === 3 ? true : false}
             />
             <CheckNameBlock>대학원생</CheckNameBlock>
             <CheckBlock
               type="radio"
-              id="user_type"
               onChange={onUpdateUsertype}
-              value="학생"
-              checked={user_type === '학부생' ? true : false}
+              value="4"
+              checked={user_type === 4 ? true : false}
             />
             <CheckNameBlock>학부생</CheckNameBlock>
           </CheckBoxBlock>

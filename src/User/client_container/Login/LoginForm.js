@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeField, login } from '../../store/modules/auth';
 import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
+//import { useCookies } from 'react-cookie';
+import cookie from 'react-cookies';
 
 const LoginFormBlock = styled.div``;
 
@@ -49,7 +50,7 @@ const ErrorMessage = styled.div`
 
 const LoginForm = () => {
   const [error, setError] = useState(null);
-  const [cookies, setCookie] = useCookies(['id']);
+  //const [cookies, setCookie] = useCookies(['id']);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { form, auth, authError } = useSelector(({ auth }) => ({
@@ -65,8 +66,8 @@ const LoginForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { user_no, password } = form;
-    dispatch(login({ user_no, password }));
+    const { username, password } = form;
+    dispatch(login({ username, password }));
   };
 
   useEffect(() => {
@@ -77,17 +78,23 @@ const LoginForm = () => {
       return;
     }
     if (auth) {
-      console.log(form.user_no);
+      console.log(form.username);
       console.log('로그인 성공');
-      if (form.user_no !== '') {
-        if (form.user_no === 'admin') {
+      if (form.username !== '') {
+        if (form.username === 'admin') {
           navigate('admin');
         } else {
           navigate('main');
         }
         try {
           localStorage.setItem('user', JSON.stringify(auth));
-          setCookie('user', auth);
+          const expires = new Date();
+          expires.setMinutes(expires.getMinutes() + 60);
+          cookie.save('token', auth.token, {
+            path: '/',
+            expires,
+          });
+          //setCookie('token', auth.token);
         } catch (e) {
           console.log('localStorage is not working');
         }
@@ -95,17 +102,17 @@ const LoginForm = () => {
         dispatch(changeField({ key: 'password', value: '' }));
       }
     }
-  }, [auth, authError, dispatch, form.user_no, navigate]);
+  }, [auth, authError, dispatch, form.username, navigate]);
   return (
     <>
       <LoginFormBlock>
         <form onSubmit={onSubmit}>
           <StyledInput
-            autoComplete="user_no"
-            name="user_no"
+            autoComplete="username"
+            name="username"
             placeholder="아이디"
             onChange={onChange}
-            value={form.user_no}
+            value={form.username}
           />
           <StyledInput
             autoComplete="password"

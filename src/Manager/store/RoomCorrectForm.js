@@ -1,7 +1,7 @@
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { changeField, change } from './modules/rooms';
+import { changeField, change, take } from './modules/rooms';
 import CorrectRoomPage from '../pages/MeetingRoom/CorrectRoomPage';
 
 const RoomCorrectForm = () => {
@@ -9,15 +9,12 @@ const RoomCorrectForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { id, name, amenities, discription, images } = useSelector(
-    ({ rooms }) => ({
-      id: rooms.id,
-      name: rooms.name,
-      amenities: rooms.amenities,
-      discription: rooms.discription,
-      images: rooms.images,
-    }),
-  );
+  const { id, name, amenities, discription } = useSelector(({ rooms }) => ({
+    id: rooms.id,
+    name: rooms.name,
+    amenities: rooms.amenities,
+    discription: rooms.discription,
+  }));
 
   let Id = parseInt(params.id);
   const { rooms } = useSelector(({ rooms }) => ({
@@ -31,6 +28,16 @@ const RoomCorrectForm = () => {
     }
   }
 
+  const formData = new FormData();
+  const [file, setFile] = useState();
+
+  useEffect(() => {
+    formData.append('name', name);
+    formData.append('amenities', amenities);
+    formData.append('discription', discription);
+    formData.append('image', file);
+  }, [name, amenities, discription, file]);
+
   const onChange = useCallback(
     (name, value) => {
       dispatch(changeField({ key: name, value }));
@@ -39,12 +46,17 @@ const RoomCorrectForm = () => {
   );
   const onSubmit = (e) => {
     e.preventDefault();
-    const idx = Id;
-    dispatch(change({ idx, id, name, amenities, discription, images }));
+    dispatch(change({ id, formData }));
     navigate(-1);
+    dispatch(take());
   };
   return (
-    <CorrectRoomPage room={room} onChange={onChange} onSubmit={onSubmit} />
+    <CorrectRoomPage
+      room={room}
+      setFile={setFile}
+      onChange={onChange}
+      onSubmit={onSubmit}
+    />
   );
 };
 

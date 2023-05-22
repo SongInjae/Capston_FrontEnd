@@ -33,14 +33,12 @@ export const insert = createAction(
 );
 export const change = createAction(
   CHANGE,
-  ({ idx, id, designation, name, user_no, email, pwd }) => ({
-    idx,
+  ({ id, user_type, name, user_no, email }) => ({
     id,
-    designation,
+    user_type,
     name,
     user_no,
     email,
-    pwd,
   }),
 );
 export const remove = createAction(REMOVE, (id) => id);
@@ -111,17 +109,10 @@ const addmembers = handleActions(
       produce(state, (draft) => {
         draft[key] = value;
       }),
-    [INSERT]: (
-      state,
-      { payload: { user_type, name, user_no, email, password } },
-    ) =>
-      produce(state, (draft) => {
-        draft.info.push({ user_type, name, user_no, email, password });
-      }),
     [REMOVE_SUCCESS]: (state, { payload: id }) =>
       produce(state, (draft) => {
-        const index = draft.info.findIndex((info) => info.id === id);
-        draft.info.splice(index, 1);
+        //const index = draft.info.findIndex((info) => info.id === id);
+        //draft.info.splice(index, 1);
       }),
     [REMOVE_FAILURE]: (state, { payload: error }) => ({
       ...state,
@@ -129,14 +120,14 @@ const addmembers = handleActions(
     }),
     [CHANGE_SUCCESS]: (
       state,
-      { payload: { idx, id, designation, name, user_no, email, pwd } },
+      //{ payload: { idx, id, designation, name, user_no, email, pwd } },
     ) =>
       produce(state, (draft) => {
-        for (let i = 0; i < draft.info.length; i++) {
-          if (draft.info[i].id === idx) {
-            draft.info[i] = { id, designation, name, user_no, email, pwd };
-          }
-        }
+        //for (let i = 0; i < draft.info.length; i++) {
+        //if (draft.info[i].id === idx) {
+        //draft.info[i] = { id, designation, name, user_no, email, pwd };
+        //}
+        //}
       }),
     [CHANGE_FAILURE]: (state, { payload: error }) => ({
       ...state,
@@ -153,7 +144,7 @@ const addmembers = handleActions(
     }),
     [INSERT_SUCCESS]: (state, { payload: info }) =>
       produce(state, (draft) => {
-        draft.info.push(info);
+        //draft.info.push(info);
       }),
     [INSERT_FAILURE]: (state, { payload: error }) => ({
       ...state,
