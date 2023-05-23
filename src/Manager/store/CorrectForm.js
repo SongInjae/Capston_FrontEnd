@@ -9,20 +9,31 @@ const CorrectForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { id, name, number, email, designation } = useSelector(
+  const { id, user_type, name, user_no, email } = useSelector(
     ({ addmembers }) => ({
       id: addmembers.id,
-      designation: addmembers.designation,
+      user_type: addmembers.user_type,
       name: addmembers.name,
-      number: addmembers.number,
+      user_no: addmembers.user_no,
       email: addmembers.email,
     }),
   );
-
   let Id = parseInt(params.id);
+  /*
   const { info } = useSelector(({ addmembers }) => ({
     info: addmembers.info[Id - 1],
   }));
+  */
+  const { infos } = useSelector(({ addmembers }) => ({
+    infos: addmembers.info,
+  }));
+  let info = null;
+  for (let i = 0; i <= infos.length; i++) {
+    if (infos[i].id === Id) {
+      info = infos[i];
+      break;
+    }
+  }
 
   const onChange = useCallback(
     (name, value) => {
@@ -37,9 +48,7 @@ const CorrectForm = () => {
   );
   const onSubmit = (e) => {
     e.preventDefault();
-    const idx = Id;
-    const pwd = 3;
-    dispatch(change({ idx, id, designation, name, number, email, pwd }));
+    dispatch(change({ id, user_type, name, user_no, email }));
     navigate(-1);
   };
   return <CorrectMember info={info} onChange={onChange} onSubmit={onSubmit} />;

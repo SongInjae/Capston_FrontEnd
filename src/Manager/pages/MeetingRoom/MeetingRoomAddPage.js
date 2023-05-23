@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { useState } from 'react';
 
 import Button from '../../components/Button';
 import BackImage from '../../components/BackImage';
@@ -16,7 +17,7 @@ const FormStyled = styled.form`
   display: table;
   vertical-align: middle;
 `;
-const ImageBlock = styled.div`
+const ImageBlock = styled.label`
   display: table-cell;
   margin: 0 auto;
   width: 16.5rem;
@@ -27,6 +28,15 @@ const ImageBlock = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  ${(props) =>
+    props.image &&
+    css`
+      background-color: transparent;
+      border: none;
+    `}
+`;
+const ImageInput = styled.input`
+  display: none;
 `;
 const ImageIcon = styled.div`
   background-image: url(${PictureIcon});
@@ -34,6 +44,13 @@ const ImageIcon = styled.div`
   height: 4em;
   background-size: contain;
   background-repeat: no-repeat;
+  ${(props) =>
+    props.image &&
+    css`
+      background-image: url(${props.image});
+      width: 100%;
+      height: 100%;
+    `}
 `;
 const FormBlock = styled.div`
   display: table-row;
@@ -71,20 +88,37 @@ const SubmitButton = styled(Button)`
   font-size: 0.9rem !important;
 `;
 
-const MeetingRoomAddPage = ({ onChange, onSubmit }) => {
+const MeetingRoomAddPage = ({ setFile, onChange, onSubmit }) => {
+  const [imgFile, setImgFile] = useState(false);
+
+  const saveImgFile = (e) => {
+    const files = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(files);
+    reader.onloadend = () => {
+      setImgFile(reader.result);
+    };
+    setFile(e.target.files[0]);
+  };
   return (
     <>
       <BackImage />
       <FormStyled onSubmit={onSubmit}>
-        <ImageBlock>
-          <ImageIcon />
+        <ImageBlock htmlFor="images" image={imgFile}>
+          <ImageIcon image={imgFile} />
         </ImageBlock>
+        <ImageInput
+          type="file"
+          id="images"
+          accept="image/*"
+          onChange={saveImgFile}
+        />
         <FormBlock>
           <LabelBlock htmlFor="room_name">회의실 이름</LabelBlock>
           <InputBlock
             type="text"
             placeholder="ex) 대양AI센터 835호"
-            id="room_name"
+            id="name"
             onChange={onChange}
             required
           />
@@ -94,7 +128,7 @@ const MeetingRoomAddPage = ({ onChange, onSubmit }) => {
           <InputBlock
             type="text"
             placeholder="ex) 빔프로젝트, 컴퓨터 2대"
-            id="facility"
+            id="amenities"
             onChange={onChange}
             required
           />
@@ -104,7 +138,7 @@ const MeetingRoomAddPage = ({ onChange, onSubmit }) => {
           <TextareaBlock
             rows="8"
             placeholder="유의사항을 입력하세요."
-            id="text"
+            id="discription"
             onChange={onChange}
             required
           />

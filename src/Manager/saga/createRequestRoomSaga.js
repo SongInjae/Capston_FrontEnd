@@ -7,7 +7,7 @@ export const createRequestActionTypes = (type) => {
   return [type, SUCCESS, FAILURE];
 };
 
-export default function createRequestSaga(type, request) {
+export default function createRequestRoomSaga(type, request) {
   const SUCCESS = `${type}_SUCCESS`;
   const FAILURE = `${type}_FAILURE`;
 
@@ -17,7 +17,7 @@ export default function createRequestSaga(type, request) {
       const response = yield call(request, action.payload);
       yield put({
         type: SUCCESS,
-        payload: response.data.results,
+        payload: response.data.message,
       });
     } catch (e) {
       yield put({

@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { take } from '../store/modules/addmember';
 import { insert } from '../store/modules/addmember';
 import Paging from '../components/Paging';
+//import Pagenation from '../components/Pagenation';
 import sea_img from '../assets/img/search.png';
 import UserTable from './Member/UserTable';
 
@@ -121,6 +123,10 @@ const CsvBlock = styled.input`
 `;
 
 const MemberManagementsPage = () => {
+  useEffect(() => {
+    dispatch(take());
+  }, []);
+
   const infos = useSelector(({ addmembers }) => addmembers.info); //info 불러오기
   const [userInput, setUserInput] = useState(''); //필터링 input
   const dispatch = useDispatch(); //redux dispatch 불러오기
@@ -139,7 +145,7 @@ const MemberManagementsPage = () => {
   //필터링 된 이름 내보내기
   const filterInfo = useCallback(
     infos.filter((info) => {
-      return info.number.includes(userInput);
+      return info.user_no.includes(userInput);
     }),
     [userInput, infos],
   );
@@ -148,9 +154,9 @@ const MemberManagementsPage = () => {
   const onChangeFile = (e) => {
     let input = e.target;
     let reader = new FileReader();
-    let designation = null;
+    let user_type = null;
     let name = null;
-    let number = null;
+    let user_no = null;
     let email = null;
     let pwd = 3;
 
@@ -161,11 +167,11 @@ const MemberManagementsPage = () => {
       workBook.SheetNames.forEach(function (sheetName) {
         let rows = utils.sheet_to_json(workBook.Sheets[sheetName]);
         for (let i = 0; i < rows.length; i++) {
-          designation = rows[i].designation;
+          user_type = rows[i].user_type;
           name = rows[i].name;
-          number = rows[i].number.toString();
+          user_no = rows[i].user_no.toString();
           email = rows[i].email;
-          dispatch(insert({ designation, name, number, email, pwd }));
+          dispatch(insert({ user_type, name, user_no, email, pwd }));
         }
       });
     };
@@ -179,11 +185,6 @@ const MemberManagementsPage = () => {
     setIndexOfFirstPost(indexOfLastPost - 12);
     setCurrentPosts(filterInfo.slice(indexOfFirstPost, indexOfLastPost));
   }, [currentPage, indexOfFirstPost, indexOfLastPost, filterInfo]);
-
-  const setPage = (e) => {
-    setCurrentPage(e);
-  };
-
   return (
     <>
       <FliterAddBlock>
@@ -212,7 +213,7 @@ const MemberManagementsPage = () => {
         page={currentPage}
         maxcntItem={12}
         count={count}
-        setPage={setPage}
+        setPage={setCurrentPage}
       />
     </>
   );

@@ -17,7 +17,6 @@ const store = createStore(
 );
 
 function loadUser() {
-  localStorage.removeItem('user');
   try {
     const user = localStorage.getItem('user');
     if (!user) return;

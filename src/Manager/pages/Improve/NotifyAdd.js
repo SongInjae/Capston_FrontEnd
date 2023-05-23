@@ -64,8 +64,8 @@ const SubmitButton = styled(Button)`
 `;
 
 const NotifyAdd = ({ onChange, onSubmit, onChangeField }) => {
-  const onChnageHtml = (e) => {
-    onChangeField({ key: 'text', value: e });
+  const onChangeHtml = (e) => {
+    onChangeField({ key: 'content', value: e });
   };
   return (
     <>
@@ -82,7 +82,7 @@ const NotifyAdd = ({ onChange, onSubmit, onChangeField }) => {
           />
         </FormBlock>
         <QuillWrapper>
-          <ReactQuill onChange={onChnageHtml} />
+          <ReactQuill onChange={onChangeHtml} />
         </QuillWrapper>
         <SubmitButton>Submit</SubmitButton>
       </FormStyled>

@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeField, login } from '../../store/modules/auth';
 import { useNavigate } from 'react-router-dom';
+//import { useCookies } from 'react-cookie';
+import cookie from 'react-cookies';
 
 const LoginFormBlock = styled.div``;
 
@@ -48,6 +50,7 @@ const ErrorMessage = styled.div`
 
 const LoginForm = () => {
   const [error, setError] = useState(null);
+  //const [cookies, setCookie] = useCookies(['id']);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { form, auth, authError } = useSelector(({ auth }) => ({
@@ -84,6 +87,13 @@ const LoginForm = () => {
         }
         try {
           localStorage.setItem('user', JSON.stringify(auth));
+          const expires = new Date();
+          expires.setMinutes(expires.getMinutes() + 60);
+          cookie.save('token', auth.token, {
+            path: '/',
+            expires,
+          });
+          //setCookie('token', auth.token);
         } catch (e) {
           console.log('localStorage is not working');
         }
@@ -92,7 +102,6 @@ const LoginForm = () => {
       }
     }
   }, [auth, authError, dispatch, form.username, navigate]);
-
   return (
     <>
       <LoginFormBlock>

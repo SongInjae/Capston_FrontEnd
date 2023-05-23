@@ -24,7 +24,7 @@ function* getRoomsSaga() {
     }
 }
 
-export function* roomSaga() {
+export function* meetingRoomSaga() {
 
     yield takeLatest('GET_ROOM', getRoomsSaga); //action saga 연결
 }

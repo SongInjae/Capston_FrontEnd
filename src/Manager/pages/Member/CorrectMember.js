@@ -69,12 +69,12 @@ const SubmitButton = styled(Button)`
   align-items: center;
 `;
 
-const AddMember = ({ info, onChange, onSubmit }) => {
+const CorrectMember = ({ info, onChange, onSubmit }) => {
   let id = info.id;
   let [name, setName] = useState(info.name);
-  let [number, setNumber] = useState(info.number);
+  let [user_no, setUser_no] = useState(info.user_no);
   let [email, setEmail] = useState(info.email);
-  let [design, setDesign] = useState(info.designation);
+  let [user_type, setUser_type] = useState(info.user_type.id);
   useEffect(() => {
     onChange('id', id);
   }, [onChange, id]);
@@ -82,26 +82,26 @@ const AddMember = ({ info, onChange, onSubmit }) => {
     onChange('name', name);
   }, [onChange, name]);
   useEffect(() => {
-    onChange('number', number);
-  }, [onChange, number]);
+    onChange('user_no', user_no);
+  }, [onChange, user_no]);
   useEffect(() => {
     onChange('email', email);
   }, [onChange, email]);
   useEffect(() => {
-    onChange('designation', design);
-  }, [onChange, design]);
+    onChange('user_type', user_type);
+  }, [onChange, user_type]);
 
   const onUpdateName = useCallback((e) => {
     setName(e.target.value);
   }, []);
-  const onUpdateNumber = useCallback((e) => {
-    setNumber(e.target.value);
+  const onUpdateUserno = useCallback((e) => {
+    setUser_no(e.target.value);
   }, []);
   const onUpdateEmail = useCallback((e) => {
     setEmail(e.target.value);
   }, []);
-  const onUpdateDesign = useCallback((e) => {
-    setDesign(e.target.value);
+  const onUpdateUsertype = useCallback((e) => {
+    setUser_type(parseInt(e.target.value));
   }, []);
 
   return (
@@ -125,9 +125,9 @@ const AddMember = ({ info, onChange, onSubmit }) => {
           <NameInputBlock
             type="number"
             placeholder="학번 혹은 교번을 입력하세요."
-            id="number"
-            onChange={onUpdateNumber}
-            value={number}
+            id="user_no"
+            onChange={onUpdateUserno}
+            value={user_no}
             required
           />
         </FormBlock>
@@ -143,40 +143,29 @@ const AddMember = ({ info, onChange, onSubmit }) => {
           />
         </FormBlock>
         <FormBlock>
-          <LabelBlock htmlFor="belong">소속</LabelBlock>
+          <LabelBlock>소속</LabelBlock>
           <CheckBoxBlock>
             <CheckBlock
               type="radio"
-              id="designation"
-              onChange={onUpdateDesign}
-              value="교수"
-              checked={design === '교수' ? true : false}
+              onChange={onUpdateUsertype}
+              value="2"
+              checked={user_type === 2 ? true : false}
             />
             <CheckNameBlock>교수</CheckNameBlock>
             <CheckBlock
               type="radio"
-              id="designation"
-              onChange={onUpdateDesign}
-              value="조교"
-              checked={design === '조교' ? true : false}
-            />
-            <CheckNameBlock>조교</CheckNameBlock>
-            <CheckBlock
-              type="radio"
-              id="designation"
-              onChange={onUpdateDesign}
-              value="대학원생"
-              checked={design === '대학원생' ? true : false}
+              onChange={onUpdateUsertype}
+              value="3"
+              checked={user_type === 3 ? true : false}
             />
             <CheckNameBlock>대학원생</CheckNameBlock>
             <CheckBlock
               type="radio"
-              id="designation"
-              onChange={onUpdateDesign}
-              value="학생"
-              checked={design === '학생' ? true : false}
+              onChange={onUpdateUsertype}
+              value="4"
+              checked={user_type === 4 ? true : false}
             />
-            <CheckNameBlock>학생</CheckNameBlock>
+            <CheckNameBlock>학부생</CheckNameBlock>
           </CheckBoxBlock>
         </FormBlock>
         <SubmitButton>Correct</SubmitButton>
@@ -185,4 +174,4 @@ const AddMember = ({ info, onChange, onSubmit }) => {
   );
 };
 
-export default AddMember;
+export default CorrectMember;

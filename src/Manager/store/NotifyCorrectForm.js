@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -11,18 +11,31 @@ const NotifyCorrectForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const current = new Date();
-  const date = format(current, 'yyyy.MM.dd');
+  const date = format(current, 'yyyy-MM-dd');
 
-  const { id, title, text } = useSelector(({ notify }) => ({
+  const { id, title, content } = useSelector(({ notify }) => ({
     id: notify.id,
     title: notify.title,
-    text: notify.text,
+    content: notify.content,
   }));
 
   let Id = parseInt(params.id);
   const { notify } = useSelector(({ notify }) => ({
     notify: notify.infos[Id - 1],
   }));
+
+  const formData = new FormData();
+
+  useEffect(() => {
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('start', date);
+  });
+
+  const onChangeField = useCallback(
+    (payload) => dispatch(changeField(payload)),
+    [],
+  );
 
   const onChange = useCallback(
     (name, value) => {
@@ -32,13 +45,17 @@ const NotifyCorrectForm = () => {
   );
   const onSubmit = (e) => {
     e.preventDefault();
-    const idx = Id;
-    dispatch(change({ idx, id, title, text, date }));
+    dispatch(change({ id, formData }));
     navigate(-1);
   };
 
   return (
-    <NotifyCorrect notify={notify} onChange={onChange} onSubmit={onSubmit} />
+    <NotifyCorrect
+      notify={notify}
+      onChange={onChange}
+      onSubmit={onSubmit}
+      onChangeField={onChangeField}
+    />
   );
 };
 

@@ -68,9 +68,9 @@ const UserTable = ({ infos }) => {
     infos.length > 0 ? (
       infos.map((info) => (
         <TrBlock key={info.id}>
-          <Td1>{info.designation}</Td1>
+          <Td1>{info.user_type.name}</Td1>
           <Td2>{info.name}</Td2>
-          <Td3>{info.number}</Td3>
+          <Td3>{info.user_no}</Td3>
           <Td4>{info.email}</Td4>
           <Td5>
             <Menu info={info} />
