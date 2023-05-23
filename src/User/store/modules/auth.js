@@ -38,10 +38,7 @@ function* logoutSaga() {
     console.log(e);
   }
 }
-header :
-body:{
-  
-}
+
 
 export function* authSaga() {
   yield takeLatest(LOGIN, loginSaga);

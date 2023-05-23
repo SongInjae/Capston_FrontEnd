@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
+import moment from 'moment';
 import {
   format,
   addMonths,
@@ -123,15 +124,48 @@ function Bodys({ infos, currentMonth, selectedDate, onDateClick }) {
       let reserveTime = '';
       let reser = false;
 
-      infos.forEach((info) => {
+      infos && infos.forEach((info) => {
         if (
-          info.month === cloneday.getMonth() + 1 &&
-          info.day === cloneday.getDate()
+          new Date(info.date).getMonth() === cloneday.getMonth() &&
+          new Date(info.date).getDate() === cloneday.getDate()
         ) {
-          reserveTime = info.time;
+          reserveTime = moment(info.start).format('HH:mm') + '-' + moment(info.end).format('HH:mm');
           reser = true;
         }
+
       });
+      // infos.forEach((info) => {
+      //   if (
+      //     new Date(info.date).getMonth() === cloneday.getMonth() + 1 &&
+      //     new Date(info.date).getDate() === cloneday.getDate()
+      //   ) {
+      //     reserveTime = info.start + info.end;
+      //     reser = true;
+      //   }
+
+      // });
+
+      // infos.forEach((info) => {
+      //   if (
+      //     info.month === cloneday.getMonth() + 1 &&
+      //     info.day === cloneday.getDate()
+      //   ) {
+      //     reserveTime = info.start + info.end;
+      //     reser = true;
+      //   }
+
+      // });
+      // infos.forEach((info) => {
+      //   if (
+      //     info.month === cloneday.getMonth() + 1 &&
+      //     info.day === cloneday.getDate()
+      //   ) {
+      //     reserveTime = info.start + info.end;
+      //     reser = true;
+      //   }
+
+      // });
+
 
       if (day.getDay() === 0 || day.getDay() === 6) {
         if (!isSameMonth(currentMonth, day)) {

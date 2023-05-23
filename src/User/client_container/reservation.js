@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Header from "../component/header";
 import format from "date-fns/format";
 import { useDispatch, useSelector } from "react-redux";
+import { getUserNo } from "../store/modules/userInfo";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineAddCircle } from "react-icons/md";
 import { AiFillWarning } from "react-icons/ai"
@@ -61,7 +62,7 @@ const ToolTitle = styled.div`
     width: 4rem;
     margin-top: 0.1rem;
     text-align: center;
-    font-size: 12px;
+    font-size: 12px;   
     font-weight: 500;
 `
 const DatePickWrapper = styled.div`
@@ -206,6 +207,9 @@ const Background = styled.div`
 `;
 
 const ModalContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: fixed;
     left: 50%;
     top: 50%;
@@ -219,6 +223,7 @@ const ModalContainer = styled.div`
 `;
 const ModalHeader = styled.div`
     display: flex;
+    width : 100%;
     background-color: #a31432;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
@@ -236,8 +241,41 @@ const ModalMainTitle = styled.div`
   display: flex;
   align-items: center;
 `;
+const AddMemberInputContainer = styled.div`
+    margin-top: 30px;
+`
+const AddMemberInput = styled.input`
+  ::placeholder{
+        color: gray
+    }
+    font-weight:500;
+    font-size: 1rem;
+    padding-left: 0.5rem;
+    width : 20vw;
+    height : 48px;
+    border-style: solid;
+    border-color: lightgrey;
+    align-items: center;
+    outline : none;
+`;
+
+const ModalAddMemeberBtn = styled.button`
+    background-color: #a31432;
+    margin-left: 3px;
+    width : 5vw;
+    height : 48px;
+    color : white;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 8px;
+    border-radius: 10px;
+    border: none;
+    :hover{
+        background-color: #EF9090;
+    }
+`;
 function ReservingPage() {
-    const toolList = ["HDMI", "빔 프로젝트", "화이트보드"]
     const TimeList = [
         "9:00 - 10:00",
         "10:00 - 11:00",
@@ -248,31 +286,49 @@ function ReservingPage() {
         "15:00 - 16:00",
         "16:00 - 17:00",
         "16:00 - 17:00"]
-    const memberList = ["17011582 권형석", "17011477 목승주"];
+    const memberList = [];
+    const dispatch = useDispatch();
     const [members, setMembers] = useState(memberList)
     const [isTimeBtnClicked, setIsTimeBtnClicked] = useState(false);
     const [isAddMemeberClicked, setIsAddMemeberClicked] = useState(false);
     const [selectedTime, setSelectedTime] = useState("시간을 선택하세요");
+    const [userNo, setUserNo] = useState('');
+    const [meetingName, setMeetingName] = useState("");
     const selectedDate = useSelector(state => state.dateReducer.date);
     const selectedRoom = useSelector(state => state.roomReducer.room);
     const clickTimePickBtn = (time) => {
         setSelectedTime(time);
         setIsTimeBtnClicked(!isTimeBtnClicked);
+        console.log(selectedTime);
+    }
+
+    const onChangeMeetingName = (e) => {
+        setMeetingName(e.target.value);
+        console.log(e.target.value);
+    }
+
+    const onClickAddUserBtn = (userNo) => {
+        dispatch(getUserNo(userNo));
     }
     return (
         <div>
             <Header></Header>
             <ReserveWrapper>
                 <RoomImage ></RoomImage>
-                <RoomTitle>{selectedRoom}</RoomTitle>
+                <RoomTitle>{selectedRoom.name}</RoomTitle>
                 <ToolWrapper>
-                    {toolList.map((tool) => (
+                    {/* {toolList.map((tool) => (
 
                         <Tool>
                             <ToolImage></ToolImage>
                             <ToolTitle>{tool}</ToolTitle>
                         </Tool>
-                    ))}
+                    ))} */
+                        <Tool>
+                            <ToolImage></ToolImage>
+                            <ToolTitle>{selectedRoom.amenities}</ToolTitle>
+                        </Tool>
+                    }
                 </ToolWrapper>
                 <Divider></Divider>
                 <DatePickWrapper>
@@ -282,7 +338,7 @@ function ReservingPage() {
                 <TimePickbtn><TimeTitle onClick={() => setIsTimeBtnClicked(!isTimeBtnClicked)}>{selectedTime}</TimeTitle>{
                     isTimeBtnClicked === true ? TimeList.map((time) => (<TimeTitle onClick={() => clickTimePickBtn(time)}>{time}</TimeTitle>)) : null
                 }</TimePickbtn>
-                <MeetingNameInput placeholder="회의명을 입력하세요(선택)"></MeetingNameInput>
+                <MeetingNameInput placeholder="회의명을 입력하세요(선택)" onChange={onChangeMeetingName}></MeetingNameInput>
                 <Divider></Divider>
                 <MemberTitle>참석멤버
                 </MemberTitle>
@@ -294,6 +350,11 @@ function ReservingPage() {
                                 <ModalMainTitle>참석멤버 추가</ModalMainTitle>
                                 <ModalXBtn color="white" onClick={() => setIsAddMemeberClicked(!isAddMemeberClicked)}></ModalXBtn>
                             </ModalHeader>
+                            <AddMemberInputContainer>
+                                <AddMemberInput placeholder="추가할 멤버 학번" onChange={(e) => { setUserNo(e.value.target) }}></AddMemberInput>
+                                <ModalAddMemeberBtn onClick={() => onClickAddUserBtn(userNo)}>추가</ModalAddMemeberBtn>
+                            </AddMemberInputContainer>
+
                         </ModalContainer>
                     </Background> : null}
 
@@ -304,6 +365,7 @@ function ReservingPage() {
                         <AddMemberIcon></AddMemberIcon>
                     </AddMemberButton>
                 </MemberWrapper>
+
 
                 <Divider></Divider>
                 <WarningTitle><WarningIcon></WarningIcon>유의사항</WarningTitle>

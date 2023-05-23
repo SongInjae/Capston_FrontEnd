@@ -75,7 +75,6 @@ const LoginForm = () => {
       return;
     }
     if (auth) {
-      console.log(form.username);
       console.log('로그인 성공');
       if (form.username !== '') {
         if (form.username === 'admin') {

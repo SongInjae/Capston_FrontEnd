@@ -14,18 +14,19 @@ export const pickRoom = room => ({ type: 'PICK_ROOM', room }); //액션 생성�
 
 function* getRoomsSaga() {
 
-    const response = yield call(roomAPI.getRoomsInfo);
-    console.log(response.data);
     try {
-        yield put({ type: 'GET_ROOM', roomsInfo: response.data });
+        const response = yield call(roomAPI.getRoomsInfo);
+        console.log(response.data);
+        yield put({ type: 'GET_ROOM_RESULT', roomsInfo: response.data.results });
 
     } catch (e) {
-        yield put({ type: 'GET_ROOM', roomInfo: [] });
+        yield put({ type: 'GET_ROOM_RESULT', roomInfo: [] });
     }
 }
 
 export function* roomSaga() {
-    yield takeLatest('GET_ROOM', getRoomsSaga);
+
+    yield takeLatest('GET_ROOM', getRoomsSaga); //action saga 연결
 }
 
 function roomReducer(currentState = initialState, action) { //리듀서 선언
@@ -37,7 +38,7 @@ function roomReducer(currentState = initialState, action) { //리듀서 선언
                 room: action.room
 
             }
-        case 'GET_ROOM':
+        case 'GET_ROOM_RESULT':
             return {
                 ...currentState,
                 roomsInfo: action.roomsInfo

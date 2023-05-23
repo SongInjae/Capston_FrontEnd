@@ -19,8 +19,7 @@ const Room = styled.div`
     //justify-content: center;
     /* align-items: center; */
 `;
-const RoomImage = styled.div`
-    background-color: lightgray;
+const RoomImage = styled.img`
     width : 8rem;
     height : 8rem;
     border-radius: 8px;
@@ -67,9 +66,9 @@ function RoomComponent({ roomInfo }) {
 
     return (
         <Room>
-            <RoomImage />
+            <RoomImage src={roomInfo.images.image} />
             <RoomNameWrapper>
-                <RoomName>{roomInfo}</RoomName>
+                <RoomName>{roomInfo.name}</RoomName>
             </RoomNameWrapper>
             <ReserveBtnWrapper>
                 <ReserveBtn onClick={() => clickReserveBtn(roomInfo)}>예약하기</ReserveBtn>

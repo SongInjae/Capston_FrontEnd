@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import logo from '../assets/sejong.png';
 import { GrClose } from 'react-icons/gr';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import auth from '../store/modules/auth';
 import { logout } from '../store/modules/auth';
+import { changePassword, changeUserInfo } from '../store/modules/userInfo';
 
 const HeaderWrapper = styled.header`
   margin: 0 auto;
@@ -193,6 +195,25 @@ const UserInfoChageBtn = styled.button`
 `;
 
 function MyPage(props) {
+  const userInfo = useSelector(state => state.auth.auth);
+  const dispatch = useDispatch();
+  const [currentpwd, setCurrentpwd] = useState('');
+  const [changedpwd, setChangedpwd] = useState('');
+  const [checkpwd, setCheckpwd] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const onClickChangePwd = () => {
+
+    if (changedpwd === checkpwd && changedpwd.length >= 8) {
+      dispatch(changePassword({ currentpwd, changedpwd }));
+    } else {
+      alert("비밀번호를 확인해주세요!");
+    }
+  };
+
+  const onClickChangeUserInfo = () => {
+    dispatch(changeUserInfo());
+  }
   return (
     <Background>
       <ModalContainer>
@@ -209,43 +230,44 @@ function MyPage(props) {
         </TitleWrapper>
         <TextFieldWrapper>
           <TextFieldClass>기존 비밀번호</TextFieldClass>
-          <TextField type="password"></TextField>
+          <TextField type="password" onChange={(event) => setCurrentpwd(event.target.value)}></TextField>
         </TextFieldWrapper>
         <TextFieldWrapper>
           <TextFieldClass>변경할 비밀번호</TextFieldClass>
-          <TextField type="password"></TextField>
+          <TextField type="password" onChange={(event) => setChangedpwd(event.target.value)}></TextField>
         </TextFieldWrapper>
         <TextFieldWrapper>
           <TextFieldClass>비밀번호 재확인</TextFieldClass>
-          <TextField type="password"></TextField>
+          <TextField type="password" onChange={(event) => setCheckpwd(event.target.value)}></TextField>
         </TextFieldWrapper>
-        <PwdChageBtn>비밀번호 변경</PwdChageBtn>
+        <PwdChageBtn onClick={onClickChangePwd}>비밀번호 변경</PwdChageBtn>
         <TitleWrapper>
           <InfoTitle>회원정보 변경</InfoTitle>
         </TitleWrapper>
         <TextFieldWrapper>
           <TextFieldClass>이름</TextFieldClass>
-          <TextField></TextField>
+          <TextField value={userInfo.name} onChange={(event) => setName(event.target.value)}></TextField>
         </TextFieldWrapper>
         <TextFieldWrapper>
           <TextFieldClass>학번/교번</TextFieldClass>
-          <TextField></TextField>
+          <TextField value={userInfo.username} disabled={true}></TextField>
         </TextFieldWrapper>
         <TextFieldWrapper>
           <TextFieldClass>이메일</TextFieldClass>
-          <TextField type="email"></TextField>
+          <TextField value={userInfo.email} type="email" onChange={(event) => setEmail(event.target.value)}></TextField>
         </TextFieldWrapper>
         <TextFieldWrapper>
-          <TextFieldClass>전화번호</TextFieldClass>
+          <TextFieldClass disabled={true}>전화번호</TextFieldClass >
           <TextField></TextField>
         </TextFieldWrapper>
-        <UserInfoChageBtn>회원정보 변경</UserInfoChageBtn>
+        <UserInfoChageBtn onClick={onClickChangeUserInfo}>회원정보 변경</UserInfoChageBtn>
       </ModalContainer>
     </Background>
   );
 }
 
 function Header() {
+  const userInfo = useSelector(state => state.auth.auth);
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
   const clickSearchMyReservation = () => {
@@ -271,7 +293,7 @@ function Header() {
       </MainTitle>
       <RightComponent>
         <LogoutWrapper>
-          <UserInfo>17011582 권형석</UserInfo>
+          <UserInfo>{userInfo.username} {userInfo.name}</UserInfo>
           <LogoutBtn onClick={onLogout}>로그아웃</LogoutBtn>
         </LogoutWrapper>
         <TabWrapper>

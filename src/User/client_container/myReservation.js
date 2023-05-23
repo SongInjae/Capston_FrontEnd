@@ -2,6 +2,9 @@ import styled, { css } from 'styled-components';
 import logo from '../assets/sejong.png';
 import MyReserveCalendar from './myReserveCalendar';
 import Button from '../../Manager/components/Button';
+import { useEffect } from 'react';
+import { getMyReservation, deleteMyReservation } from '../store/modules/reservation';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Header = styled.header`
   margin: 0 auto;
@@ -121,36 +124,48 @@ const CancelButton = styled(Button)`
 `;
 
 const MyReservation = () => {
-  const infos = [
-    {
-      id: 1,
-      year: 2023,
-      month: 5,
-      day: 26,
-      time: '15:00-16:30',
-      location: '대양 AI센터 835호',
-    },
-    {
-      id: 2,
-      year: 2023,
-      month: 5,
-      day: 23,
-      time: '18:00-19:00',
-      location: '대양 AI센터 836호',
-    },
-  ];
+  const reserveRoomInfo = useSelector(state => state.reservation.myReservationInfo);
+  const dispatch = useDispatch();
 
-  const infoList = infos.map((info) => (
+  useEffect(() => {
+    dispatch(getMyReservation());
+  }, [dispatch]);
+  // const infos = [
+  //   {
+  //     id: 1,
+  //     year: 2023,
+  //     month: 5,
+  //     day: 26,
+  //     time: '15:00-16:30',
+  //     location: '대양 AI센터 835호',
+  //   },
+  //   {
+  //     id: 2,
+  //     year: 2023,
+  //     month: 5,
+  //     day: 23,
+  //     time: '18:00-19:00',
+  //     location: '대양 AI센터 836호',
+  //   },
+  // ];
+
+  const infoList = reserveRoomInfo && reserveRoomInfo.map((info) => (
     <ReserveInfoBlock>
       <RoomInfoBlock>
         <RoomImageBlock />
         <RoomTextBlock>
-          <Roomtext weight={true}>{info.location}</Roomtext>
+          <Roomtext weight={true}>{info.id}</Roomtext>
+          <Roomtext>
+            일정 : {info.date}
+          </Roomtext>
+          <Roomtext>시간 : {info.start}</Roomtext>
+          <CancelButton onClick={() => dispatch(deleteMyReservation(info.id))}>예약 취소</CancelButton>
+          {/* <Roomtext weight={true}>{info.location}</Roomtext>
           <Roomtext>
             일정 : {info.year}년 {info.month}월 {info.day}일
           </Roomtext>
           <Roomtext>시간 : {info.time}</Roomtext>
-          <CancelButton>예약 취소</CancelButton>
+          <CancelButton>예약 취소</CancelButton> */}
         </RoomTextBlock>
       </RoomInfoBlock>
     </ReserveInfoBlock>
@@ -174,7 +189,8 @@ const MyReservation = () => {
           </TabWrapper>
         </RightComponent>
       </Header>
-      <MyReserveCalendar infos={infos} />
+      <MyReserveCalendar infos={reserveRoomInfo} />
+      {/* <MyReserveCalendar infos={infos} /> */}
 
       <TitleBlock>나의 예약목록</TitleBlock>
       {infoList}

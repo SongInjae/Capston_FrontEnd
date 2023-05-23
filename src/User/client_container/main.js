@@ -21,9 +21,10 @@ function UserMain() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (roomsInfo !== []) return;
     dispatch(getRooms());
-  }, [roomsInfo, dispatch]);
+    if (roomsInfo !== []) return;
+
+  }, dispatch);
 
 
   const roomInfo = [
@@ -37,7 +38,7 @@ function UserMain() {
       <Header></Header>
       <UserCalendar></UserCalendar>
       <RoomsWrapper>
-        {roomInfo.map((room) => (
+        {roomsInfo && roomsInfo.map((room) => (
           <RoomComponent roomInfo={room}></RoomComponent>
         ))}
       </RoomsWrapper>
