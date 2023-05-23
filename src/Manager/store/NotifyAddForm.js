@@ -23,8 +23,8 @@ const NotifyAddForm = () => {
   useEffect(() => {
     formData.append('title', title);
     formData.append('content', content);
-    formData.append('start', format(start, 'yyyy-MM-dd'));
-    //formData.append('end', end);
+    formData.append('end', start.toISOString());
+    formData.append('start', end.toISOString());
   }, [title, content, start, end]);
 
   const onChangeField = useCallback(

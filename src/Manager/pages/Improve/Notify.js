@@ -131,7 +131,7 @@ const Notify = () => {
     <TBodyTrBlock id={info.id}>
       <Td0>{idx + 1}.</Td0>
       <Td1>{info.title}</Td1>
-      <Td2>{info.end}</Td2>
+      <Td2>{info.end.replace('T', ' ').substring(0, 16)}</Td2>
       <Td3>
         <DivBlock>
           <CorrectLink to={`/admin/improve/notify/correct/${info.id}`}>

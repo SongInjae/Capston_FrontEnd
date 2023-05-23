@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { remove } from '../store/modules/rooms';
 import { take } from '../store/modules/rooms';
+import Pagenation from '../components/Pagenation';
 
 const FliterAddBlock = styled.div`
   width: 100%;
@@ -103,18 +104,20 @@ const MeetingRoomPage = () => {
   const dispatch = useDispatch();
   const onRemove = (id) => dispatch(remove(id));
 
-  const [imgFile, setImgFile] = useState(false);
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * 6;
+
   let roomsInfos = [];
-  for (let i = 0; i <= rooms.length; i += 3) {
+  let cnt = 0;
+  for (let i = offset; i <= rooms.length; i += 3) {
     let room = [];
+    cnt += 1;
     for (let j = 0; j < 3; j++) {
       if (i + j === rooms.length) break;
-      //console.log(rooms[i + j].images.image);
       room.push(
         <RoomBlock>
           <RoomImage
             image={rooms[i + j].images.image ? rooms[i + j].images.image : ''}
-            //image={imgFile}
           />
           <RoomInfoBlock>
             <RoomName>{rooms[i + j].name}</RoomName>
@@ -137,6 +140,12 @@ const MeetingRoomPage = () => {
         <FileBlock to="/admin/room/add">회의실 추가</FileBlock>
       </FliterAddBlock>
       {roomsInfos}
+      <Pagenation
+        total={rooms.length}
+        limit={6}
+        page={page}
+        setPage={setPage}
+      />
     </>
   );
 };

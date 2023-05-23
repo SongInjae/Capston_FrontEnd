@@ -95,8 +95,10 @@ const ReservationTable = ({ infos }) => {
           <Td1>
             {info.date_year}.{info.date_month}.{info.date_day}
           </Td1>
-          <Td2>{info.name}</Td2>
-          <Td3>{info.designation}</Td3>
+          <Td2>{info.room}</Td2>
+          <Td3>
+            {info.name}({info.designation})
+          </Td3>
           <Td4>{info.time}</Td4>
           <Td5>{info.email}</Td5>
           <Td6>
@@ -114,8 +116,8 @@ const ReservationTable = ({ infos }) => {
       <TheadBlock>
         <tr>
           <TheadTd1>Date</TheadTd1>
-          <TheadTd2>Name</TheadTd2>
-          <TheadTd3>Designation</TheadTd3>
+          <TheadTd2>Room</TheadTd2>
+          <TheadTd3>Name</TheadTd3>
           <TheadTd4>Time</TheadTd4>
           <TheadTd5>Email</TheadTd5>
           <TheadTd6>Edit</TheadTd6>
