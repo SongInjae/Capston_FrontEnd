@@ -87,12 +87,13 @@ const LoginForm = () => {
           navigate('main');
         }
         try {
-          localStorage.setItem('user', JSON.stringify(auth));
           const expires = new Date();
           expires.setMinutes(expires.getMinutes() + 60);
+          auth.expire = Date.now() + 1000 * 60 * 60;
+          localStorage.setItem('user', JSON.stringify(auth));
           cookie.save('token', auth.token, {
             path: '/',
-            expires,
+            //expires,
           });
           //setCookie('token', auth.token);
         } catch (e) {

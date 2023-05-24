@@ -151,7 +151,7 @@ const CorrectMember = ({ info, onChange, onSubmit }) => {
               value="2"
               checked={user_type === 2 ? true : false}
             />
-            <CheckNameBlock>교수</CheckNameBlock>
+            <CheckNameBlock>교직원</CheckNameBlock>
             <CheckBlock
               type="radio"
               onChange={onUpdateUsertype}

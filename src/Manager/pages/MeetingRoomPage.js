@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { remove } from '../store/modules/rooms';
 import { take } from '../store/modules/rooms';
 import Pagenation from '../components/Pagenation';
+import LogoutModal from '../components/LogoutModal';
 
 const FliterAddBlock = styled.div`
   width: 100%;
@@ -39,17 +40,18 @@ const FileBlock = styled(Link)`
 const RoomRowBlock = styled.div`
   display: flex;
   width: 70rem;
-  height: 20rem;
+  height: 18rem;
   margin-top: 0.5rem;
+  flex: 1;
 `;
 const RoomBlock = styled.div`
   width: 20rem;
-  height: 20rem;
+  height: 18rem;
   margin: 0 2rem;
 `;
 const RoomImage = styled.img`
   width: 100%;
-  height: 16rem;
+  height: 15rem;
   border: 1px solid #000;
   border-radius: 0.6rem;
   background: #f7f9fc;
@@ -102,20 +104,36 @@ const MeetingRoomPage = () => {
   }, []);
   const rooms = useSelector(({ rooms }) => rooms.rooms);
   const dispatch = useDispatch();
-  const onRemove = (id) => dispatch(remove(id));
 
   const [page, setPage] = useState(1);
-  const offset = (page - 1) * 6;
+  const offset = (page - 1) * 1;
+
+  const [id, setId] = useState();
+  const [modal, setModal] = useState(false);
+  const onRemoveClick = (infoId) => {
+    setModal(true);
+    setId(infoId);
+  };
+  const onCancel = () => {
+    setModal(false);
+  };
+  const onConfirm = useCallback(() => {
+    setModal(false);
+    dispatch(remove(id));
+  }, []);
 
   let roomsInfos = [];
   let cnt = 0;
   for (let i = offset; i <= rooms.length; i += 3) {
     let room = [];
     cnt += 1;
+    if (cnt === 3) break;
+    if (i > offset) break;
     for (let j = 0; j < 3; j++) {
-      if (i + j === rooms.length) break;
+      //if (i + j === rooms.length) break;
+      if (j === 1) break;
       room.push(
-        <RoomBlock>
+        <RoomBlock key={rooms[i + j].id}>
           <RoomImage
             image={rooms[i + j].images.image ? rooms[i + j].images.image : ''}
           />
@@ -124,14 +142,14 @@ const MeetingRoomPage = () => {
             <RoomInfoCorrectBtn to={`/admin/room/correct/${rooms[i + j].id}`}>
               수정
             </RoomInfoCorrectBtn>
-            <RoomInfoCorrectBtn onClick={() => onRemove(rooms[i + j].id)}>
+            <RoomInfoCorrectBtn onClick={() => onRemoveClick(rooms[i + j].id)}>
               삭제
             </RoomInfoCorrectBtn>
           </RoomInfoBlock>
         </RoomBlock>,
       );
     }
-    roomsInfos.push(<RoomRowBlock>{room}</RoomRowBlock>);
+    roomsInfos.push(<RoomRowBlock key={i}>{room}</RoomRowBlock>);
   }
 
   return (
@@ -142,9 +160,16 @@ const MeetingRoomPage = () => {
       {roomsInfos}
       <Pagenation
         total={rooms.length}
-        limit={6}
+        limit={1}
         page={page}
         setPage={setPage}
+      />
+      <LogoutModal
+        visible={modal}
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+        title="회의실 삭제"
+        description="정말로 삭제하시겠습니까?"
       />
     </>
   );

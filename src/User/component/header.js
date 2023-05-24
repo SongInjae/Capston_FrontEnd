@@ -248,6 +248,7 @@ function Header() {
   const onLogout = () => {
     dispatch(logout());
     navigate('/');
+    localStorage.removeItem('user');
   };
   return (
     <HeaderWrapper>

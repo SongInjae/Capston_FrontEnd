@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { remove, take } from '../../store/modules/notify';
-import { format } from 'date-fns';
 
+import LogoutModal from '../../components/LogoutModal';
 import Button from '../../components/Button';
 
 const StyledBlock = styled.div`
@@ -123,12 +123,23 @@ const Notify = () => {
   }, []);
   const infos = useSelector(({ notify }) => notify.infos);
   const dispatch = useDispatch();
-  const onRemove = (id) => {
-    dispatch(remove(id));
+
+  const [id, setId] = useState();
+  const [modal, setModal] = useState(false);
+  const onRemoveClick = (infoId) => {
+    setModal(true);
+    setId(infoId);
   };
+  const onCancel = () => {
+    setModal(false);
+  };
+  const onConfirm = useCallback(() => {
+    setModal(false);
+    dispatch(remove(id));
+  }, []);
 
   const infoList = infos.map((info, idx) => (
-    <TBodyTrBlock id={info.id}>
+    <TBodyTrBlock key={info.id}>
       <Td0>{idx + 1}.</Td0>
       <Td1>{info.title}</Td1>
       <Td2>{info.end.replace('T', ' ').substring(0, 16)}</Td2>
@@ -137,7 +148,9 @@ const Notify = () => {
           <CorrectLink to={`/admin/improve/notify/correct/${info.id}`}>
             수정
           </CorrectLink>
-          <DeleteButton onClick={() => onRemove(info.id)}>삭제</DeleteButton>
+          <DeleteButton onClick={() => onRemoveClick(info.id)}>
+            삭제
+          </DeleteButton>
         </DivBlock>
       </Td3>
     </TBodyTrBlock>
@@ -159,6 +172,13 @@ const Notify = () => {
         </TheadBlock>
         <tbody>{infoList}</tbody>
       </TableBlock>
+      <LogoutModal
+        visible={modal}
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+        title="공지사항 삭제"
+        description="정말로 삭제하시겠습니까?"
+      />
     </StyledBlock>
   );
 };

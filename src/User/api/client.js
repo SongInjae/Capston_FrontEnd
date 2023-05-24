@@ -7,5 +7,6 @@ const client = axios.create();
 export const manager = axios.create();
 export const room = axios.create();
 export const notify = axios.create();
+export const reserve = axios.create();
 
 export default client;

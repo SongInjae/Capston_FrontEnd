@@ -3,9 +3,8 @@ import cookie from 'react-cookies';
 
 const token = cookie.load('token');
 
-//정보 불러오기
 export const takeAllInfo = () =>
-  room.get('http://3.35.38.254:8000/rooms', 1, {
+  room.get('http://3.35.38.254:8000/rooms', {
     headers: { Authorization: `Token ${token}` },
   });
 export const addInfo = (formdata) =>

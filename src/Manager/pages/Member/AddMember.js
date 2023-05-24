@@ -66,6 +66,10 @@ const SubmitButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
+  &[disabled] {
+    transform: revert;
+    background: gray;
+  }
 `;
 const ErrorBlock = styled.div`
   color: red;
@@ -140,7 +144,7 @@ const AddMember = ({ error, onChange, onTypeChange, onSubmit }) => {
             <CheckNameBlock>학부생</CheckNameBlock>
           </CheckBoxBlock>
         </FormBlock>
-        <SubmitButton>Submit</SubmitButton>
+        <SubmitButton disabled={error}>Submit</SubmitButton>
       </FormStyled>
     </>
   );
