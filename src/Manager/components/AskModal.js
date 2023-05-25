@@ -50,7 +50,6 @@ const AskModal = ({
   onConfirm,
   onCancel,
 }) => {
-  console.log(title, description);
   if (!visible) return null;
   return (
     <Fullscreen>

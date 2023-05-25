@@ -53,7 +53,6 @@ const Pagenation = ({ total, limit, page, setPage }) => {
   let firstNum = 0;
   if (page % 5 === 0) firstNum = (page / 5 - 1) * 5 + 1;
   else firstNum = page - (page % 5) + 1;
-  console.log(firstNum);
   return (
     <>
       <Nav>
@@ -67,6 +66,7 @@ const Pagenation = ({ total, limit, page, setPage }) => {
               key={i + firstNum}
               onClick={() => setPage(i + firstNum)}
               aria-current={page === i + firstNum ? 'page' : null}
+              disabled={i + firstNum > numPages}
             >
               {i + firstNum}
             </Button>

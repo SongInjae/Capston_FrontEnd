@@ -9,13 +9,14 @@ const CorrectForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { id, user_type, name, user_no, email } = useSelector(
+  const { id, user_type, name, user_no, email, department } = useSelector(
     ({ addmembers }) => ({
       id: addmembers.id,
       user_type: addmembers.user_type,
       name: addmembers.name,
       user_no: addmembers.user_no,
       email: addmembers.email,
+      department: addmembers.department,
     }),
   );
   let Id = parseInt(params.id);
@@ -48,7 +49,7 @@ const CorrectForm = () => {
   );
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(change({ id, user_type, name, user_no, email }));
+    dispatch(change({ id, user_type, name, user_no, email, department }));
     navigate(-1);
   };
   return <CorrectMember info={info} onChange={onChange} onSubmit={onSubmit} />;

@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 
 const NotifyAddForm = () => {
   const start = new Date();
+  start.setHours(start.getHours() + 9);
   const [end, setEnd] = useState(new Date());
   //const date = format(start, 'yyyy.MM.dd');
   const navigate = useNavigate();

@@ -75,6 +75,8 @@ const CorrectMember = ({ info, onChange, onSubmit }) => {
   let [user_no, setUser_no] = useState(info.user_no);
   let [email, setEmail] = useState(info.email);
   let [user_type, setUser_type] = useState(info.user_type.id);
+  let [department, setDepartment] = useState(info.department);
+
   useEffect(() => {
     onChange('id', id);
   }, [onChange, id]);
@@ -90,6 +92,9 @@ const CorrectMember = ({ info, onChange, onSubmit }) => {
   useEffect(() => {
     onChange('user_type', user_type);
   }, [onChange, user_type]);
+  useEffect(() => {
+    onChange('department', department);
+  }, [onChange, department]);
 
   const onUpdateName = useCallback((e) => {
     setName(e.target.value);
@@ -102,6 +107,9 @@ const CorrectMember = ({ info, onChange, onSubmit }) => {
   }, []);
   const onUpdateUsertype = useCallback((e) => {
     setUser_type(parseInt(e.target.value));
+  }, []);
+  const onUpdateDepartment = useCallback((e) => {
+    setDepartment(parseInt(e.target.value));
   }, []);
 
   return (
@@ -147,6 +155,15 @@ const CorrectMember = ({ info, onChange, onSubmit }) => {
           <CheckBoxBlock>
             <CheckBlock
               type="radio"
+              name="user_type"
+              onChange={onUpdateUsertype}
+              value="1"
+              checked={user_type === 1 ? true : false}
+            />
+            <CheckNameBlock>관리자</CheckNameBlock>
+            <CheckBlock
+              type="radio"
+              name="user_type"
               onChange={onUpdateUsertype}
               value="2"
               checked={user_type === 2 ? true : false}
@@ -154,6 +171,7 @@ const CorrectMember = ({ info, onChange, onSubmit }) => {
             <CheckNameBlock>교직원</CheckNameBlock>
             <CheckBlock
               type="radio"
+              name="user_type"
               onChange={onUpdateUsertype}
               value="3"
               checked={user_type === 3 ? true : false}
@@ -161,11 +179,33 @@ const CorrectMember = ({ info, onChange, onSubmit }) => {
             <CheckNameBlock>대학원생</CheckNameBlock>
             <CheckBlock
               type="radio"
+              name="user_type"
               onChange={onUpdateUsertype}
               value="4"
               checked={user_type === 4 ? true : false}
             />
             <CheckNameBlock>학부생</CheckNameBlock>
+          </CheckBoxBlock>
+        </FormBlock>
+        <FormBlock>
+          <LabelBlock>학과</LabelBlock>
+          <CheckBoxBlock>
+            <CheckBlock
+              type="radio"
+              name="department"
+              onChange={onUpdateDepartment}
+              value="1"
+              checked={department === 1 ? true : false}
+            />
+            <CheckNameBlock>컴퓨터공학과</CheckNameBlock>
+            <CheckBlock
+              type="radio"
+              name="department"
+              onChange={onUpdateDepartment}
+              value="2"
+              checked={department === 2 ? true : false}
+            />
+            <CheckNameBlock>기타 학과</CheckNameBlock>
           </CheckBoxBlock>
         </FormBlock>
         <SubmitButton>Correct</SubmitButton>

@@ -10,12 +10,13 @@ const NotifyCorrectForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const current = new Date();
+  current.setHours(current.getHours() + 9);
 
   const { id, title, content, notifys } = useSelector(({ notify }) => ({
     notifys: notify.infos,
-    id: notify.infos.id,
-    title: notify.infos.title,
-    content: notify.infos.content,
+    id: notify.id,
+    title: notify.title,
+    content: notify.content,
   }));
 
   let Id = parseInt(params.id);

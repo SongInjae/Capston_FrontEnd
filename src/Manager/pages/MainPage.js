@@ -13,6 +13,7 @@ import RegularReservagionPage from './RegularReservagionPage';
 import ImprovementPage from './ImprovementPage';
 
 import LogoutModal from '../components/AskModal';
+import BulkDeletePage from './Member/BulkDeletePage';
 import CorrectForm from '../store/CorrectForm';
 import InfoForm from '../store/InfoForm';
 import RoomAddForm from '../store/RoomAddForm';
@@ -102,6 +103,7 @@ const MainPage = () => {
             <Route path="/member">
               <Route index element={<MemberManagementsPage />} />
               <Route path="add" element={<InfoForm />} />
+              <Route path="delete" element={<BulkDeletePage />} />
               <Route path="correct/:id" element={<CorrectForm />} />
             </Route>
             <Route path="/reserve" element={<ReservationPage />} />

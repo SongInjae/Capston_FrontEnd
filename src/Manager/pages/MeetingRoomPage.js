@@ -106,9 +106,9 @@ const MeetingRoomPage = () => {
   const dispatch = useDispatch();
 
   const [page, setPage] = useState(1);
-  const offset = (page - 1) * 1;
+  const offset = (page - 1) * 6;
 
-  const [id, setId] = useState();
+  const [id, setId] = useState(null);
   const [modal, setModal] = useState(false);
   const onRemoveClick = (infoId) => {
     setModal(true);
@@ -124,32 +124,34 @@ const MeetingRoomPage = () => {
 
   let roomsInfos = [];
   let cnt = 0;
-  for (let i = offset; i <= rooms.length; i += 3) {
-    let room = [];
-    cnt += 1;
-    if (cnt === 3) break;
-    if (i > offset) break;
-    for (let j = 0; j < 3; j++) {
-      //if (i + j === rooms.length) break;
-      if (j === 1) break;
-      room.push(
-        <RoomBlock key={rooms[i + j].id}>
-          <RoomImage
-            image={rooms[i + j].images.image ? rooms[i + j].images.image : ''}
-          />
-          <RoomInfoBlock>
-            <RoomName>{rooms[i + j].name}</RoomName>
-            <RoomInfoCorrectBtn to={`/admin/room/correct/${rooms[i + j].id}`}>
-              수정
-            </RoomInfoCorrectBtn>
-            <RoomInfoCorrectBtn onClick={() => onRemoveClick(rooms[i + j].id)}>
-              삭제
-            </RoomInfoCorrectBtn>
-          </RoomInfoBlock>
-        </RoomBlock>,
-      );
+  if (rooms.length !== 0) {
+    for (let i = offset; i <= rooms.length; i += 3) {
+      let room = [];
+      cnt += 1;
+      if (cnt === 3) break;
+      for (let j = 0; j < 3; j++) {
+        if (i + j === rooms.length) break;
+        room.push(
+          <RoomBlock key={rooms[i + j].id}>
+            <RoomImage
+              image={rooms[i + j].images.image ? rooms[i + j].images.image : ''}
+            />
+            <RoomInfoBlock>
+              <RoomName>{rooms[i + j].name}</RoomName>
+              <RoomInfoCorrectBtn to={`/admin/room/correct/${rooms[i + j].id}`}>
+                수정
+              </RoomInfoCorrectBtn>
+              <RoomInfoCorrectBtn
+                onClick={() => onRemoveClick(rooms[i + j].id)}
+              >
+                삭제
+              </RoomInfoCorrectBtn>
+            </RoomInfoBlock>
+          </RoomBlock>,
+        );
+      }
+      roomsInfos.push(<RoomRowBlock key={i}>{room}</RoomRowBlock>);
     }
-    roomsInfos.push(<RoomRowBlock key={i}>{room}</RoomRowBlock>);
   }
 
   return (
@@ -160,7 +162,7 @@ const MeetingRoomPage = () => {
       {roomsInfos}
       <Pagenation
         total={rooms.length}
-        limit={1}
+        limit={6}
         page={page}
         setPage={setPage}
       />

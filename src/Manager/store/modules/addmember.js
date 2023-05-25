@@ -5,9 +5,15 @@ import createRequestSaga, {
   createRequestActionTypes,
 } from '../../saga/createRequestSaga';
 import * as memberAPI from '../../api/manager';
+import createRequestDataSaga from '../../saga/createRequestDataSaga';
+import createRequestCSVSaga from '../../saga/createRequestCSV';
 
 const CHANGE_FIELD = 'addmembers/CHANGE_FIELD';
 
+const [EXCEL, EXCEL_SUCCESS, EXCEL_FAILURE] =
+  createRequestActionTypes('addmembers/EXCEL');
+const [BULKRM, BULKRM_SUCCESS, BULKRM_FAILURE] =
+  createRequestActionTypes('addmembers/BULKRM');
 const [TAKE, TAKE_SUCCESS, TAKE_FAILURE] =
   createRequestActionTypes('addmembers/take');
 const [INSERT, INSERT_SUCCESS, INSERT_FAILURE] =
@@ -21,24 +27,28 @@ export const changeField = createAction(CHANGE_FIELD, ({ key, value }) => ({
   key, //id, designation, name, number, email
   value, //실제 바꾸려는 값
 }));
+export const excel = createAction(EXCEL, (formData) => formData);
+export const bulkDelete = createAction(BULKRM, (data) => data);
 export const insert = createAction(
   INSERT,
-  ({ user_type, name, user_no, email, password }) => ({
+  ({ user_type, name, user_no, email, password, department }) => ({
     user_type,
     name,
     user_no,
     email,
     password,
+    department,
   }),
 );
 export const change = createAction(
   CHANGE,
-  ({ id, user_type, name, user_no, email }) => ({
+  ({ id, user_type, name, user_no, email, department }) => ({
     id,
     user_type,
     name,
     user_no,
     email,
+    department,
   }),
 );
 export const remove = createAction(REMOVE, (id) => id);
@@ -46,12 +56,16 @@ export const remove = createAction(REMOVE, (id) => id);
 //export const take = createAction(TAKE, (headers) => headers);
 export const take = createAction(TAKE);
 
+const excelSaga = createRequestCSVSaga(EXCEL, memberAPI.excelInfo);
+const bulkrmSaga = createRequestDataSaga(BULKRM, memberAPI.bulkDelete);
 const takeSaga = createRequestSaga(TAKE, memberAPI.takeAllInfo);
 const addSaga = createRequestSaga(INSERT, memberAPI.addInfo);
 const removeSaga = createRequestSaga(REMOVE, memberAPI.removeInfo);
 const changeSaga = createRequestSaga(CHANGE, memberAPI.changeInfo);
 
 export function* addmembersSaga() {
+  yield takeLatest(EXCEL, excelSaga);
+  yield takeLatest(BULKRM, bulkrmSaga);
   yield takeLatest(TAKE, takeSaga);
   yield takeLatest(INSERT, addSaga);
   yield takeLatest(REMOVE, removeSaga);
@@ -97,6 +111,9 @@ const initialState = {
       },
     },
   ],
+  deleteNumber: null,
+  excelError: null,
+  bulkrmError: null,
   takeError: null,
   insertError: null,
   removeError: null,
@@ -149,6 +166,22 @@ const addmembers = handleActions(
     [INSERT_FAILURE]: (state, { payload: error }) => ({
       ...state,
       insertError: error,
+    }),
+    [EXCEL_SUCCESS]: (state, { payload: excel }) => ({
+      ...state,
+      excel,
+    }),
+    [EXCEL_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      excelError: error,
+    }),
+    [BULKRM_SUCCESS]: (state, { payload: data }) => ({
+      ...state,
+      deleteNumber: data,
+    }),
+    [BULKRM_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      bulkrmError: error,
     }),
   },
   initialState,

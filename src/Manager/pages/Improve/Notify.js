@@ -119,7 +119,6 @@ const DeleteButton = styled(Button)`
 const Notify = () => {
   useEffect(() => {
     dispatch(take());
-    console.log('11');
   }, []);
   const infos = useSelector(({ notify }) => notify.infos);
   const dispatch = useDispatch();

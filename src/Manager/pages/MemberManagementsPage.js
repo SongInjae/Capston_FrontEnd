@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { take } from '../store/modules/addmember';
-import { insert } from '../store/modules/addmember';
+import { take, insert, excel } from '../store/modules/addmember';
 import Paging from '../components/Paging';
 //import Pagenation from '../components/Pagenation';
 import sea_img from '../assets/img/search.png';
@@ -72,19 +71,19 @@ const SearchBlock = styled.input`
 const ButtonsBlock = styled.div`
   position: absolute;
   height: 2rem;
-  width: 12rem;
+  //width: 12rem;
   right: 1rem;
   display: flex;
   text-align: center;
 `;
-const FileBlock = styled(Link)`
+const LinkBlock = styled(Link)`
   line-height: 1.5rem;
   box-sizing: border-box;
   font-family: 'InterLight';
   font-size: 0.9rem;
   margin-right: 1rem;
   padding-top: 0.5rem;
-  width: 6rem;
+  width: 5rem;
   height: 2rem;
   text-decoration: none;
   border-radius: 0.25rem;
@@ -104,7 +103,7 @@ const LabelCsvBlock = styled.label`
   font-size: 0.9rem;
   margin-right: 1rem;
   padding-top: 0.5rem;
-  width: 6rem;
+  width: 5rem;
   height: 2rem;
   text-decoration: none;
   border-radius: 0.25rem;
@@ -152,6 +151,10 @@ const MemberManagementsPage = () => {
 
   // 파일 읽기
   const onChangeFile = (e) => {
+    const formData = new FormData();
+    formData.append('user_input', e.target.files[0]);
+    dispatch(excel(formData));
+    /*
     let input = e.target;
     let reader = new FileReader();
     let user_type = null;
@@ -174,8 +177,9 @@ const MemberManagementsPage = () => {
           dispatch(insert({ user_type, name, user_no, email, pwd }));
         }
       });
+      
     };
-    reader.readAsBinaryString(input.files[0]);
+    reader.readAsBinaryString(input.files[0]);*/
   };
 
   //페이지네이션
@@ -196,12 +200,13 @@ const MemberManagementsPage = () => {
           </NameSearchBlock>
         </NameFliterBlock>
         <ButtonsBlock>
-          <FileBlock to="/admin/member/add">Add</FileBlock>
+          <LinkBlock to="/admin/member/add">Add</LinkBlock>
+          <LinkBlock to="delete">Delete</LinkBlock>
           <LabelCsvBlock htmlFor="memberCsv">CSV</LabelCsvBlock>
           <CsvBlock
             type="file"
             id="memberCsv"
-            accept=".xlsx"
+            accept=".csv"
             onChange={onChangeFile}
           />
         </ButtonsBlock>
