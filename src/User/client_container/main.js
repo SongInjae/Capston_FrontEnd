@@ -5,6 +5,7 @@ import RoomComponent from '../component/Room';
 import Header from '../component/header';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRooms } from '../store/modules/room';
+import { getMyInfo } from '../store/modules/userInfo';
 const RoomsWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 0.5fr);
@@ -21,6 +22,7 @@ function UserMain() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getMyInfo());
     dispatch(getRooms());
     if (roomsInfo !== []) return;
 

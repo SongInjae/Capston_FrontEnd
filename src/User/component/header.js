@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import auth from '../store/modules/auth';
 import { logout } from '../store/modules/auth';
-import { changePassword, changeUserInfo } from '../store/modules/userInfo';
+import { changePassword, changeUserInfo, googleConnect, googleRevoke } from '../store/modules/userInfo';
 
 const HeaderWrapper = styled.header`
   margin: 0 auto;
@@ -142,6 +142,18 @@ const TextFieldWrapper = styled.div`
   justify-content: center;
 `;
 
+const GoogleConnectionBtn = styled.div`
+  font-size: 11px;
+  border-style: solid;
+  border-color: lightgray;
+  margin-left: 3px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+  text-align: center;
+`;
+
 const TextFieldClass = styled.div`
   font-size: 15px;
   width: 15%;
@@ -195,13 +207,13 @@ const UserInfoChageBtn = styled.button`
 `;
 
 function MyPage(props) {
-  const userInfo = useSelector(state => state.auth.auth);
+  const userInfo = useSelector(state => state.userInfo.myInfo);
   const dispatch = useDispatch();
   const [currentpwd, setCurrentpwd] = useState('');
   const [changedpwd, setChangedpwd] = useState('');
   const [checkpwd, setCheckpwd] = useState('');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState(userInfo.name);
+  const [email, setEmail] = useState(userInfo.email);
   const onClickChangePwd = () => {
 
     if (changedpwd === checkpwd && changedpwd.length >= 8) {
@@ -210,10 +222,36 @@ function MyPage(props) {
       alert("비밀번호를 확인해주세요!");
     }
   };
+  const onChangeName = (e) => {
+    setName(e.target.value);
+  }
+
+  const onChangeEmail = (e) => {
+    setEmail(e.target.value);
+  }
 
   const onClickChangeUserInfo = () => {
-    dispatch(changeUserInfo());
+    let data = {};
+    if (userInfo.name !== name) {
+      data.name = name;
+    }
+    if (userInfo.email !== email) {
+      data.email = email;
+    }
+    if (name !== userInfo.name || email !== userInfo.email) {
+      dispatch(changeUserInfo({ id: userInfo.id, data: data }));
+    } else {
+      alert('바뀐 정보가 없습니다.')
+    }
   }
+  const onClickConnectGoogle = () => {
+    console.log('click');
+    dispatch(googleConnect());
+  }
+  const onClickRevokeGoogle = () => {
+    dispatch(googleConnect());
+  }
+
   return (
     <Background>
       <ModalContainer>
@@ -246,15 +284,18 @@ function MyPage(props) {
         </TitleWrapper>
         <TextFieldWrapper>
           <TextFieldClass>이름</TextFieldClass>
-          <TextField value={userInfo.name} onChange={(event) => setName(event.target.value)}></TextField>
+          <TextField defaultValue={userInfo.name} onChange={onChangeName}></TextField>
         </TextFieldWrapper>
         <TextFieldWrapper>
           <TextFieldClass>학번/교번</TextFieldClass>
-          <TextField value={userInfo.username} disabled={true}></TextField>
+          <TextField value={userInfo.user_no} disabled={true}></TextField>
         </TextFieldWrapper>
         <TextFieldWrapper>
           <TextFieldClass>이메일</TextFieldClass>
-          <TextField value={userInfo.email} type="email" onChange={(event) => setEmail(event.target.value)}></TextField>
+          <TextField defaultValue={userInfo.email} type="email" onChange={onChangeEmail} ></TextField>
+
+          {/* <a href="3.35.38.254:8000" onClick={onClickConnectGoogle}>연동하기</a> */}
+          <GoogleConnectionBtn onClick={onClickConnectGoogle}>연동하기</GoogleConnectionBtn>
         </TextFieldWrapper>
         <TextFieldWrapper>
           <TextFieldClass disabled={true}>전화번호</TextFieldClass >
@@ -267,11 +308,16 @@ function MyPage(props) {
 }
 
 function Header() {
-  const userInfo = useSelector(state => state.auth.auth);
+
+  const userInfo = useSelector(state => state.userInfo.myInfo);
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
   const clickSearchMyReservation = () => {
     navigate('/main/reserve');
+  }
+  const clickNotice = () => {
+    navigate('/notice');
+
   }
 
   const clickMyPageBtn = () => {
@@ -293,11 +339,11 @@ function Header() {
       </MainTitle>
       <RightComponent>
         <LogoutWrapper>
-          <UserInfo>{userInfo.username} {userInfo.name}</UserInfo>
+          <UserInfo>{userInfo.user_no} {userInfo.name}</UserInfo>
           <LogoutBtn onClick={onLogout}>로그아웃</LogoutBtn>
         </LogoutWrapper>
         <TabWrapper>
-          <HeaderTab>공지사항</HeaderTab>
+          <HeaderTab onClick={clickNotice}>공지사항</HeaderTab>
           <HeaderTab onClick={clickSearchMyReservation}>내 예약현황 조회</HeaderTab>
           <HeaderTab onClick={clickMyPageBtn}>마이페이지</HeaderTab>
           {modal === true ? (

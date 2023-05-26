@@ -351,7 +351,7 @@ function ReservingPage() {
                                 <ModalXBtn color="white" onClick={() => setIsAddMemeberClicked(!isAddMemeberClicked)}></ModalXBtn>
                             </ModalHeader>
                             <AddMemberInputContainer>
-                                <AddMemberInput placeholder="추가할 멤버 학번" onChange={(e) => { setUserNo(e.value.target) }}></AddMemberInput>
+                                <AddMemberInput placeholder="추가할 멤버 학번" onChange={(e) => { setUserNo(e.target.value) }}></AddMemberInput>
                                 <ModalAddMemeberBtn onClick={() => onClickAddUserBtn(userNo)}>추가</ModalAddMemeberBtn>
                             </AddMemberInputContainer>
 

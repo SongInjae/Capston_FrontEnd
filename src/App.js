@@ -5,6 +5,7 @@ import MainPage from './Manager/pages/MainPage';
 import UserMain from './User/client_container/main';
 import ReservingPage from './User/client_container/reservation';
 import MyReservation from './User/client_container/myReservation';
+import NoticePage from './User/client_container/notice';
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
       <Route path="/admin/*" element={<MainPage />} />
 
       <Route path="/main" element={<UserMain />} />
+      <Route path="/notice" element={<NoticePage />} />
       <Route path="/reserve" element={<ReservingPage />} />
       <Route path="/main/*" element={<UserMain />} />
       <Route path="/main/reserve" element={<MyReservation />} />
