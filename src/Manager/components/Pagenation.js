@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const Nav = styled.nav`
   display: flex;
@@ -6,7 +6,20 @@ const Nav = styled.nav`
   align-items: center;
   //gap: 0.25rem;
   //gap: 0.05rem;
-  margin: 1rem;
+  //position: absolute;
+  //bottom: 0.5rem;
+  //left: 50%;
+  //transform: translate(-50%, 0%);
+  margin-bottom: 0.5rem;
+  ${(props) =>
+    props.noflex &&
+    css`
+      position: absolute;
+      margin: 0;
+      bottom: 0.5rem;
+      left: 50%;
+      transform: translate(-50%, 0%);
+    `}
 `;
 
 const Button = styled.button`
@@ -48,14 +61,14 @@ const Button = styled.button`
   }
 `;
 
-const Pagenation = ({ total, limit, page, setPage }) => {
+const Pagenation = ({ noflex, total, limit, page, setPage }) => {
   const numPages = Math.ceil(total / limit);
   let firstNum = 0;
   if (page % 5 === 0) firstNum = (page / 5 - 1) * 5 + 1;
   else firstNum = page - (page % 5) + 1;
   return (
     <>
-      <Nav>
+      <Nav noflex={noflex}>
         <Button onClick={() => setPage(page - 1)} disabled={page === 1}>
           &lt;
         </Button>

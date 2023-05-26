@@ -9,6 +9,7 @@ import createRequestDataSaga from '../../saga/createRequestDataSaga';
 import createRequestCSVSaga from '../../saga/createRequestCSV';
 
 const CHANGE_FIELD = 'addmembers/CHANGE_FIELD';
+const EMPTY = 'addmembers/EMPTY';
 
 const [EXCEL, EXCEL_SUCCESS, EXCEL_FAILURE] =
   createRequestActionTypes('addmembers/EXCEL');
@@ -52,6 +53,7 @@ export const change = createAction(
   }),
 );
 export const remove = createAction(REMOVE, (id) => id);
+export const empty = createAction(EMPTY);
 
 //export const take = createAction(TAKE, (headers) => headers);
 export const take = createAction(TAKE);
@@ -111,6 +113,7 @@ const initialState = {
       },
     },
   ],
+  excelInfo: [],
   deleteNumber: null,
   excelError: null,
   bulkrmError: null,
@@ -167,9 +170,9 @@ const addmembers = handleActions(
       ...state,
       insertError: error,
     }),
-    [EXCEL_SUCCESS]: (state, { payload: excel }) => ({
+    [EXCEL_SUCCESS]: (state, { payload: excelInfo }) => ({
       ...state,
-      excel,
+      excelInfo,
     }),
     [EXCEL_FAILURE]: (state, { payload: error }) => ({
       ...state,
@@ -182,6 +185,10 @@ const addmembers = handleActions(
     [BULKRM_FAILURE]: (state, { payload: error }) => ({
       ...state,
       bulkrmError: error,
+    }),
+    [EMPTY]: (state) => ({
+      ...state,
+      excelInfo: [],
     }),
   },
   initialState,

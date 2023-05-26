@@ -6,10 +6,11 @@ import { remove } from '../../store/modules/noshow';
 import Button from '../../components/Button';
 import UserIcon from '../../assets/img/Penaltiy_User.png';
 import LogoutModal from '../../components/LogoutModal';
+import Pagenation from '../../components/Pagenation';
 
 const StyledBlock = styled.div`
   width: 70rem;
-  height: 20rem;
+  height: 22rem;
   border: 1px solid #5f6d7c;
   border-radius: 0.25rem;
   padding: 1rem;
@@ -89,6 +90,7 @@ const Penalty = () => {
   const infos = useSelector(({ noshow }) => noshow.infos);
   const dispatch = useDispatch();
 
+  //모달 구현
   const [id, setId] = useState();
   const [modal, setModal] = useState(false);
   const onRemoveClick = (infoId) => {
@@ -103,10 +105,16 @@ const Penalty = () => {
     dispatch(remove(id));
   }, []);
 
-  let InfoLists = [];
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * 4;
 
-  for (let i = 0; i < infos.length; i += 2) {
+  //패널티 회원 정보
+  let InfoLists = [];
+  let cnt = 0;
+  for (let i = offset; i < infos.length; i += 2) {
     let Info = [];
+    cnt++;
+    if (cnt === 3) break;
     for (let j = 0; j < 2; j++) {
       if (infos.length === i + j) break;
       Info.push(
@@ -141,6 +149,13 @@ const Penalty = () => {
         onCancel={onCancel}
         title="패널티 회원 삭제"
         description="정말로 삭제하시겠습니까?"
+      />
+      <Pagenation
+        noflex={true}
+        total={infos.length}
+        limit={4}
+        page={page}
+        setPage={setPage}
       />
     </StyledBlock>
   );

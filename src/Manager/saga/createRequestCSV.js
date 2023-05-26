@@ -15,28 +15,15 @@ export default function createRequestCSVSaga(type, request) {
     yield put(startLoading(type)); //로딩 시작
     try {
       const response = yield call(request, action.payload);
-      const datablock = response.data.split(',,');
-      const frame = [];
-      for (let i = 1; i < datablock.length; i++) {
-        const data = datablock[i].split(',');
-        console.log(data);
-        /*
-        const col = {
-          id: i,
-          user_no: data[0],
-          password: data[1],
-          name: data[2],
-          email: data[3],
-          user_type: data[4],
-          department: data[5],
-        };
-        */
-        //frame.push(col);
+      console.log(response.data.results[1].errors);
+      for (let i = 1; i < response.data.results.length; i++) {
+        response.data.results[i].errors = Object.entries(
+          response.data.results[i].errors,
+        );
       }
-      console.log(frame);
       yield put({
         type: SUCCESS,
-        payload: response.data,
+        payload: response.data.results,
       });
     } catch (e) {
       yield put({

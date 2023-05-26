@@ -3,16 +3,13 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { take, insert, excel } from '../store/modules/addmember';
+import { take, excel } from '../store/modules/addmember';
 import Paging from '../components/Paging';
-//import Pagenation from '../components/Pagenation';
+import Pagenation from '../components/Pagenation';
 import sea_img from '../assets/img/search.png';
 import UserTable from './Member/UserTable';
 
-import {
-  read,
-  utils,
-} from 'https://cdn.sheetjs.com/xlsx-latest/package/xlsx.mjs';
+import { CSVLink } from 'react-csv';
 
 const FliterAddBlock = styled.div`
   display: flex;
@@ -120,6 +117,31 @@ const LabelCsvBlock = styled.label`
 const CsvBlock = styled.input`
   display: none;
 `;
+const CsvLinkStyled = styled(CSVLink)`
+  line-height: 1.5rem;
+  box-sizing: border-box;
+  font-family: 'InterLight';
+  font-size: 0.9rem;
+  margin-right: 1rem;
+  padding-top: 0.5rem;
+  width: 5rem;
+  height: 2rem;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  padding: 0.25rem 1rem;
+  color: white;
+  cursor: pointer;
+  background-color: rgb(195, 0, 47);
+  &:hover {
+    background: rgba(105, 0, 47, 0.1);
+  }
+  &[disabled] {
+    display: none;
+    cursor: revert;
+    transform: revert;
+  }
+`;
 
 const MemberManagementsPage = () => {
   useEffect(() => {
@@ -127,14 +149,13 @@ const MemberManagementsPage = () => {
   }, []);
 
   const infos = useSelector(({ addmembers }) => addmembers.info); //info 불러오기
+  const excelInfo = useSelector(({ addmembers }) => addmembers.excelInfo);
   const [userInput, setUserInput] = useState(''); //필터링 input
   const dispatch = useDispatch(); //redux dispatch 불러오기
 
-  const [count, setCount] = useState(0); //아이템 총 개수
-  const [currentPage, setCurrentPage] = useState(1); //현재 페이지
-  const [indexOfLastPost, setIndexOfLastPost] = useState(0); //마지막 포스트의 index
-  const [indexOfFirstPost, setIndexOfFirstPost] = useState(0); //첫번째 포스트의 index
-  const [currentPosts, setCurrentPosts] = useState(0); //현재 포스트
+  //페이지네이션
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * 12;
 
   //필터링 input 변화 감지
   const onChange = (e) => {
@@ -143,10 +164,12 @@ const MemberManagementsPage = () => {
 
   //필터링 된 이름 내보내기
   const filterInfo = useCallback(
-    infos.filter((info) => {
-      return info.user_no.includes(userInput);
-    }),
-    [userInput, infos],
+    infos
+      .filter((info) => {
+        return info.user_no.includes(userInput);
+      })
+      .slice(offset, offset + 12),
+    [userInput, infos, offset],
   );
 
   // 파일 읽기
@@ -181,14 +204,6 @@ const MemberManagementsPage = () => {
     };
     reader.readAsBinaryString(input.files[0]);*/
   };
-
-  //페이지네이션
-  useEffect(() => {
-    setCount(filterInfo.length);
-    setIndexOfLastPost(currentPage * 12);
-    setIndexOfFirstPost(indexOfLastPost - 12);
-    setCurrentPosts(filterInfo.slice(indexOfFirstPost, indexOfLastPost));
-  }, [currentPage, indexOfFirstPost, indexOfLastPost, filterInfo]);
   return (
     <>
       <FliterAddBlock>
@@ -200,6 +215,13 @@ const MemberManagementsPage = () => {
           </NameSearchBlock>
         </NameFliterBlock>
         <ButtonsBlock>
+          <CsvLinkStyled
+            data={excelInfo}
+            filename="Error_Reason.csv"
+            disabled={excelInfo.length === 0}
+          >
+            Error
+          </CsvLinkStyled>
           <LinkBlock to="/admin/member/add">Add</LinkBlock>
           <LinkBlock to="delete">Delete</LinkBlock>
           <LabelCsvBlock htmlFor="memberCsv">CSV</LabelCsvBlock>
@@ -212,13 +234,13 @@ const MemberManagementsPage = () => {
         </ButtonsBlock>
       </FliterAddBlock>
       <ContentBlock>
-        <UserTable infos={currentPosts} />
+        <UserTable infos={filterInfo} />
       </ContentBlock>
-      <Paging
-        page={currentPage}
-        maxcntItem={12}
-        count={count}
-        setPage={setCurrentPage}
+      <Pagenation
+        total={infos.length}
+        limit={12}
+        page={page}
+        setPage={setPage}
       />
     </>
   );

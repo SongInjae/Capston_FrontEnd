@@ -5,11 +5,11 @@ import { format } from 'date-fns';
 import { useDispatch } from 'react-redux';
 
 import { take } from '../store/modules/reserve';
-import Paging from '../components/Paging';
 import sea_img from '../assets/img/search.png';
 import cal_img from '../assets/img/data-table.png';
 import ReservationTable from './Reserve/ReservationTable';
 import CalendarModals from '../components/CalendarModals';
+import Pagenation from '../components/Pagenation';
 
 const FliterAddBlock = styled.div`
   display: flex;
@@ -80,12 +80,6 @@ const ReservationPage = () => {
     dispatch(take());
   }, []);
 
-  const [count, setCount] = useState(0); //아이템 총 개수
-  const [currentPage, setCurrentPage] = useState(1); //현재 페이지
-  const [indexOfLastPost, setIndexOfLastPost] = useState(0); //마지막 포스트의 index
-  const [indexOfFirstPost, setIndexOfFirstPost] = useState(0); //첫번째 포스트의 index
-  const [currentPosts, setCurrentPosts] = useState(0); //현재 포스트
-
   const [modal, setModal] = useState(false); //팝업창 여부
 
   const [date, setDate] = useState(null);
@@ -97,14 +91,20 @@ const ReservationPage = () => {
   const onChange = (e) => {
     setUserInput(e.target.value);
   };
+
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * 12;
+
   //이름 필터링
   useEffect(() => {
     setFilterInfo(
-      infos.filter((info) => {
-        return info.booker.name.includes(userInput);
-      }),
+      infos
+        .filter((info) => {
+          return info.booker.name.includes(userInput);
+        })
+        .slice(offset, offset + 12),
     );
-  }, [userInput, infos]);
+  }, [userInput, infos, offset]);
 
   //달력 이모티콘 클릭하면 팝업창 띄우기
   const onCalendar = () => {
@@ -124,18 +124,6 @@ const ReservationPage = () => {
     );
   }, [date]);
 
-  //페이지네이션
-  useEffect(() => {
-    setCount(filterInfo.length);
-    setIndexOfLastPost(currentPage * 12);
-    setIndexOfFirstPost(indexOfLastPost - 12);
-    setCurrentPosts(filterInfo.slice(indexOfFirstPost, indexOfLastPost));
-  }, [currentPage, indexOfFirstPost, indexOfLastPost, filterInfo]);
-
-  const setPage = (e) => {
-    setCurrentPage(e);
-  };
-
   return (
     <>
       <FliterAddBlock>
@@ -150,12 +138,12 @@ const ReservationPage = () => {
         </NameFliterBlock>
       </FliterAddBlock>
       <ContentBlock>
-        <ReservationTable infos={currentPosts} />
+        <ReservationTable infos={filterInfo} />
       </ContentBlock>
-      <Paging
-        page={currentPage}
-        maxcntItem={12}
-        count={count}
+      <Pagenation
+        total={infos.length}
+        limit={12}
+        page={page}
         setPage={setPage}
       />
     </>

@@ -6,10 +6,11 @@ import { remove, take } from '../../store/modules/notify';
 
 import LogoutModal from '../../components/LogoutModal';
 import Button from '../../components/Button';
+import Pagenation from '../../components/Pagenation';
 
 const StyledBlock = styled.div`
   width: 70rem;
-  height: 20rem;
+  height: 22rem;
   border: 1px solid #5f6d7c;
   border-radius: 0.25rem;
   padding: 1rem;
@@ -32,11 +33,12 @@ const AddLink = styled(Link)`
 `;
 const TableBlock = styled.table`
   width: 100%;
-  margin: 1.5rem auto;
+  margin: 1.5rem auto 0;
   text-align: center;
   border-collapse: collapse;
   border-spacing: 0;
   font-family: 'InterLight';
+  flex: 1;
 `;
 const TheadBlock = styled.thead`
   width: 100%;
@@ -123,6 +125,7 @@ const Notify = () => {
   const infos = useSelector(({ notify }) => notify.infos);
   const dispatch = useDispatch();
 
+  //모달 구현
   const [id, setId] = useState();
   const [modal, setModal] = useState(false);
   const onRemoveClick = (infoId) => {
@@ -137,6 +140,11 @@ const Notify = () => {
     dispatch(remove(id));
   }, []);
 
+  //페이지네이션
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * 5;
+
+  //공지사항 정보
   const infoList = infos.map((info, idx) => (
     <TBodyTrBlock key={info.id}>
       <Td0>{idx + 1}.</Td0>
@@ -154,6 +162,9 @@ const Notify = () => {
       </Td3>
     </TBodyTrBlock>
   ));
+
+  const onePageInfo = infoList.slice(offset, offset + 5);
+
   return (
     <StyledBlock>
       <TitleBlock>
@@ -169,7 +180,7 @@ const Notify = () => {
             <TheadTd3>Edit</TheadTd3>
           </TheadTrBlock>
         </TheadBlock>
-        <tbody>{infoList}</tbody>
+        <tbody>{onePageInfo}</tbody>
       </TableBlock>
       <LogoutModal
         visible={modal}
@@ -177,6 +188,13 @@ const Notify = () => {
         onCancel={onCancel}
         title="공지사항 삭제"
         description="정말로 삭제하시겠습니까?"
+      />
+      <Pagenation
+        noflex={true}
+        total={infos.length}
+        limit={5}
+        page={page}
+        setPage={setPage}
       />
     </StyledBlock>
   );
