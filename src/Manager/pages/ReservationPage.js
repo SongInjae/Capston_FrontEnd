@@ -2,7 +2,9 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
+import { useDispatch } from 'react-redux';
 
+import { take } from '../store/modules/reserve';
 import Paging from '../components/Paging';
 import sea_img from '../assets/img/search.png';
 import cal_img from '../assets/img/data-table.png';
@@ -73,6 +75,11 @@ const SearchBlock = styled.input`
 `;
 
 const ReservationPage = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(take());
+  }, []);
+
   const [count, setCount] = useState(0); //아이템 총 개수
   const [currentPage, setCurrentPage] = useState(1); //현재 페이지
   const [indexOfLastPost, setIndexOfLastPost] = useState(0); //마지막 포스트의 index
@@ -81,9 +88,7 @@ const ReservationPage = () => {
 
   const [modal, setModal] = useState(false); //팝업창 여부
 
-  const [year, setYear] = useState(null);
-  const [month, setMonth] = useState(null);
-  const [day, setDay] = useState(null);
+  const [date, setDate] = useState(null);
 
   const infos = useSelector(({ reserve }) => reserve.infos); //info 불러오기
   const [userInput, setUserInput] = useState(''); //필터링 input
@@ -96,7 +101,7 @@ const ReservationPage = () => {
   useEffect(() => {
     setFilterInfo(
       infos.filter((info) => {
-        return info.name.includes(userInput);
+        return info.booker.name.includes(userInput);
       }),
     );
   }, [userInput, infos]);
@@ -108,24 +113,16 @@ const ReservationPage = () => {
   //날짜 선택하면 팝업 끄고 값 받아오기
   const onSelect = (e) => {
     setModal(false);
-    setYear(parseInt(format(e, 'yyyy')));
-    setMonth(parseInt(format(e, 'MM')));
-    setDay(parseInt(format(e, 'd')));
+    setDate(format(e, 'yyyy-MM-dd'));
   };
   //달력 필터링
   useEffect(() => {
     setFilterInfo(
       filterInfo.filter((info) => {
-        return year === null
-          ? filterInfo
-          : info.date_year === year &&
-            info.date_month === month &&
-            info.date_day === day
-          ? info
-          : '';
+        return date === null ? filterInfo : info.date === date ? info : '';
       }),
     );
-  }, [year, month, day]);
+  }, [date]);
 
   //페이지네이션
   useEffect(() => {

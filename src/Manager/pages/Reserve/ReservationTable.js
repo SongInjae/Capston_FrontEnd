@@ -102,19 +102,26 @@ const ReservationTable = ({ infos }) => {
     dispatch(remove(id));
   }, []);
 
+  function ConvertType(i) {
+    if (i === 1) return '관리자';
+    else if (i === 2) return '교직원';
+    else if (i === 3) return '대학원생';
+    else return '학부생';
+  }
+
   const infoList =
     infos.length > 0 ? (
       infos.map((info) => (
         <TrBlock key={info.id}>
-          <Td1>
-            {info.date_year}.{info.date_month}.{info.date_day}
-          </Td1>
-          <Td2>{info.room}</Td2>
+          <Td1>{info.date}</Td1>
+          <Td2>{info.room.name}</Td2>
           <Td3>
-            {info.name}({info.designation})
+            {info.booker.name}({ConvertType(info.booker.user_type)})
           </Td3>
-          <Td4>{info.time}</Td4>
-          <Td5>{info.email}</Td5>
+          <Td4>
+            {info.start.slice(11, 16)}-{info.end.slice(11, 16)}
+          </Td4>
+          <Td5>{info.booker.email}</Td5>
           <Td6>
             <TrashIcon onClick={() => onRemoveClick(info.id)} />
           </Td6>

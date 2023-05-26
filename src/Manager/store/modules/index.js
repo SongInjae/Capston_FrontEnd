@@ -1,14 +1,13 @@
 import { combineReducers } from 'redux';
 import { all } from 'redux-saga/effects';
 
-import addmembers, { addmembersSaga } from './addmember';
-import regular from './regular';
-import noshow from './noshow';
-
 import auth, { authSaga } from '../../../User/store/modules/auth';
+import addmembers, { addmembersSaga } from './addmember';
 import rooms, { roomSaga } from './rooms';
 import notify, { notifySaga } from './notify';
 import reserve, { reserveSaga } from './reserve';
+import regular, { regularSaga } from './regular';
+import noshow, { noshowSaga } from './noshow';
 import loading from '../../../User/store/modules/loading';
 
 const rootReducer = combineReducers({
@@ -29,6 +28,8 @@ export function* rootSaga() {
     notifySaga(),
     roomSaga(),
     reserveSaga(),
+    regularSaga(),
+    noshowSaga(),
   ]);
 }
 
