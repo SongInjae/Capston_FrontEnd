@@ -9,16 +9,16 @@ const InfoForm = () => {
   const [chkPwd, setChkPwd] = useState();
   const [error, setError] = useState(false);
 
-  const { name, user_no, email, password, user_type, pwdCheck } = useSelector(
-    ({ addmembers }) => ({
+  const { name, user_no, email, password, user_type, pwdCheck, department } =
+    useSelector(({ addmembers }) => ({
       user_type: addmembers.user_type,
       name: addmembers.name,
       user_no: addmembers.user_no,
       email: addmembers.email,
       password: addmembers.password,
       pwdCheck: addmembers.pwdCheck,
-    }),
-  );
+      department: addmembers.department,
+    }));
   useEffect(() => {
     setPwd(password);
     setChkPwd(pwdCheck);
@@ -42,12 +42,12 @@ const InfoForm = () => {
     );
   };
   const onTypeChange = (e) => {
-    const value = e.target.value;
-    dispatch(changeField({ key: 'user_type', value }));
+    const { value, name } = e.target;
+    dispatch(changeField({ key: name, value }));
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(insert({ user_type, name, user_no, email, password }));
+    dispatch(insert({ user_type, name, user_no, email, password, department }));
     navigate(-1);
     dispatch(take());
   };

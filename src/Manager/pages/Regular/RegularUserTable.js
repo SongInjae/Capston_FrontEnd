@@ -1,8 +1,10 @@
 import styled from 'styled-components';
+import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { remove } from '../../store/modules/regular';
 import TrashIconURL from '../../assets/img/trash.png';
+import LogoutModal from '../../components/LogoutModal';
 
 const TableBlock = styled.table`
   width: 100%;
@@ -85,19 +87,32 @@ const TrashIcon = styled.div`
 
 const RegularUserTable = ({ infos }) => {
   const dispatch = useDispatch();
-  const onRemove = (id) => dispatch(remove(id));
+
+  const [id, setId] = useState();
+  const [modal, setModal] = useState(false);
+  const onRemoveClick = (infoId) => {
+    setModal(true);
+    setId(infoId);
+  };
+  const onCancel = () => {
+    setModal(false);
+  };
+  const onConfirm = useCallback(() => {
+    setModal(false);
+    dispatch(remove(id));
+  }, []);
 
   const infoList =
     infos.length > 0 ? (
       infos.map((info) => (
-        <TrBlock id={info.id}>
+        <TrBlock key={info.id}>
           <Td1>{info.designation}</Td1>
           <Td2>{info.name}</Td2>
           <Td3>{info.day}</Td3>
           <Td4>{info.time}</Td4>
           <Td5>{info.email}</Td5>
           <Td6>
-            <TrashIcon onClick={() => onRemove(info.id)} />
+            <TrashIcon onClick={() => onRemoveClick(info.id)} />
           </Td6>
         </TrBlock>
       ))
@@ -107,19 +122,28 @@ const RegularUserTable = ({ infos }) => {
       </tr>
     );
   return (
-    <TableBlock>
-      <TheadBlock>
-        <tr>
-          <TheadTd1>Designation</TheadTd1>
-          <TheadTd2>Name</TheadTd2>
-          <TheadTd3>Day</TheadTd3>
-          <TheadTd4>Time</TheadTd4>
-          <TheadTd5>Email</TheadTd5>
-          <TheadTd6>Edit</TheadTd6>
-        </tr>
-      </TheadBlock>
-      <tbody>{infoList}</tbody>
-    </TableBlock>
+    <>
+      <TableBlock>
+        <TheadBlock>
+          <tr>
+            <TheadTd1>Designation</TheadTd1>
+            <TheadTd2>Name</TheadTd2>
+            <TheadTd3>Day</TheadTd3>
+            <TheadTd4>Time</TheadTd4>
+            <TheadTd5>Email</TheadTd5>
+            <TheadTd6>Edit</TheadTd6>
+          </tr>
+        </TheadBlock>
+        <tbody>{infoList}</tbody>
+      </TableBlock>
+      <LogoutModal
+        visible={modal}
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+        title="정기예약 삭제"
+        description="정말로 삭제하시겠습니까?"
+      />
+    </>
   );
 };
 

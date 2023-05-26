@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
 
 import NotifyCorrect from '../pages/Improve/NotifyCorrect';
 import { changeField, change } from './modules/notify';
@@ -11,25 +10,30 @@ const NotifyCorrectForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const current = new Date();
-  const date = format(current, 'yyyy-MM-dd');
+  current.setHours(current.getHours() + 9);
 
-  const { id, title, content } = useSelector(({ notify }) => ({
+  const { id, title, content, notifys } = useSelector(({ notify }) => ({
+    notifys: notify.infos,
     id: notify.id,
     title: notify.title,
     content: notify.content,
   }));
 
   let Id = parseInt(params.id);
-  const { notify } = useSelector(({ notify }) => ({
-    notify: notify.infos[Id - 1],
-  }));
+  let notify = null;
+  for (let i = 0; i < notifys.length; i++) {
+    if (notifys[i].id === Id) {
+      notify = notifys[i];
+      break;
+    }
+  }
 
   const formData = new FormData();
 
   useEffect(() => {
     formData.append('title', title);
     formData.append('content', content);
-    formData.append('start', date);
+    formData.append('end', current.toISOString());
   });
 
   const onChangeField = useCallback(

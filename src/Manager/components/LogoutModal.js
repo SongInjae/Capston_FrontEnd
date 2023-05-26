@@ -1,11 +1,11 @@
 import AskModal from './AskModal';
 
-const LogoutModal = ({ visible, onConfirm, onCancel }) => {
+const LogoutModal = ({ visible, title, description, onConfirm, onCancel }) => {
   return (
     <AskModal
       visible={visible}
-      title="바보"
-      description="포스트를 정말 삭제하시겠습니까?"
+      title={title}
+      description={description}
       onConfirm={onConfirm}
       onCancel={onCancel}
     />

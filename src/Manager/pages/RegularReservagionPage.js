@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 import sea_img from '../assets/img/search.png';
 import RegularUserTable from './Regular/RegularUserTable';
+import Pagenation from '../components/Pagenation';
 
 const FliterBlock = styled.div`
   display: flex;
@@ -68,14 +69,20 @@ const RegularReservagionPage = () => {
   const onChange = (e) => {
     setUserInput(e.target.value);
   };
+  //페이지네이션
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * 12;
   //이름 필터링
   useEffect(() => {
     setFilterInfo(
-      infos.filter((info) => {
-        return info.name.includes(userInput);
-      }),
+      infos
+        .filter((info) => {
+          return info.name.includes(userInput);
+        })
+        .slice(offset, offset + 12),
     );
-  }, [userInput, infos]);
+  }, [userInput, infos, offset]);
+
   return (
     <>
       <FliterBlock>
@@ -90,6 +97,12 @@ const RegularReservagionPage = () => {
       <ContentBlock>
         <RegularUserTable infos={filterInfo} />
       </ContentBlock>
+      <Pagenation
+        total={infos.length}
+        limit={12}
+        page={page}
+        setPage={setPage}
+      />
     </>
   );
 };

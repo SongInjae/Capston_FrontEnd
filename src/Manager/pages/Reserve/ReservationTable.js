@@ -1,6 +1,8 @@
 import styled from 'styled-components';
+import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import LogoutModal from '../../components/LogoutModal';
 import { remove } from '../../store/modules/reserve';
 import TrashIconURL from '../../assets/img/trash.png';
 
@@ -86,21 +88,42 @@ const TrashIcon = styled.div`
 
 const ReservationTable = ({ infos }) => {
   const dispatch = useDispatch();
-  const onRemove = (id) => dispatch(remove(id));
+  const [id, setId] = useState();
+  const [modal, setModal] = useState(false);
+  const onRemoveClick = (infoId) => {
+    setModal(true);
+    setId(infoId);
+  };
+  const onCancel = () => {
+    setModal(false);
+  };
+  const onConfirm = useCallback(() => {
+    setModal(false);
+    dispatch(remove(id));
+  }, []);
+
+  function ConvertType(i) {
+    if (i === 1) return '관리자';
+    else if (i === 2) return '교직원';
+    else if (i === 3) return '대학원생';
+    else return '학부생';
+  }
 
   const infoList =
     infos.length > 0 ? (
       infos.map((info) => (
-        <TrBlock id={info.id}>
-          <Td1>
-            {info.date_year}.{info.date_month}.{info.date_day}
-          </Td1>
-          <Td2>{info.name}</Td2>
-          <Td3>{info.designation}</Td3>
-          <Td4>{info.time}</Td4>
-          <Td5>{info.email}</Td5>
+        <TrBlock key={info.id}>
+          <Td1>{info.date}</Td1>
+          <Td2>{info.room.name}</Td2>
+          <Td3>
+            {info.booker.name}({ConvertType(info.booker.user_type)})
+          </Td3>
+          <Td4>
+            {info.start.slice(11, 16)}-{info.end.slice(11, 16)}
+          </Td4>
+          <Td5>{info.booker.email}</Td5>
           <Td6>
-            <TrashIcon onClick={() => onRemove(info.id)} />
+            <TrashIcon onClick={() => onRemoveClick(info.id)} />
           </Td6>
         </TrBlock>
       ))
@@ -110,19 +133,28 @@ const ReservationTable = ({ infos }) => {
       </tr>
     );
   return (
-    <TableBlock>
-      <TheadBlock>
-        <tr>
-          <TheadTd1>Date</TheadTd1>
-          <TheadTd2>Name</TheadTd2>
-          <TheadTd3>Designation</TheadTd3>
-          <TheadTd4>Time</TheadTd4>
-          <TheadTd5>Email</TheadTd5>
-          <TheadTd6>Edit</TheadTd6>
-        </tr>
-      </TheadBlock>
-      <tbody>{infoList}</tbody>
-    </TableBlock>
+    <>
+      <TableBlock>
+        <TheadBlock>
+          <tr>
+            <TheadTd1>Date</TheadTd1>
+            <TheadTd2>Room</TheadTd2>
+            <TheadTd3>Name</TheadTd3>
+            <TheadTd4>Time</TheadTd4>
+            <TheadTd5>Email</TheadTd5>
+            <TheadTd6>Edit</TheadTd6>
+          </tr>
+        </TheadBlock>
+        <tbody>{infoList}</tbody>
+      </TableBlock>
+      <LogoutModal
+        visible={modal}
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+        title="예약 삭제"
+        description="정말로 삭제하시겠습니까?"
+      />
+    </>
   );
 };
 

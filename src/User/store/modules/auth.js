@@ -42,7 +42,7 @@ function* logoutSaga() {
 
 export function* authSaga() {
   yield takeLatest(LOGIN, loginSaga);
-  yield takeLatest(LOGOUT, logoutSaga);
+  //yield takeLatest(LOGOUT, logoutSaga);
 }
 
 const initialState = {

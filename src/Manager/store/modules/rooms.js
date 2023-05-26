@@ -88,7 +88,6 @@ const rooms = handleActions(
     [INSERT_SUCCESS]: (state, { payload: { room } }) =>
       produce(state, (draft) => {
         //draft.rooms.push(room);
-        console.log(room);
       }),
     [INSERT_FAILURE]: (state, { payload: error }) => ({
       ...state,

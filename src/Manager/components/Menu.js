@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { remove, take } from '../store/modules/addmember';
 import { Link } from 'react-router-dom';
@@ -6,6 +7,7 @@ import { Link } from 'react-router-dom';
 //import MenuIconURL from '../assets/img/menu.png';
 import CorrectIconURL from '../assets/img/correct.png';
 import TrashIconURL from '../assets/img/trash.png';
+import LogoutModal from './LogoutModal';
 
 const DivBlock = styled.div`
   display: flex;
@@ -38,15 +40,32 @@ const TrashIcon = styled.div`
 
 const Menu = ({ info }) => {
   const dispatch = useDispatch();
-  const onRemove = (id) => {
-    dispatch(remove(id));
-    dispatch(take());
-  };
   const userId = info.id;
+
+  const [modal, setModal] = useState(false);
+  const onRemoveClick = () => {
+    setModal(true);
+  };
+  const onCancel = () => {
+    setModal(false);
+  };
+  const onConfirm = useCallback(() => {
+    setModal(false);
+    dispatch(remove(userId));
+    dispatch(take());
+  }, []);
+
   return (
     <DivBlock>
       <CorrectIcon to={`/admin/member/correct/${userId}`} />
-      <TrashIcon onClick={() => onRemove(info.id)} />
+      <TrashIcon onClick={onRemoveClick} />
+      <LogoutModal
+        visible={modal}
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+        title="회원정보 삭제"
+        description="정말로 삭제하시겠습니까?"
+      />
     </DivBlock>
   );
 };

@@ -2,12 +2,14 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
+import { useDispatch } from 'react-redux';
 
-import Paging from '../components/Paging';
+import { take } from '../store/modules/reserve';
 import sea_img from '../assets/img/search.png';
 import cal_img from '../assets/img/data-table.png';
 import ReservationTable from './Reserve/ReservationTable';
 import CalendarModals from '../components/CalendarModals';
+import Pagenation from '../components/Pagenation';
 
 const FliterAddBlock = styled.div`
   display: flex;
@@ -73,17 +75,14 @@ const SearchBlock = styled.input`
 `;
 
 const ReservationPage = () => {
-  const [count, setCount] = useState(0); //아이템 총 개수
-  const [currentPage, setCurrentPage] = useState(1); //현재 페이지
-  const [indexOfLastPost, setIndexOfLastPost] = useState(0); //마지막 포스트의 index
-  const [indexOfFirstPost, setIndexOfFirstPost] = useState(0); //첫번째 포스트의 index
-  const [currentPosts, setCurrentPosts] = useState(0); //현재 포스트
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(take());
+  }, []);
 
   const [modal, setModal] = useState(false); //팝업창 여부
 
-  const [year, setYear] = useState(null);
-  const [month, setMonth] = useState(null);
-  const [day, setDay] = useState(null);
+  const [date, setDate] = useState(null);
 
   const infos = useSelector(({ reserve }) => reserve.infos); //info 불러오기
   const [userInput, setUserInput] = useState(''); //필터링 input
@@ -92,14 +91,20 @@ const ReservationPage = () => {
   const onChange = (e) => {
     setUserInput(e.target.value);
   };
+
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * 12;
+
   //이름 필터링
   useEffect(() => {
     setFilterInfo(
-      infos.filter((info) => {
-        return info.name.includes(userInput);
-      }),
+      infos
+        .filter((info) => {
+          return info.booker.name.includes(userInput);
+        })
+        .slice(offset, offset + 12),
     );
-  }, [userInput, infos]);
+  }, [userInput, infos, offset]);
 
   //달력 이모티콘 클릭하면 팝업창 띄우기
   const onCalendar = () => {
@@ -108,36 +113,16 @@ const ReservationPage = () => {
   //날짜 선택하면 팝업 끄고 값 받아오기
   const onSelect = (e) => {
     setModal(false);
-    setYear(parseInt(format(e, 'yyyy')));
-    setMonth(parseInt(format(e, 'MM')));
-    setDay(parseInt(format(e, 'd')));
+    setDate(format(e, 'yyyy-MM-dd'));
   };
   //달력 필터링
   useEffect(() => {
     setFilterInfo(
       filterInfo.filter((info) => {
-        return year === null
-          ? filterInfo
-          : info.date_year === year &&
-            info.date_month === month &&
-            info.date_day === day
-          ? info
-          : '';
+        return date === null ? filterInfo : info.date === date ? info : '';
       }),
     );
-  }, [year, month, day]);
-
-  //페이지네이션
-  useEffect(() => {
-    setCount(filterInfo.length);
-    setIndexOfLastPost(currentPage * 12);
-    setIndexOfFirstPost(indexOfLastPost - 12);
-    setCurrentPosts(filterInfo.slice(indexOfFirstPost, indexOfLastPost));
-  }, [currentPage, indexOfFirstPost, indexOfLastPost, filterInfo]);
-
-  const setPage = (e) => {
-    setCurrentPage(e);
-  };
+  }, [date]);
 
   return (
     <>
@@ -153,12 +138,12 @@ const ReservationPage = () => {
         </NameFliterBlock>
       </FliterAddBlock>
       <ContentBlock>
-        <ReservationTable infos={currentPosts} />
+        <ReservationTable infos={filterInfo} />
       </ContentBlock>
-      <Paging
-        page={currentPage}
-        maxcntItem={12}
-        count={count}
+      <Pagenation
+        total={infos.length}
+        limit={12}
+        page={page}
         setPage={setPage}
       />
     </>

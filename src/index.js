@@ -20,6 +20,10 @@ function loadUser() {
   try {
     const user = localStorage.getItem('user');
     if (!user) return;
+    if (Date.now() > JSON.parse(user).expire) {
+      localStorage.removeItem('user');
+      return;
+    }
     store.dispatch(tempSetUser(JSON.parse(user)));
   } catch (e) {
     console.log('localStorage is not working');

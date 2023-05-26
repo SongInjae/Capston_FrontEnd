@@ -66,6 +66,10 @@ const SubmitButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
+  &[disabled] {
+    transform: revert;
+    background: gray;
+  }
 `;
 const ErrorBlock = styled.div`
   color: red;
@@ -132,15 +136,56 @@ const AddMember = ({ error, onChange, onTypeChange, onSubmit }) => {
         <FormBlock>
           <LabelBlock>소속</LabelBlock>
           <CheckBoxBlock>
-            <CheckBlock type="radio" onChange={onTypeChange} value="2" />
+            <CheckBlock
+              type="radio"
+              name="user_type"
+              onChange={onTypeChange}
+              value="1"
+            />
+            <CheckNameBlock>관리자</CheckNameBlock>
+            <CheckBlock
+              type="radio"
+              name="user_type"
+              onChange={onTypeChange}
+              value="2"
+            />
             <CheckNameBlock>교직원</CheckNameBlock>
-            <CheckBlock type="radio" onChange={onTypeChange} value="3" />
+            <CheckBlock
+              type="radio"
+              name="user_type"
+              onChange={onTypeChange}
+              value="3"
+            />
             <CheckNameBlock>대학원생</CheckNameBlock>
-            <CheckBlock type="radio" onChange={onTypeChange} value="4" />
+            <CheckBlock
+              type="radio"
+              name="user_type"
+              onChange={onTypeChange}
+              value="4"
+            />
             <CheckNameBlock>학부생</CheckNameBlock>
           </CheckBoxBlock>
         </FormBlock>
-        <SubmitButton>Submit</SubmitButton>
+        <FormBlock>
+          <LabelBlock>학과</LabelBlock>
+          <CheckBoxBlock>
+            <CheckBlock
+              type="radio"
+              name="department"
+              onChange={onTypeChange}
+              value="1"
+            />
+            <CheckNameBlock>컴퓨터공학과</CheckNameBlock>
+            <CheckBlock
+              type="radio"
+              name="department"
+              onChange={onTypeChange}
+              value="2"
+            />
+            <CheckNameBlock>기타 학과</CheckNameBlock>
+          </CheckBoxBlock>
+        </FormBlock>
+        <SubmitButton disabled={error}>Submit</SubmitButton>
       </FormStyled>
     </>
   );

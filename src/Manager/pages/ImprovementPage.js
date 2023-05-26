@@ -5,7 +5,8 @@ import Notify from './Improve/Notify';
 
 const BoardBlock = styled.div`
   //display: flex;
-  margin: 2rem;
+  margin-left: 1.5rem;
+  margin-top: 1.5rem;
 `;
 
 const ImprovementPage = () => {

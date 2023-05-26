@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Route, Routes, Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../User/store/modules/auth';
+import cookie from 'react-cookies';
 
 import MemberManagementsPage from './MemberManagementsPage';
 import ReservationPage from './ReservationPage';
@@ -12,6 +13,7 @@ import RegularReservagionPage from './RegularReservagionPage';
 import ImprovementPage from './ImprovementPage';
 
 import LogoutModal from '../components/AskModal';
+import BulkDeletePage from './Member/BulkDeletePage';
 import CorrectForm from '../store/CorrectForm';
 import InfoForm from '../store/InfoForm';
 import RoomAddForm from '../store/RoomAddForm';
@@ -56,6 +58,8 @@ const MainPage = () => {
     setModal(false);
     dispatch(logout());
     navigate('/');
+    localStorage.removeItem('user');
+    cookie.remove('token', { path: '/' });
   };
 
   const toggleActive = (e) => {
@@ -89,6 +93,8 @@ const MainPage = () => {
             visible={modal}
             onConfirm={onConfirm}
             onCancel={onCancel}
+            title="로그아웃"
+            description="정말로 로그아웃을 하시겠습니까?"
           />
         </div>
         <div className="content-content">
@@ -97,6 +103,7 @@ const MainPage = () => {
             <Route path="/member">
               <Route index element={<MemberManagementsPage />} />
               <Route path="add" element={<InfoForm />} />
+              <Route path="delete" element={<BulkDeletePage />} />
               <Route path="correct/:id" element={<CorrectForm />} />
             </Route>
             <Route path="/reserve" element={<ReservationPage />} />
