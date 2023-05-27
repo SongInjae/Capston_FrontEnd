@@ -7,9 +7,9 @@ import createRequestSaga, {
 import * as noshowAPI from '../../api/noshow';
 
 const [TAKE, TAKE_SUCCESS, TAKE_FAILURE] =
-  createRequestActionTypes('regular/take');
+  createRequestActionTypes('remove/take');
 const [REMOVE, REMOVE_SUCCESS, REMOVE_FAILURE] =
-  createRequestActionTypes('regular/REMOVE');
+  createRequestActionTypes('remove/REMOVE');
 
 export const take = createAction(TAKE);
 export const remove = createAction(REMOVE, (id) => id);

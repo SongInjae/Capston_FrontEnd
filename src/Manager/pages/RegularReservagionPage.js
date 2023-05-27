@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
+import { take } from '../store/modules/regular';
 import sea_img from '../assets/img/search.png';
 import RegularUserTable from './Regular/RegularUserTable';
 import Pagenation from '../components/Pagenation';
@@ -62,6 +63,10 @@ const ContentBlock = styled.div`
 `;
 
 const RegularReservagionPage = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(take());
+  }, [dispatch]);
   const infos = useSelector(({ regular }) => regular.regularInfo); //info 불러오기
   const [filterInfo, setFilterInfo] = useState(infos);
   const [userInput, setUserInput] = useState(''); //필터링 input
@@ -77,7 +82,7 @@ const RegularReservagionPage = () => {
     setFilterInfo(
       infos
         .filter((info) => {
-          return info.name.includes(userInput);
+          return info.booker.name.includes(userInput);
         })
         .slice(offset, offset + 12),
     );
