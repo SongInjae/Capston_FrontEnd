@@ -128,7 +128,7 @@ const RegularUserTable = ({ infos }) => {
           <Td2>
             {info.booker.name}({ConvertType(info.booker.user_type)})
           </Td2>
-          <Td3>{ConvertDay(info.day.join(', '))}</Td3>
+          <Td3>{Object.values(ConvertDay(info.day.join(', ')))}</Td3>
           <Td4>
             {info.start.slice(0, 5)}-{info.end.slice(0, 5)}
           </Td4>

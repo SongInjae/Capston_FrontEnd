@@ -1,12 +1,16 @@
 import styled, { css } from 'styled-components';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { remove } from '../../store/modules/noshow';
 
 import Button from '../../components/Button';
 import UserIcon from '../../assets/img/Penaltiy_User.png';
 import LogoutModal from '../../components/LogoutModal';
-import Pagenation from '../../components/Pagenation';
+
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const StyledBlock = styled.div`
   width: 70rem;
@@ -22,19 +26,50 @@ const TitleBlock = styled.div`
   color: #5f6d7c;
   margin-bottom: 1.5rem;
 `;
-const UserRowBlock = styled.div`
+const ContentBlock = styled.div`
   display: flex;
-  width: 60rem;
-  height: 7rem;
+  width: 100%;
   margin: 0.5rem 2rem;
-  justify-content: space-between;
+  justify-content: space-around;
+`;
+const DoughnutStyled = styled(Doughnut)`
+  width: 17rem !important;
+  height: 17rem !important;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+  padding: 1rem;
+`;
+const UserListBlock = styled.div`
+  width: 50%;
+  height: 17rem;
+  overflow: scroll;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+`;
+const UserCategory = styled.div`
+  display: flex;
+  background-color: rgb(209, 217, 226);
+`;
+const ButtonStyled = styled.div`
+  color: rgb(81, 98, 111);
+  padding: 1rem;
+  //border-right: 1px solid rgb(81, 98, 111);
+  //border-bottom: 1px solid rgb(81, 98, 111);
+  &:hover {
+    background-color: rgb(81, 98, 111);
+    color: white;
+    cursor: pointer;
+  }
+  &:last-child {
+  }
 `;
 const UserBlock = styled.div`
   display: flex;
   height: 6rem;
   width: 30rem;
+  padding: 0 1rem;
   border-bottom: 1px solid #5f6d7c;
-  margin-right: 5rem;
+  margin: 1rem;
   ${(props) =>
     props.last &&
     css`
@@ -87,8 +122,20 @@ const DeleteButton = styled(Button)`
 `;
 
 const Penalty = () => {
-  const infos = useSelector(({ noshow }) => noshow.infos);
+  const { infos, stateData } = useSelector(({ noshow }) => ({
+    infos: noshow.infos,
+    stateData: noshow.data,
+  }));
   const dispatch = useDispatch();
+  const [cnt1, setCnt1] = useState(0);
+  const [cnt2, setCnt2] = useState(0);
+  const [cnt3, setCnt3] = useState(0);
+
+  useEffect(() => {
+    setCnt1(stateData[0]);
+    setCnt2(stateData[1]);
+    setCnt3(stateData[2]);
+  }, [stateData]);
 
   //모달 구현
   const [id, setId] = useState();
@@ -105,57 +152,71 @@ const Penalty = () => {
     dispatch(remove(id));
   }, []);
 
-  const [page, setPage] = useState(1);
-  const offset = (page - 1) * 4;
-
   //패널티 회원 정보
   let InfoLists = [];
-  let cnt = 0;
-  for (let i = offset; i < infos.length; i += 2) {
-    let Info = [];
-    cnt++;
-    if (cnt === 3) break;
-    for (let j = 0; j < 2; j++) {
-      if (infos.length === i + j) break;
-      Info.push(
-        <UserBlock key={infos[i + j].id}>
-          <ImageInfoBlock>
-            <ImageIcon />
-            <TextBlock>
-              <InfoBlock bold={true}>
-                {infos[i + j].name}({infos[i + j].number})
-              </InfoBlock>
-              <InfoBlock>{infos[i + j].designation}</InfoBlock>
-              <InfoBlock>Panalty : {infos[i + j].count}</InfoBlock>
-              <InfoBlock>Email : {infos[i + j].email}</InfoBlock>
-            </TextBlock>
-          </ImageInfoBlock>
-          <DeleteButton onClick={() => onRemoveClick(infos[i + j].id)}>
-            Delete
-          </DeleteButton>
-        </UserBlock>,
-      );
-    }
-    InfoLists.push(<UserRowBlock key={i}>{Info}</UserRowBlock>);
+  for (let i = 0; i < infos.length; i++) {
+    InfoLists.push(
+      <UserBlock key={infos[i].id}>
+        <ImageInfoBlock>
+          <ImageIcon />
+          <TextBlock>
+            <InfoBlock bold={true}>
+              {infos[i].name}({infos[i].number})
+            </InfoBlock>
+            <InfoBlock>{infos[i].designation}</InfoBlock>
+            <InfoBlock>Panalty : {infos[i].count}</InfoBlock>
+            <InfoBlock>Email : {infos[i].email}</InfoBlock>
+          </TextBlock>
+        </ImageInfoBlock>
+        <DeleteButton onClick={() => onRemoveClick(infos[i].id)}>
+          Delete
+        </DeleteButton>
+      </UserBlock>,
+    );
   }
+
+  //차트 데이터
+  const data = {
+    labels: ['교직원', '대학원생', '학부생'],
+    datasets: [
+      {
+        label: '노쇼 횟수',
+        data: [cnt1, cnt2, cnt3],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(153, 102, 255, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
   return (
     <StyledBlock>
-      <TitleBlock>패널티 회원 관리</TitleBlock>
-      {InfoLists}
+      <TitleBlock>사용자별 노쇼 회원 목록</TitleBlock>
+      <ContentBlock>
+        <DoughnutStyled data={data} />
+        <UserListBlock>
+          <UserCategory>
+            <ButtonStyled>교직원</ButtonStyled>
+            <ButtonStyled>대학원생</ButtonStyled>
+            <ButtonStyled>학부생</ButtonStyled>
+          </UserCategory>
+          {InfoLists}
+        </UserListBlock>
+      </ContentBlock>
       <LogoutModal
         visible={modal}
         onConfirm={onConfirm}
         onCancel={onCancel}
         title="패널티 회원 삭제"
         description="정말로 삭제하시겠습니까?"
-      />
-      <Pagenation
-        noflex={true}
-        total={infos.length}
-        limit={4}
-        page={page}
-        setPage={setPage}
       />
     </StyledBlock>
   );

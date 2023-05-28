@@ -23,6 +23,7 @@ export function* noshowSaga() {
 }
 
 const initialState = {
+  data: [2, 3, 1],
   infos: [
     {
       id: 1,
