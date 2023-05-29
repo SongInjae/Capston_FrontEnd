@@ -100,7 +100,7 @@ const ReservationTable = ({ infos }) => {
   const onConfirm = useCallback(() => {
     setModal(false);
     dispatch(remove(id));
-  }, []);
+  }, [id]);
 
   function ConvertType(i) {
     if (i === 1) return '관리자';
@@ -119,7 +119,7 @@ const ReservationTable = ({ infos }) => {
             {info.booker.name}({ConvertType(info.booker.user_type)})
           </Td3>
           <Td4>
-            {info.start.slice(11, 16)}-{info.end.slice(11, 16)}
+            {info.start.slice(0, 5)}-{info.end.slice(0, 5)}
           </Td4>
           <Td5>{info.booker.email}</Td5>
           <Td6>

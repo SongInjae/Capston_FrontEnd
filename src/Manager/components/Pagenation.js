@@ -69,6 +69,9 @@ const Pagenation = ({ noflex, total, limit, page, setPage }) => {
   return (
     <>
       <Nav noflex={noflex}>
+        <Button onClick={() => setPage(1)} disabled={page === 1}>
+          &lt;&lt;
+        </Button>
         <Button onClick={() => setPage(page - 1)} disabled={page === 1}>
           &lt;
         </Button>
@@ -86,6 +89,9 @@ const Pagenation = ({ noflex, total, limit, page, setPage }) => {
           ))}
         <Button onClick={() => setPage(page + 1)} disabled={page === numPages}>
           &gt;
+        </Button>
+        <Button onClick={() => setPage(numPages)} disabled={page === numPages}>
+          &gt;&gt;
         </Button>
       </Nav>
     </>

@@ -5,7 +5,12 @@ import MainPage from './Manager/pages/MainPage';
 import UserMain from './User/client_container/main';
 import ReservingPage from './User/client_container/reservation';
 import MyReservation from './User/client_container/myReservation';
+<<<<<<< HEAD
 import NoticePage from './User/client_container/notice';
+=======
+import NotifyInfoPage from './User/client_container/Notify/NotifyInfoPage';
+import NotifyMainPage from './User/client_container/Notify/NotifyMainPage';
+>>>>>>> ff2dcd851225751d402a504dc0d630dca8efab61
 
 const App = () => {
   return (
@@ -18,6 +23,10 @@ const App = () => {
       <Route path="/reserve" element={<ReservingPage />} />
       <Route path="/main/*" element={<UserMain />} />
       <Route path="/main/reserve" element={<MyReservation />} />
+      <Route path="/main/board">
+        <Route index element={<NotifyMainPage />} />
+        <Route path=":id" element={<NotifyInfoPage />} />
+      </Route>
     </Routes>
   );
 };

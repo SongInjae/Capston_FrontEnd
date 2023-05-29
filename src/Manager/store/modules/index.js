@@ -16,6 +16,8 @@ import { userInfoSaga } from '../../../User/store/modules/userInfo';
 import { reservationSaga } from '../../../User/store/modules/reservation';
 =======
 import auth, { authSaga } from '../../../User/store/modules/auth';
+import board, { boardSaga } from '../../../User/store/modules/board';
+
 import addmembers, { addmembersSaga } from './addmember';
 >>>>>>> refs/remotes/origin/master
 import rooms, { roomSaga } from './rooms';
@@ -26,18 +28,24 @@ import noshow, { noshowSaga } from './noshow';
 import loading from '../../../User/store/modules/loading';
 
 const rootReducer = combineReducers({
+  auth,
+  board,
+  loading,
   addmembers,
   reserve,
   rooms,
   regular,
   notify,
   noshow,
+<<<<<<< HEAD
   auth,
   dateReducer,
   roomReducer,
   reservation,
   userInfo,
   loading,
+=======
+>>>>>>> ff2dcd851225751d402a504dc0d630dca8efab61
 });
 
 export function* rootSaga() {
@@ -47,6 +55,7 @@ export function* rootSaga() {
 =======
   yield all([
     authSaga(),
+    boardSaga(),
     addmembersSaga(),
     notifySaga(),
     roomSaga(),

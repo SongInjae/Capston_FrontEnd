@@ -20,11 +20,11 @@ const TheadBlock = styled.thead`
   background-color: #51626f;
 `;
 const TheadTd1 = styled.td`
-  width: 10%;
+  width: 15%;
   border-right: 0.1px solid white;
 `;
 const TheadTd2 = styled.td`
-  width: 20%;
+  width: 15%;
   border-right: 0.1px solid white;
 `;
 const TheadTd3 = styled.td`
@@ -51,11 +51,11 @@ const TrBlock = styled.tr`
 `;
 
 const Td1 = styled.td`
-  width: 10%;
+  width: 15%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
 const Td2 = styled.td`
-  width: 20%;
+  width: 15%;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
 `;
 const Td3 = styled.td`
@@ -100,17 +100,39 @@ const RegularUserTable = ({ infos }) => {
   const onConfirm = useCallback(() => {
     setModal(false);
     dispatch(remove(id));
-  }, []);
+  }, [id]);
+
+  function ConvertType(i) {
+    if (i === 1) return '관리자';
+    else if (i === 2) return '교직원';
+    else if (i === 3) return '대학원생';
+    else return '학부생';
+  }
+
+  function ConvertDay(i) {
+    i = i.replace('MON', '월');
+    i = i.replace('TUE', '화');
+    i = i.replace('WEN', '수');
+    i = i.replace('THR', '목');
+    i = i.replace('FRI', '금');
+    i = i.replace('SAT', '토');
+    i = i.replace('SUN', '일');
+    return i;
+  }
 
   const infoList =
     infos.length > 0 ? (
       infos.map((info) => (
         <TrBlock key={info.id}>
-          <Td1>{info.designation}</Td1>
-          <Td2>{info.name}</Td2>
-          <Td3>{info.day}</Td3>
-          <Td4>{info.time}</Td4>
-          <Td5>{info.email}</Td5>
+          <Td1>{info.room.name}</Td1>
+          <Td2>
+            {info.booker.name}({ConvertType(info.booker.user_type)})
+          </Td2>
+          <Td3>{Object.values(ConvertDay(info.day.join(', ')))}</Td3>
+          <Td4>
+            {info.start.slice(0, 5)}-{info.end.slice(0, 5)}
+          </Td4>
+          <Td5>{info.booker.email}</Td5>
           <Td6>
             <TrashIcon onClick={() => onRemoveClick(info.id)} />
           </Td6>
@@ -126,7 +148,7 @@ const RegularUserTable = ({ infos }) => {
       <TableBlock>
         <TheadBlock>
           <tr>
-            <TheadTd1>Designation</TheadTd1>
+            <TheadTd1>Room</TheadTd1>
             <TheadTd2>Name</TheadTd2>
             <TheadTd3>Day</TheadTd3>
             <TheadTd4>Time</TheadTd4>
