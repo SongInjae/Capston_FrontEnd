@@ -2,22 +2,25 @@ import * as userInfoAPI from '../../api/userInfo';
 import { takeLatest, call, put } from 'redux-saga/effects';
 
 
-const initialState = { myInfo: {}, userInfo: [], currentPwd: '', changedPwd: '', changedName: '', changedEmail: '', userNoCount: 0, getUserNo: '' } // 초기상태
+const initialState = { myInfo: {}, userInfo: [], changedName: '', changedEmail: '', user_no: '', memList: [], memIdList: [], data: {} } // 초기상태
 
 export const getMyInfo = (myInfo) => ({ type: 'GET_MYINFO', myInfo: myInfo });
 
 export const changePassword = (data) => ({ type: 'CHANGE_PWD', data: data });
 
-export const changeUserInfo = (data) => ({ type: 'CHANGE_USERINFO', data: data }); //액션 생성함수
+export const changeUserInfo = (user_no, data) => ({ type: 'CHANGE_USERINFO', user_no: user_no, data: data }); //액션 생성함수
 
-export const getUserNo = (userNo) => ({ type: 'GET_USERNO', getUserNo: userNo }); //액션 생성함수
+export const getUserNo = (data, memList, memIdList) => ({ type: 'GET_USERNO', data: data, memList: memList, memIdList: memIdList }); //액션 생성함수
 
-export const googleConnect = () => ({ type: 'CONNECT_GOOGLE' });
+export const removeMember = (data, memList, memIdList) => ({ type: 'REMOVE_MEMBER', data: data, memList: memList, memIdList: memIdList })
+
+export const googleConnect = (user_no) => ({ type: 'CONNECT_GOOGLE', user_no });
 
 export const googleRevoke = () => ({ type: 'REVOKE_GOOGLE' });
 
 export function* getMine() {
     const response = yield call(userInfoAPI.getMyInformation);
+    console.log(response.data);
     try {
         yield put({ type: 'GET_MYINFO_RESULT', myInfo: response.data });
 
@@ -27,12 +30,15 @@ export function* getMine() {
 }
 
 export function* patchPassword(action) {
+    console.log(action)
     let bodyData = {
         current_password: action.data.currentpwd,
         new_password: action.data.changedpwd,
     }
+
     try {
-        const response = yield call(userInfoAPI.changePassword(bodyData));
+        const response = yield call(userInfoAPI.changePassword, bodyData);
+
         yield put({ type: 'CHANGE_PWD_RESULT' });
         alert('비밀번호를 변경하였습니다.');
 
@@ -42,52 +48,87 @@ export function* patchPassword(action) {
         yield put({ type: 'CHANGE_PWD_RESULT' });
     }
 }
+
 export function* patchUserInfo(action) {
-    console.log(action)
-    const response = yield call(userInfoAPI.changeUserInfo(action.data.id, action.data.data));
-    console.log(response.data);
+    console.log(action);
     try {
+        const response = yield call(userInfoAPI.changeUserInfo(action.user_no, action.data));
         yield put({ type: 'CHANGE_USERINFO_RESULT' });
 
+    } catch (e) {
         alert('정보를 변경하였습니다.');
 
-    } catch (e) {
         yield put({ type: 'CHANGE_USERINFO_RESULT' });
     }
 }
 
 export function* getExistUserNo(action) {
-    const response = yield call(userInfoAPI.existUserNo(action.getUserNo));
-    response.setHeader("Access-Control-Allow-Origin", "*");
-    response.setHeader("Access-Control-Allow-Credentials", "true");
-    response.setHeader("Access-Control-Max-Age", "1800");
-    response.setHeader("Access-Control-Allow-Headers", "content-type");
-    response.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS");
-    console.log(response.data)
+    let memList = action.memList;
+    let memIdList = action.memIdList;
     try {
-        yield put({ type: 'GET_USERNO_RESULT', userNoCount: response.data.count });
+        const response = yield call(userInfoAPI.existUserNo, action.data);
+        console.log(action);
+        console.log(action.data);
+        if (memList.includes(action.data)) {
+            alert('이미 추가된 학번입니다.');
+            yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
+            return;
+        }
+        if (response.data.count === 0) {
+            alert('존재하지 않는 학번/직번입니다.');
+            yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
+        } else {
+            console.log(response.data);
+            memList.push(action.data);
+            memIdList.push(response.data.results[0].id);
+            alert('추가되었습니다.');
+            console.log(memList);
+            console.log(memIdList);
+            yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
+        }
+        console.log('add');
     } catch (e) {
-        yield put({ type: 'GET_USERNO_RESULT' });
+        console.log(e);
+        yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
+        alert('존재하지 않는 학번/직번입니다.');
     }
 }
 
-export function* connectToGoogle() {
+export function* removeMem(action) {
+    let memList = action.memList;
+
+    let memIdList = action.memIdList;
+    console.log('remove');
+    let index = memList.indexOf(action.data);
+
+    let removed = memList.filter((element) => element !== action.data);
+
+    memIdList[index] = "0";
+    let removedIdList = memIdList.filter((element) => element !== "0");
+
+    console.log(removed);
+    yield put({ type: 'REMOVE_MEMBER_RESULT', memList: removed, memIdList: removedIdList });
+}
+
+export function* connectToGoogle(action) {
+
+    console.log(action.user_no)
     try {
-        const response = yield call(userInfoAPI.connectGoogle);
-        console.log(response.data);
+        const response = yield call(userInfoAPI.connectGoogle, action.user_no);
         yield put({ type: 'CONNECT_GOOGLE_RESULT' });
     } catch (e) {
         yield put({ type: 'CONNECT_GOOGLE_RESULT' });
     }
 }
+
 
 export function* revokeGoogle() {
     try {
         const response = yield call(userInfoAPI.revokeGoogle);
 
-        yield put({ type: 'REVOKE_GOOGLE' });
+        yield put({ type: 'REVOKE_GOOGLE_RESULT' });
     } catch (e) {
-        yield put({ type: 'REVOKE_GOOGLE' });
+        yield put({ type: 'REVOKE_GOOGLE_RESULT' });
     }
 }
 
@@ -96,6 +137,7 @@ export function* userInfoSaga() {
     yield takeLatest('CHANGE_PWD', patchPassword);
     yield takeLatest('CHANGE_USERINFO', patchUserInfo);
     yield takeLatest('GET_USERNO', getExistUserNo);
+    yield takeLatest('REMOVE_MEMBER', removeMem);
     yield takeLatest('CONNECT_GOOGLE', connectToGoogle);
     yield takeLatest('REVOKE_GOOGLE', connectToGoogle);
 }
@@ -113,8 +155,7 @@ function userInfo(currentState = initialState, action) { //리듀서 선언
         case 'CHANGE_PWD_RESULT':
             return {
                 ...currentState,
-                currendPwd: action.currentPwd,
-                changedPwd: action.changedPwd,
+                data: action.data,
             }
         case 'CHANGE_USERINFO_RESULT':
             return {
@@ -123,14 +164,20 @@ function userInfo(currentState = initialState, action) { //리듀서 선언
         case 'GET_USERNO_RESULT':
             return {
                 ...currentState,
-                getUserNo: action.getUserNo,
-                userNoCount: action.userNoCount,
+                memList: action.memList,
+                memIdList: action.memIdList,
+            }
+        case 'REMOVE_MEMBER_RESULT':
+            return {
+                ...currentState,
+                memList: action.memList,
+                memIdList: action.memIdList,
             }
         case 'CONNECT_GOOGLE_RESULT':
             return {
                 ...currentState,
             }
-        case 'REVOKE_GOOGLE':
+        case 'REVOKE_GOOGLE_RESULT':
             return {
                 ...currentState,
             }

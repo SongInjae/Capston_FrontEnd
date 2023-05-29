@@ -129,7 +129,7 @@ function Bodys({ infos, currentMonth, selectedDate, onDateClick }) {
           new Date(info.date).getMonth() === cloneday.getMonth() &&
           new Date(info.date).getDate() === cloneday.getDate()
         ) {
-          reserveTime = moment(info.start).format('HH:mm') + '-' + moment(info.end).format('HH:mm');
+          reserveTime = `${info.start.split(':')[0]}:${info.start.split(':')[1]}-${info.end.split(':')[0]}:${info.end.split(':')[1]}`;
           reser = true;
         }
 

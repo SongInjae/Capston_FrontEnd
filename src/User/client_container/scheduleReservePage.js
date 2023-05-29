@@ -328,7 +328,7 @@ const ModalAddMemeberBtn = styled.button`
         background-color: #EF9090;
     }
 `;
-function ReservingPage() {
+function ScheduleReservingPage() {
     const TimeList = [
         "9:00",
         "9:30",
@@ -653,4 +653,4 @@ function ReservingPage() {
     );
 }
 
-export default ReservingPage;
+export default ScheduleReservingPage;

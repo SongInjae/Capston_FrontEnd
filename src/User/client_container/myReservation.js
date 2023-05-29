@@ -2,8 +2,8 @@ import styled, { css } from 'styled-components';
 import logo from '../assets/sejong.png';
 import MyReserveCalendar from './myReserveCalendar';
 import Button from '../../Manager/components/Button';
-import { useEffect } from 'react';
-import { getMyReservation, deleteMyReservation } from '../store/modules/reservation';
+import { useEffect, useState } from 'react';
+import { getMyReservation, deleteMyReservation, authLocation } from '../store/modules/reservation';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '../component/header';
 
@@ -27,18 +27,18 @@ const RoomInfoBlock = styled.div`
   width: 33rem;
   display: flex;
 `;
-const RoomImageBlock = styled.div`
-  background-color: lightgray;
-  border-radius: 7px;
-  width: 7rem;
-  height: 7rem;
+const RoomImage = styled.img`
+    width : 7rem;
+    height : 7rem;
+    border-radius: 8px;
 `;
 const RoomTextBlock = styled.div`
   margin-left: 1rem;
   flex-grow: 1;
 `;
 const Roomtext = styled.div`
-  color: gray;
+  color: black;
+  font-size: 0.9rem;
   ${(props) =>
     props.weight &&
     css`
@@ -62,43 +62,83 @@ const CancelButton = styled(Button)`
     background-color: #a31432;
 `;
 
+const LocationAuthBtn = styled(Button)`
+ margin-top: auto;
+    float : right;
+    bottom: 10px;
+    right : 10px;
+    font-weight: 500;
+    font-size: 1.0rem;
+    color: white;
+    width: 5.5rem;
+    height : 2.7rem;
+    border-radius: 8px;
+    border-width: 0px;
+    background-color: #a31432;
+`
+
 const MyReservation = () => {
   const reserveRoomInfo = useSelector(state => state.reservation.myReservationInfo);
+  const myId = useSelector(state => state.userInfo.myInfo.id);
+  const geolocationOptions = {
+    enableHighAccuracy: true,
+    timeout: 1000 * 10,
+    maximumAge: 1000 * 3600 * 24,
+  }
+
+
+  const [locationInfo, setLocationInfo] = useState({});
+
   const dispatch = useDispatch();
 
+  const getLocation = () => {
+    const { geolocation } = navigator
+
+    if (!geolocation) {
+      alert('Geolocation is not supported.')
+      return
+    }
+
+    return new Promise((resolve, reject) => { geolocation.getCurrentPosition(resolve, reject, geolocationOptions) });
+  }
+
   useEffect(() => {
-    dispatch(getMyReservation());
+    dispatch(getMyReservation(myId));
+    console.log(reserveRoomInfo);
   }, [dispatch]);
-  // const infos = [
-  //   {
-  //     id: 1,
-  //     year: 2023,
-  //     month: 5,
-  //     day: 26,
-  //     time: '15:00-16:30',
-  //     location: '대양 AI센터 835호',
-  //   },
-  //   {
-  //     id: 2,
-  //     year: 2023,
-  //     month: 5,
-  //     day: 23,
-  //     time: '18:00-19:00',
-  //     location: '대양 AI센터 836호',
-  //   },
-  // ];
+  const onClickDeleteBtn = (id) => {
+    dispatch(deleteMyReservation(id));
+    window.location.reload();
+
+    dispatch(getMyReservation(id));
+  }
+
+  const onClickLocationAuthBtn = async (id) => {
+    try {
+      let position = await getLocation();
+      setLocationInfo(position);
+      console.log(position);
+      dispatch(authLocation(id, position.coords.latitude, position.coords.longitude));
+    } catch (e) {
+      alert(e);
+    }
+
+  }
 
   const infoList = reserveRoomInfo && reserveRoomInfo.map((info) => (
+
     <ReserveInfoBlock>
       <RoomInfoBlock>
-        <RoomImageBlock />
+        <RoomImage src={info.room.images.image} />
         <RoomTextBlock>
-          <Roomtext weight={true}>{info.id}</Roomtext>
+          <Roomtext weight={true}>{info.room.name}</Roomtext>
           <Roomtext>
             일정 : {info.date}
           </Roomtext>
-          <Roomtext>시간 : {info.start}</Roomtext>
-          <CancelButton onClick={() => dispatch(deleteMyReservation(info.id))}>예약 취소</CancelButton>
+          <Roomtext>시간 : {info.start.split(':')[0]}:{info.start.split(':')[1]}-{info.end.split(':')[0]}:{info.end.split(':')[1]}</Roomtext>
+          <CancelButton onClick={() => onClickDeleteBtn(info.id)}>예약 취소</CancelButton>
+
+          <LocationAuthBtn onClick={() => onClickLocationAuthBtn(info.id)}>인증하기</LocationAuthBtn>
           {/* <Roomtext weight={true}>{info.location}</Roomtext>
           <Roomtext>
             일정 : {info.year}년 {info.month}월 {info.day}일

@@ -239,14 +239,14 @@ function MyPage(props) {
       data.email = email;
     }
     if (name !== userInfo.name || email !== userInfo.email) {
-      dispatch(changeUserInfo({ id: userInfo.id, data: data }));
+      dispatch(changeUserInfo(userInfo.id, data));
     } else {
       alert('바뀐 정보가 없습니다.')
     }
   }
   const onClickConnectGoogle = () => {
     console.log('click');
-    dispatch(googleConnect());
+    dispatch(googleConnect(userInfo.user_no));
   }
   const onClickRevokeGoogle = () => {
     dispatch(googleConnect());
