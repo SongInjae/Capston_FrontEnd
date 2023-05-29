@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { take, excel } from '../store/modules/addmember';
-import Paging from '../components/Paging';
 import Pagenation from '../components/Pagenation';
 import sea_img from '../assets/img/search.png';
 import UserTable from './Member/UserTable';
@@ -144,14 +143,14 @@ const CsvLinkStyled = styled(CSVLink)`
 `;
 
 const MemberManagementsPage = () => {
+  const dispatch = useDispatch(); //redux dispatch 불러오기
   useEffect(() => {
     dispatch(take());
-  }, []);
+  }, [dispatch]);
 
   const infos = useSelector(({ addmembers }) => addmembers.info); //info 불러오기
   const excelInfo = useSelector(({ addmembers }) => addmembers.excelInfo);
   const [userInput, setUserInput] = useState(''); //필터링 input
-  const dispatch = useDispatch(); //redux dispatch 불러오기
 
   //페이지네이션
   const [page, setPage] = useState(1);

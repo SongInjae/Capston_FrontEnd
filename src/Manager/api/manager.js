@@ -23,7 +23,7 @@ export const bulkDelete = (data) =>
 //회원정보 불러오기
 export const takeAllInfo = () =>
   manager.get('http://3.35.38.254:8000/users', {
-    headers: { Authorization: `Token ${token}` },
+    headers: { Authorization: `Token ${cookie.load('token')}` },
   });
 //회원 추가하기
 export const addInfo = ({

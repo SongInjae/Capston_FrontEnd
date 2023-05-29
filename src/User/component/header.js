@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import logo from '../img/sejong.png';
 import { GrClose } from 'react-icons/gr';
 
+import cookie from 'react-cookies';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../store/modules/auth';
@@ -249,6 +250,7 @@ function Header() {
     dispatch(logout());
     navigate('/');
     localStorage.removeItem('user');
+    cookie.remove('token', { path: '/' });
   };
   return (
     <HeaderWrapper>

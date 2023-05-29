@@ -3,8 +3,8 @@ import './MainPage.css';
 import styled from 'styled-components';
 import { Route, Routes, Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logout } from '../../User/store/modules/auth';
 import cookie from 'react-cookies';
+import { logout } from '../../User/store/modules/auth';
 
 import MemberManagementsPage from './MemberManagementsPage';
 import ReservationPage from './ReservationPage';
@@ -59,7 +59,7 @@ const MainPage = () => {
     dispatch(logout());
     navigate('/');
     localStorage.removeItem('user');
-    cookie.remove('token', { path: '/' });
+    cookie.remove('token');
   };
 
   const toggleActive = (e) => {

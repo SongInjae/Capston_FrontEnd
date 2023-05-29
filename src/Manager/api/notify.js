@@ -4,13 +4,9 @@ import cookie from 'react-cookies';
 const token = cookie.load('token');
 
 export const takeAllInfo = () =>
-  notify.get(
-    'http://3.35.38.254:8000/utils/notice',
-    { page: 1 },
-    {
-      headers: { Authorization: `Token ${token}` },
-    },
-  );
+  notify.get('http://3.35.38.254:8000/utils/notice', {
+    headers: { Authorization: `Token ${token}` },
+  });
 export const addInfo = (formData) =>
   notify.post('http://3.35.38.254:8000/utils/notice', formData, {
     headers: { Authorization: `Token ${token}` },

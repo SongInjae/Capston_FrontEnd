@@ -112,7 +112,7 @@ const RegularUserTable = ({ infos }) => {
   function ConvertDay(i) {
     i = i.replace('MON', '월');
     i = i.replace('TUE', '화');
-    i = i.replace('WEN', '수');
+    i = i.replace('WED', '수');
     i = i.replace('THR', '목');
     i = i.replace('FRI', '금');
     i = i.replace('SAT', '토');
