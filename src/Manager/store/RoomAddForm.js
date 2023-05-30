@@ -19,7 +19,7 @@ const RoomAddForm = () => {
 
   useEffect(() => {
     formData.append('name', name);
-    formData.append('amenities', amenities);
+    formData.append('amenities', JSON.stringify(amenities));
     formData.append('discription', discription);
     formData.append('image', file);
   }, [name, amenities, discription, file]);

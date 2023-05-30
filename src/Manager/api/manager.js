@@ -36,7 +36,7 @@ export const addInfo = ({
 }) =>
   manager.post(
     'http://3.35.38.254:8000/users',
-    { user_type, name, user_no, email, password, department },
+    { user_type, name, user_no, email, password: 12345678, department },
     { headers: { Authorization: `Token ${token}` } },
   );
 //회원 삭제하기

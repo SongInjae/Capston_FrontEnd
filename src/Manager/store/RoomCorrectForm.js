@@ -36,7 +36,9 @@ const RoomCorrectForm = () => {
 
   useEffect(() => {
     if (name !== false) formData.append('name', name);
-    if (amenities !== false) formData.append('amenities', amenities);
+    if (amenities !== false) {
+      formData.append('amenities', JSON.stringify(amenities));
+    }
     if (discription !== false) formData.append('discription', discription);
     if (file !== false) formData.append('image', file);
   }, [name, amenities, discription, file]);

@@ -15,8 +15,8 @@ const InfoForm = () => {
       name: addmembers.name,
       user_no: addmembers.user_no,
       email: addmembers.email,
-      password: addmembers.password,
-      pwdCheck: addmembers.pwdCheck,
+      //password: addmembers.password,
+      //pwdCheck: addmembers.pwdCheck,
       department: addmembers.department,
     }));
   useEffect(() => {
@@ -47,7 +47,9 @@ const InfoForm = () => {
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(insert({ user_type, name, user_no, email, password, department }));
+    dispatch(
+      insert({ user_type, name, user_no, email, /*password,*/ department }),
+    );
     navigate(-1);
     dispatch(take());
   };

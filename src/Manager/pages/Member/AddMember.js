@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import Button from '../../components/Button';
 import BackImage from '../../components/BackImage';
@@ -19,6 +19,11 @@ const FormBlock = styled.div`
   height: 4em;
   font-family: 'InterBold';
   font-weight: 400;
+  ${(props) =>
+    props.display &&
+    css`
+      display: none;
+    `}
 `;
 const ImageIcon = styled.div`
   background-image: url(${UserIcon});
@@ -102,24 +107,24 @@ const AddMember = ({ error, onChange, onTypeChange, onSubmit }) => {
             required
           />
         </FormBlock>
-        <FormBlock>
+        <FormBlock display={true}>
           <LabelBlock htmlFor="pwd">비밀번호</LabelBlock>
           <NameInputBlock
             type="password"
             placeholder="비밀번호를 입력하세요."
             id="password"
             onChange={onChange}
-            required
+            //required
           />
         </FormBlock>
-        <FormBlock>
+        <FormBlock display={true}>
           <LabelBlock htmlFor="pwdCheck">비밀번호 확인</LabelBlock>
           <NameInputBlock
             type="password"
             placeholder="위와 같은 비밀번호를 입력하세요."
             id="pwdCheck"
             onChange={onChange}
-            required
+            //required
           />
         </FormBlock>
         <ErrorBlock>{error}</ErrorBlock>
