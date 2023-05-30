@@ -5,7 +5,6 @@ import MainPage from './Manager/pages/MainPage';
 import UserMain from './User/client_container/main';
 import ReservingPage from './User/client_container/reservation';
 import MyReservation from './User/client_container/myReservation';
-import NoticePage from './User/client_container/notice';
 
 import NotifyInfoPage from './User/client_container/Notify/NotifyInfoPage';
 import NotifyMainPage from './User/client_container/Notify/NotifyMainPage';
@@ -18,7 +17,6 @@ const App = () => {
       <Route path="/" element={<SignIn />} />
       <Route path="/admin/*" element={<MainPage />} />
       <Route path="/main" element={<UserMain />} />
-      <Route path="/notice" element={<NoticePage />} />
       <Route path="/reserve" element={<ReservingPage />} />
       <Route path="/schedule_reserve" element={<ScheduleReservingPage />} />
       <Route path="/main/*" element={<UserMain />} />

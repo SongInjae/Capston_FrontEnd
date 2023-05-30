@@ -10,13 +10,8 @@ import { meetingRoomSaga } from '../../../User/store/modules/room';
 import { userInfoSaga } from '../../../User/store/modules/userInfo';
 import { reservationSaga } from '../../../User/store/modules/reservation';
 import auth, { authSaga } from '../../../User/store/modules/auth';
-<<<<<<< Updated upstream
 import board, { boardSaga } from '../../../User/store/modules/board';
 
-import addmembers, { addmembersSaga } from './addmember';
->>>>>>> refs/remotes/origin/master
-=======
->>>>>>> Stashed changes
 import rooms, { roomSaga } from './rooms';
 import notify, { notifySaga } from './notify';
 import reserve, { reserveSaga } from './reserve';

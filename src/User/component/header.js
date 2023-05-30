@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import logo from '../assets/sejong.png';
 import { GrClose } from 'react-icons/gr';
@@ -9,8 +9,10 @@ import { logout } from '../store/modules/auth';
 import { changePassword, changeUserInfo, googleConnect, googleRevoke } from '../store/modules/userInfo';
 
 const HeaderWrapper = styled.header`
-  margin: 0 auto;
+ 
+ 
   display: flex;
+  width: 100%;
   background-color: #a31432;
   justify-content: space-between;
   display: flex;
@@ -29,6 +31,8 @@ const MainTitle = styled.div`
   margin-left: 130px;
   display: flex;
   align-items: center;
+
+  cursor : pointer;
 `;
 
 const UserInfo = styled.div`
@@ -50,6 +54,8 @@ const LogoutBtn = styled.button`
   margin-left: 10px;
   margin-right: 15px;
   margin-bottom: 15px;
+
+  cursor : pointer;
 `;
 
 const LogoutWrapper = styled.div``;
@@ -63,6 +69,7 @@ const HeaderTab = styled.li`
   font-size: 14px;
   margin-left: 15px;
   margin-right: 15px;
+  cursor : pointer;
 `;
 const RightComponent = styled.div`
   text-align: right;
@@ -279,6 +286,7 @@ function MyPage(props) {
           <TextField type="password" onChange={(event) => setCheckpwd(event.target.value)}></TextField>
         </TextFieldWrapper>
         <PwdChageBtn onClick={onClickChangePwd}>비밀번호 변경</PwdChageBtn>
+
         <TitleWrapper>
           <InfoTitle>회원정보 변경</InfoTitle>
         </TitleWrapper>
@@ -295,12 +303,12 @@ function MyPage(props) {
           <TextField defaultValue={userInfo.email} type="email" onChange={onChangeEmail} ></TextField>
 
           {/* <a href="3.35.38.254:8000" onClick={onClickConnectGoogle}>연동하기</a> */}
-          <GoogleConnectionBtn onClick={onClickConnectGoogle}>연동하기</GoogleConnectionBtn>
+          {/* <GoogleConnectionBtn onClick={onClickConnectGoogle}>연동하기</GoogleConnectionBtn> */}
         </TextFieldWrapper>
-        <TextFieldWrapper>
+        {/* <TextFieldWrapper>
           <TextFieldClass disabled={true}>전화번호</TextFieldClass >
           <TextField></TextField>
-        </TextFieldWrapper>
+        </TextFieldWrapper> */}
         <UserInfoChageBtn onClick={onClickChangeUserInfo}>회원정보 변경</UserInfoChageBtn>
       </ModalContainer>
     </Background>
@@ -316,7 +324,7 @@ function Header() {
     navigate('/main/reserve');
   }
   const clickNotice = () => {
-    navigate('/notice');
+    navigate('/main/board');
 
   }
 
@@ -327,6 +335,11 @@ function Header() {
     setModal(false);
   };
 
+  const clickSejongLogo = () => {
+    console.log('click')
+    navigate('/main')
+  }
+
   const dispatch = useDispatch();
   const onLogout = () => {
     dispatch(logout());
@@ -335,7 +348,7 @@ function Header() {
   };
   return (
     <HeaderWrapper>
-      <MainTitle>
+      <MainTitle onClick={clickSejongLogo}>
         <SejongLogo src={logo}></SejongLogo> &nbsp;세종대학교 예약시스템
       </MainTitle>
       <RightComponent>

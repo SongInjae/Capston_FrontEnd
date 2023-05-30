@@ -9,7 +9,8 @@ export const getMyReservation = (id) => client.get('http://3.35.38.254:8000/room
 });
 
 export const makeReservation = (body) => client.post('http://3.35.38.254:8000/rooms/reservations',
-    body,
+    body
+    ,
     {
         headers: {
             Authorization: 'Token ' + token
@@ -31,7 +32,14 @@ export const getRoomReservation = (id) =>
         }
     });
 
-export const authLocate = (id, lat, log) => {
+export const getRoomReserveByDate = (id, date) =>
+    client.get(`http://3.35.38.254:8000/rooms/reservations?date=${date}&room=${id}`, {
+        headers: {
+            Authorization: 'Token ' + token
+        }
+    });
+
+export const authLocate = (id, lat, log) =>
     client.post(`http://3.35.38.254:8000/rooms/reservations/${id}/location?latitude=${lat}&logtitude=${log}`, {
 
         headers: {
@@ -39,4 +47,3 @@ export const authLocate = (id, lat, log) => {
         },
         withCredentials: true
     });
-}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../component/header";
 import format from "date-fns/format";
-import { reservation, getRoomReservation, makeReservation } from "../store/modules/reservation";
+import { makeReservation, getReservationByDate, transFormDate } from "../store/modules/reservation";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserNo, removeMember } from "../store/modules/userInfo";
 import { IoIosArrowDown } from "react-icons/io";
@@ -536,9 +536,11 @@ function ScheduleReservingPage() {
 
     const onClickReserveBtn = async () => {
         let reserveData;
+        let selectedDay = transFormDate(new Date(selectedDate).getDay());
+
         reserveData = {
-            is_scheduled: false,
-            day: ['MON', 'FRI'],
+            is_scheduled: true,
+            day: [selectedDay],
             date: `${format(selectedDate, 'yyyy')}-${format(selectedDate, 'MM')}-${format(selectedDate, 'dd')}`,
             start: startTime,
             end: endTime,
@@ -559,10 +561,14 @@ function ScheduleReservingPage() {
 
     }
 
+    // 1. 월 선택 시,
+
+    // 선택한 요일에 해당하는 모든 정기예약과 비교
+    // 선택한 요일의 주차부터 선택한 주차까지의 모든 일반예약 표시
 
 
     useEffect(() => {
-        dispatch(getRoomReservation(selectedRoom.id, [], `${format(selectedDate, 'yyyy')}-${format(selectedDate, 'MM')}-${format(selectedDate, 'dd')}`));
+        dispatch(getReservationByDate(selectedRoom.id, [], `${format(selectedDate, 'yyyy')}-${format(selectedDate, 'MM')}-${format(selectedDate, 'dd')}`));
 
     }, [dispatch, selectedDate, selectedRoom]);
     return (
@@ -640,11 +646,7 @@ function ScheduleReservingPage() {
                 <PartFour>
                     <WarningTitle><WarningIcon></WarningIcon>유의사항</WarningTitle>
                     <Warning>
-                        <WarningMsg>1. 첫번째 유의사항입니다.</WarningMsg>
-                        <WarningMsg>2. 두번째 유의사항입니다.</WarningMsg>
-                        <WarningMsg>3. 세번째 유의사항입니다.</WarningMsg>
-                        <WarningMsg>4. 네번째 유의사항입니다.</WarningMsg>
-                        <WarningMsg>5. 다섯번째 유의사항입니다.</WarningMsg>
+                        {selectedRoom.discription}
                     </Warning></PartFour>
 
                 <ReservationButton onClick={onClickReserveBtn} >예약하기</ReservationButton>

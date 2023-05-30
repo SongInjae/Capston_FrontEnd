@@ -25,7 +25,7 @@ export function* getMine() {
         yield put({ type: 'GET_MYINFO_RESULT', myInfo: response.data });
 
     } catch (e) {
-        yield put({ type: 'GET_MYINFO_RESULT', myInfo: {} });
+        yield put({ type: 'GET_MYINFO_RESULT', });
     }
 }
 

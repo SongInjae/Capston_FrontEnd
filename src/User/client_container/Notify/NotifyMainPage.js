@@ -3,67 +3,11 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { take } from '../../store/modules/board';
-
-import logo from '../../img/sejong.png';
 import sea_img from '../../../Manager/assets/img/search.png';
 import Pagenation from '../../../Manager/components/Pagenation';
-
+import Header from '../../component/header';
 //헤더
-const Header = styled.header`
-  margin: 0 auto;
-  display: flex;
-  background-color: #a31432;
-  justify-content: space-between;
-  display: flex;
-  align-items: center;
-`;
-const MainTitle = styled.div`
-  color: white;
-  font-weight: bold;
-  font-size: 26px;
-  margin-left: 130px;
-  display: flex;
-  align-items: center;
-`;
-const SejongLogo = styled.img`
-  width: 40px;
-  height: 40px;
-`;
-const RightComponent = styled.div`
-  text-align: right;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  margin-right: 130px;
-`;
-const LogoutWrapper = styled.div``;
-const UserInfo = styled.div`
-  display: inline-block;
-  color: white;
-  font-weight: 600;
-  font-size: 12px;
-`;
-const LogoutBtn = styled.button`
-  display: inline-block;
-  color: white;
-  border: 1px solid #a31432;
-  border-color: white;
-  border-radius: 8px;
-  background-color: #a31432;
-  font-weight: 600;
-  font-size: 12px;
-  margin-left: 10px;
-  margin-right: 15px;
-  margin-bottom: 15px;
-`;
-const TabWrapper = styled.div``;
-const HeaderTab = styled.li`
-  display: inline-block;
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-  margin-left: 15px;
-  margin-right: 15px;
-`;
+
 
 //본문
 const ContentBlock = styled.div`
@@ -225,22 +169,7 @@ const NotifyMainPage = () => {
 
   return (
     <div>
-      <Header>
-        <MainTitle>
-          <SejongLogo src={logo}></SejongLogo> &nbsp;세종대학교 예약시스템
-        </MainTitle>
-        <RightComponent>
-          <LogoutWrapper>
-            <UserInfo>17011582 권형석</UserInfo>
-            <LogoutBtn>로그아웃</LogoutBtn>
-          </LogoutWrapper>
-          <TabWrapper>
-            <HeaderTab>공지사항</HeaderTab>
-            <HeaderTab>내 예약현황 조회</HeaderTab>
-            <HeaderTab>마이페이지</HeaderTab>
-          </TabWrapper>
-        </RightComponent>
-      </Header>
+      <Header></Header>
 
       <ContentBlock>
         <ContentTitle>공지사항</ContentTitle>

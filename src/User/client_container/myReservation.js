@@ -6,11 +6,16 @@ import { useEffect, useState } from 'react';
 import { getMyReservation, deleteMyReservation, authLocation } from '../store/modules/reservation';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '../component/header';
+import { getMyInfo } from '../store/modules/userInfo';
 
+const Dummy = styled.div`
+  height:0px;
+`
 
 const TitleBlock = styled.h2`
-  margin-right: 27rem;
-  text-align: center;
+  text-align: left;
+  width: 29rem;
+  font-size: 1.3rem;
   margin-top: 1rem;
 `;
 const ReserveInfoBlock = styled.div`
@@ -18,10 +23,13 @@ const ReserveInfoBlock = styled.div`
   justify-content: center;
   align-items: center;
   margin: 1rem auto;
-  border: 2px solid lightgray;
+  border: 1px solid lightgray;
   border-radius: 8px;
-  width: 35rem;
+  width: 29rem;
   height: 9rem;
+  margin : 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 `;
 const RoomInfoBlock = styled.div`
   width: 33rem;
@@ -49,6 +57,7 @@ const Roomtext = styled.div`
 `;
 const CancelButton = styled(Button)`
     margin-top: auto;
+    margin-left : 3px;
     float : right;
     bottom: 10px;
     right : 10px;
@@ -77,6 +86,19 @@ const LocationAuthBtn = styled(Button)`
     background-color: #a31432;
 `
 
+const MyReserveBlock = styled.div`
+  display : flex;
+  flex-direction: row;
+  justify-content: center;
+`
+
+const InfoBlock = styled.div`
+  display : flex;
+  flex-direction: column;
+`
+
+
+
 const MyReservation = () => {
   const reserveRoomInfo = useSelector(state => state.reservation.myReservationInfo);
   const myId = useSelector(state => state.userInfo.myInfo.id);
@@ -103,14 +125,14 @@ const MyReservation = () => {
   }
 
   useEffect(() => {
+    dispatch(getMyInfo());
     dispatch(getMyReservation(myId));
-    console.log(reserveRoomInfo);
-  }, [dispatch]);
+
+  }, [dispatch, myId]);
+
   const onClickDeleteBtn = (id) => {
     dispatch(deleteMyReservation(id));
-    window.location.reload();
 
-    dispatch(getMyReservation(id));
   }
 
   const onClickLocationAuthBtn = async (id) => {
@@ -125,39 +147,75 @@ const MyReservation = () => {
 
   }
 
-  const infoList = reserveRoomInfo && reserveRoomInfo.map((info) => (
+  const commoninfoList = reserveRoomInfo && reserveRoomInfo.map((info) => (
+    !info.is_scheduled ?
+      <ReserveInfoBlock>
+        <RoomInfoBlock>
+          <RoomImage src={info.room.images.image} />
+          <RoomTextBlock>
+            <Roomtext weight={true}>{info.room.name}</Roomtext>
+            <Roomtext>
+              일정 : {info.date}
+            </Roomtext>
+            <Roomtext>시간 : {info.start.split(':')[0]}:{info.start.split(':')[1]}-{info.end.split(':')[0]}:{info.end.split(':')[1]}</Roomtext>
+            <CancelButton onClick={() => onClickDeleteBtn(info.id)}>예약 취소</CancelButton>
 
-    <ReserveInfoBlock>
-      <RoomInfoBlock>
-        <RoomImage src={info.room.images.image} />
-        <RoomTextBlock>
-          <Roomtext weight={true}>{info.room.name}</Roomtext>
-          <Roomtext>
-            일정 : {info.date}
-          </Roomtext>
-          <Roomtext>시간 : {info.start.split(':')[0]}:{info.start.split(':')[1]}-{info.end.split(':')[0]}:{info.end.split(':')[1]}</Roomtext>
-          <CancelButton onClick={() => onClickDeleteBtn(info.id)}>예약 취소</CancelButton>
-
-          <LocationAuthBtn onClick={() => onClickLocationAuthBtn(info.id)}>인증하기</LocationAuthBtn>
-          {/* <Roomtext weight={true}>{info.location}</Roomtext>
-          <Roomtext>
-            일정 : {info.year}년 {info.month}월 {info.day}일
-          </Roomtext>
-          <Roomtext>시간 : {info.time}</Roomtext>
-          <CancelButton>예약 취소</CancelButton> */}
-        </RoomTextBlock>
-      </RoomInfoBlock>
-    </ReserveInfoBlock>
+            <LocationAuthBtn onClick={() => onClickLocationAuthBtn(info.id)}>인증하기</LocationAuthBtn>
+          </RoomTextBlock>
+        </RoomInfoBlock>
+      </ReserveInfoBlock> : <Dummy></Dummy>
   ));
+
+  const scheduledInfoList = reserveRoomInfo && reserveRoomInfo.map((info) => {
+    if (info.is_scheduled) {
+      return <ReserveInfoBlock>
+        <RoomInfoBlock>
+          <RoomImage src={info.room.images.image} />
+          <RoomTextBlock>
+            <Roomtext weight={true}>{info.room.name}</Roomtext>
+            <Roomtext>
+              일정 : {info.date}
+            </Roomtext>
+            <Roomtext>시간 : {info.start.split(':')[0]}:{info.start.split(':')[1]}-{info.end.split(':')[0]}:{info.end.split(':')[1]}</Roomtext>
+            <CancelButton onClick={() => onClickDeleteBtn(info.id)}>예약 취소</CancelButton>
+
+            <LocationAuthBtn onClick={() => onClickLocationAuthBtn(info.id)}>인증하기</LocationAuthBtn>
+            {/* <Roomtext weight={true}>{info.location}</Roomtext>
+        <Roomtext>
+          일정 : {info.year}년 {info.month}월 {info.day}일
+        </Roomtext>
+        <Roomtext>시간 : {info.time}</Roomtext>
+        <CancelButton>예약 취소</CancelButton> */}
+          </RoomTextBlock>
+        </RoomInfoBlock>
+      </ReserveInfoBlock>
+    }
+
+  }
+
+  );
 
   return (
     <div>
       <Header></Header>
       <MyReserveCalendar infos={reserveRoomInfo} />
       {/* <MyReserveCalendar infos={infos} /> */}
+      <MyReserveBlock>
 
-      <TitleBlock>나의 예약목록</TitleBlock>
-      {infoList}
+        <InfoBlock>
+          <TitleBlock>나의 일반예약목록</TitleBlock>
+          {
+
+          }
+          {commoninfoList}
+        </InfoBlock>
+        <InfoBlock>
+          <TitleBlock>나의 정기예약목록</TitleBlock>
+          {scheduledInfoList}
+        </InfoBlock>
+
+      </MyReserveBlock>
+
     </div>
   );
 };

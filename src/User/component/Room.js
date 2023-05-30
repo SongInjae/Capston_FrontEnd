@@ -6,7 +6,6 @@ import { pickRoom } from "../store/modules/room";
 import { select } from "react-cookies";
 const Room = styled.div`
     border: solid;
-    border-width: 2px;
     border-color: lightgray;
     border-radius: 8px;
     padding : 15px;
@@ -65,13 +64,20 @@ const ReserveBtn = styled.button`
 function RoomComponent({ roomInfo }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const userType = useSelector(state => state.userInfo.myInfo.user_type.id);
     const possible_duration = useSelector(state => state.userInfo.myInfo.user_type.possible_duration);
     const selectDate = useSelector(state => state.dateReducer.date);
     const clickScheduleReserveBtn = (selectedRoom) => {
-
+        console.log(userType);
+        if (userType !== 2) {
+            alert('권한이 없습니다.');    //-> 정기예약 기능 개발되면 주석 풀기
+            return;
+        }
         dispatch(pickRoom(selectedRoom));
         navigate('/schedule_reserve')
     }
+
+
     const clickReserveBtn = (selectedRoom) => {
         const toolDay = new Date();
         const today = new Date();
