@@ -152,9 +152,46 @@ const Penalty = () => {
     dispatch(remove(id));
   }, []);
 
+  const [filterInfo, setFilterInfo] = useState(infos);
+  const [userType, setUserType] = useState(2);
+  const [infoListSet, setInfoList] = useState();
+
+  useEffect(() => {
+    setFilterInfo(
+      infos.filter((info) => {
+        return info.booker.user_type === userType;
+      }),
+    );
+  }, [infos, userType]);
+
   //패널티 회원 정보
+  useEffect(() => {
+    let InfoLists = [];
+    for (let i = 0; i < filterInfo.length; i++) {
+      InfoLists.push(
+        <UserBlock key={filterInfo[i].id}>
+          <ImageInfoBlock>
+            <ImageIcon />
+            <TextBlock>
+              <InfoBlock bold={true}>
+                {filterInfo[i].name}({filterInfo[i].number})
+              </InfoBlock>
+              <InfoBlock>{filterInfo[i].designation}</InfoBlock>
+              <InfoBlock>Panalty : {filterInfo[i].count}</InfoBlock>
+              <InfoBlock>Email : {filterInfo[i].email}</InfoBlock>
+            </TextBlock>
+          </ImageInfoBlock>
+          <DeleteButton onClick={() => onRemoveClick(filterInfo[i].id)}>
+            Delete
+          </DeleteButton>
+        </UserBlock>,
+      );
+    }
+    setInfoList(InfoLists);
+  }, [filterInfo, filterInfo.length, infos]);
+  /*
   let InfoLists = [];
-  for (let i = 0; i < infos.length; i++) {
+  for (let i = 0; i < filterInfo.length; i++) {
     InfoLists.push(
       <UserBlock key={infos[i].id}>
         <ImageInfoBlock>
@@ -173,7 +210,7 @@ const Penalty = () => {
         </DeleteButton>
       </UserBlock>,
     );
-  }
+  }*/
 
   //차트 데이터
   const data = {
@@ -204,11 +241,11 @@ const Penalty = () => {
         <DoughnutStyled data={data} />
         <UserListBlock>
           <UserCategory>
-            <ButtonStyled>교직원</ButtonStyled>
-            <ButtonStyled>대학원생</ButtonStyled>
-            <ButtonStyled>학부생</ButtonStyled>
+            <ButtonStyled onClick={() => setUserType(2)}>교직원</ButtonStyled>
+            <ButtonStyled onClick={() => setUserType(3)}>대학원생</ButtonStyled>
+            <ButtonStyled onClick={() => setUserType(4)}>학부생</ButtonStyled>
           </UserCategory>
-          {InfoLists}
+          {infoListSet}
         </UserListBlock>
       </ContentBlock>
       <LogoutModal

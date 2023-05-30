@@ -1,9 +1,9 @@
 import { createAction, handleActions } from 'redux-actions';
 import { produce } from 'immer';
-import { takeLatest, call } from 'redux-saga/effects';
-import createRequestSaga, {
+import { takeLatest } from 'redux-saga/effects';
+import createRequestLoginSaga, {
   createRequestActionTypes,
-} from '../../saga/createRequestSaga';
+} from '../../saga/createRequestLoginSaga';
 import * as authAPI from '../../api/auth';
 
 const CHANGE_FIELD = 'auth/CHANGE_FIELD';
@@ -15,34 +15,21 @@ const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] =
 
 export const tempSetUser = createAction(TEMP_SET_USER, (user) => user);
 export const logout = createAction(LOGOUT);
-
 export const changeField = createAction(CHANGE_FIELD, ({ key, value }) => ({
   key,
   value,
 }));
-
 export const login = createAction(LOGIN, ({ username, password }) => ({
   username,
   password,
 }));
 
-const loginSaga = createRequestSaga(LOGIN, authAPI.login);
-function* logoutSaga() {
-  try {
 
-    //먼저 쿠키에서 세션id 가져와
-    //
-    yield call(authAPI.logout);//회원 생성
-    localStorage.removeItem('user');
-  } catch (e) {
-    console.log(e);
-  }
-}
+const loginSaga = createRequestLoginSaga(LOGIN, authAPI.login);
 
 
 export function* authSaga() {
   yield takeLatest(LOGIN, loginSaga);
-  //yield takeLatest(LOGOUT, logoutSaga);
 }
 
 const initialState = {

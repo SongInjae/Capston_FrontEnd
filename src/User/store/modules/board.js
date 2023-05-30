@@ -1,8 +1,8 @@
 import { createAction, handleActions } from 'redux-actions';
 import { takeLatest } from 'redux-saga/effects';
-import createRequestSaga, {
+import createRequestResultSaga, {
   createRequestActionTypes,
-} from '../../saga/createRequestSaga';
+} from '../../saga/createRequestResultSaga';
 import * as boardAPI from '../../api/board';
 
 const [TAKE, TAKE_SUCCESS, TAKE_FAILURE] =
@@ -10,7 +10,7 @@ const [TAKE, TAKE_SUCCESS, TAKE_FAILURE] =
 
 export const take = createAction(TAKE);
 
-const takeSaga = createRequestSaga(TAKE, boardAPI.takeAllInfo);
+const takeSaga = createRequestResultSaga(TAKE, boardAPI.takeAllInfo);
 
 export function* boardSaga() {
   yield takeLatest(TAKE, takeSaga);

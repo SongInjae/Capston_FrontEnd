@@ -138,7 +138,7 @@ const Notify = () => {
   const onConfirm = useCallback(() => {
     setModal(false);
     dispatch(remove(id));
-  }, []);
+  }, [id, dispatch]);
 
   //페이지네이션
   const [page, setPage] = useState(1);

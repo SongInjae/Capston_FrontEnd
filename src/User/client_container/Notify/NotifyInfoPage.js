@@ -85,7 +85,7 @@ const NotifyInfoPage = () => {
           <span>
             등록일_
             <SpanStyld bold={true}>
-              {info.start.replace('T', ' ').substring(0, 16)}
+              {info.end.replace('T', ' ').substring(0, 16)}
             </SpanStyld>
           </span>
         </BoardInfo>

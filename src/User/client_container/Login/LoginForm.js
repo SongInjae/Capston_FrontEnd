@@ -78,26 +78,11 @@ const LoginForm = () => {
       return;
     }
     if (auth) {
-      console.log('로그인 성공');
       if (form.username !== '') {
-        if (form.username === 'admin') {
+        if (auth.user_type.id === 1) {
           navigate('admin');
         } else {
           navigate('main');
-        }
-
-        try {
-          const expires = new Date();
-          expires.setMinutes(expires.getMinutes() + 60);
-          auth.expire = Date.now() + 1000 * 60 * 60;
-          localStorage.setItem('user', JSON.stringify(auth));
-          cookie.save('token', auth.token, {
-            path: '/',
-            //expires,
-          });
-          //setCookie('token', auth.token);
-        } catch (e) {
-          console.log('localStorage is not working');
         }
         dispatch(changeField({ key: 'username', value: '' }));
         dispatch(changeField({ key: 'password', value: '' }));
