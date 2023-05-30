@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 import { pickDate } from '../user_store/date';
-import moment from 'moment';
 import {
   format,
   addMonths,
@@ -70,12 +69,12 @@ const Day = styled.div`
   border-radius: 6px;
   padding-top: 0.3rem;
   border-style: solid;
-  border-color : lightgray;
+  border-color: lightgray;
   background-color: ${(props) => props.color};
 `;
 const DateText = styled.div`
-  margin-left:0.5rem;
-`
+  margin-left: 0.5rem;
+`;
 const ReserveTimeBlock = styled.div`
   width: 100%;
   height: 25%;
@@ -118,7 +117,7 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
-  const infos = useSelector(state => state.reservation.myReservationInfo);
+  const infos = useSelector((state) => state.reservation.myReservationInfo);
   const rows = [];
   let days = [];
   let day = startDate;
@@ -131,18 +130,20 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
       let reserveTime = '';
       let reser = false;
 
-      infos && infos.forEach((info) => {
-        if (new Date(info.date).getMonth() === cloneday.getMonth() &&
-          new Date(info.date).getDate() === cloneday.getDate()) {
-          if (info.is_scheduled === false) {
-            reserveTime = `${info.start.split(':')[0]}:${info.start.split(':')[1]}-${info.end.split(':')[0]}:${info.end.split(':')[1]}`;
-            reser = true;
+      infos &&
+        infos.forEach((info) => {
+          if (
+            new Date(info.date).getMonth() === cloneday.getMonth() &&
+            new Date(info.date).getDate() === cloneday.getDate()
+          ) {
+            if (info.is_scheduled === false) {
+              reserveTime = `${info.start.split(':')[0]}:${
+                info.start.split(':')[1]
+              }-${info.end.split(':')[0]}:${info.end.split(':')[1]}`;
+              reser = true;
+            }
           }
-
-        }
-
-
-      });
+        });
       // infos.forEach((info) => {
       //   if (
       //     new Date(info.date).getMonth() === cloneday.getMonth() + 1 &&
@@ -174,7 +175,6 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
       //   }
 
       // });
-
 
       if (day.getDay() === 0 || day.getDay() === 6) {
         if (!isSameMonth(currentMonth, day)) {
@@ -240,7 +240,7 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
 const MyReserveCalendar = () => {
   const dispatch = useDispatch();
   const [current, setCurrent] = useState(new Date());
-  const selectDate = useSelector(state => state.dateReducer.date)
+  const selectDate = useSelector((state) => state.dateReducer.date);
 
   const onClickMonthMove = (direction) => {
     if (direction === 'left') {
@@ -252,7 +252,7 @@ const MyReserveCalendar = () => {
 
   const onDateClick = (day) => {
     dispatch(pickDate(day));
-    console.log(selectDate)
+    console.log(selectDate);
   };
 
   return (
