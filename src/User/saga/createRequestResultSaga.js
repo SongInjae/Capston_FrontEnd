@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import { startLoading, finishLoading } from '../store/modules/loading';
-
+export let token;
 export const createRequestActionTypes = (type) => {
   const SUCCESS = `${type}_SUCCESS`;
   const FAILURE = `${type}_FAILURE`;

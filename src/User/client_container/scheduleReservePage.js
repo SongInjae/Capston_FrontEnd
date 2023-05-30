@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../component/header";
 import format from "date-fns/format";
-import { reservation, getRoomReservation, makeReservation } from "../store/modules/reservation";
+import { makeReservation, getReservationByDate, transFormDate } from "../store/modules/reservation";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserNo, removeMember } from "../store/modules/userInfo";
 import { IoIosArrowDown } from "react-icons/io";
@@ -329,7 +328,7 @@ const ModalAddMemeberBtn = styled.button`
         background-color: #EF9090;
     }
 `;
-function ReservingPage() {
+function ScheduleReservingPage() {
     const TimeList = [
         "9:00",
         "9:30",
@@ -341,7 +340,6 @@ function ReservingPage() {
         "12:30",
         "13:00",
         "13:30",
-        "14:00",
         "14:30",
         "15:00",
         "15:30",
@@ -369,7 +367,6 @@ function ReservingPage() {
     ]
 
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const alreadyReservedTime = useSelector(state => state.reservation.reservedTime);
     const [isStartTimeBtnClicked, setIsStartTimeBtnClicked] = useState(false);
@@ -386,8 +383,6 @@ function ReservingPage() {
     const memIdList = useSelector(state => state.userInfo.memIdList);
     const myId = useSelector(state => state.userInfo.myInfo.id);
     const divideTime = useSelector(state => state.reservation.divideTime);
-    const [selectedTimeBlock, setSelectedTimeBlock] = useState([]);
-
 
     const checkReservedTime = (startTime, endTime) => {
         let reservedStartHour;
@@ -433,52 +428,6 @@ function ReservingPage() {
         return true;
 
     }
-
-    const setSelectedTimeLine = (startTime, endTime) => {
-        let startHour = parseInt(startTime.split(':')[0]);
-        let startMinute = parseInt(startTime.split(':')[1]);
-        let endHour = parseInt(endTime.split(':')[0]);
-        let endMinute = parseInt(endTime.split(':')[1]);
-        let time = [];
-        console.log(startTime, endTime);
-        for (let i = startHour; i <= endHour; i++) {
-            if (i === endHour) {
-                if (endMinute === 30) {
-
-                    time.push(`${endHour}:00-${endHour}:30`)
-                    break;
-                } else {
-                    break;
-                }    //예약있는 날짜의 endtime이랑 예약하려는 날짜의 start time이랑 겹치면 색깔 안변함
-
-            }
-            if (i === startHour) {
-                if (startMinute === 30) {
-                    console.log(`${startHour}:30-${startHour + 1}:00`);
-                    time.push(`${startHour}:30-${startHour + 1}:00`);
-                    continue;
-                }
-                if (startMinute === 0 && endHour > i) {
-
-                    time.push(`${startHour}:00-${startHour}:30`);
-                    time.push(`${startHour}:30-${startHour + 1}:00`);
-                    continue;
-                } if (startMinute === 0 && endHour === i) {
-                    time.push(`${startHour}:00-${startHour + 1}:30`);
-                    continue;
-                }
-
-
-            }
-            if (i < endHour && i > startHour) {
-                time.push(`${i}:00-${i}:30`)
-                time.push(`${i}:30-${i + 1}:00`)
-            }
-        }
-
-        console.log(time);
-        setSelectedTimeBlock(time);
-    }
     const clickStartTimePickBtn = (time) => {
         let startHour;
         let startMinute;
@@ -501,15 +450,14 @@ function ReservingPage() {
 
             if (gap <= 120) {
                 setStartTime(time);
+                console.log(time + '!!!!');
                 setIsStartTimeBtnClicked(!isStartTimeBtnClicked);
                 if (!checkReservedTime(time, endTime)) {
                     alert('예약자가 존재합니다.');
-                    setSelectedTimeBlock([]);
                     setStartTime('회의시작 시간');
-                    setEndTime('회의끝나는 시간');
                     return;
                 }
-                setSelectedTimeLine(time, endTime);
+                console.log(isStartTimeBtnClicked);
             } else {
                 alert('최대 2시간만 예약 가능합니다.');
                 return;
@@ -518,10 +466,8 @@ function ReservingPage() {
         }
 
 
-
         setIsStartTimeBtnClicked(!isStartTimeBtnClicked);
         setStartTime(time);
-        setSelectedTimeLine(time, endTime);
 
     }
 
@@ -557,12 +503,9 @@ function ReservingPage() {
                     console.log()
                     alert('예약자가 존재합니다.')
 
-                    setStartTime('회의시작 시간');
                     setEndTime('회의끝나는 시간');
-                    setSelectedTimeBlock([]);
                     return;
                 }
-                setSelectedTimeLine(startTime, time);
             } else {
                 alert('최대 2시간만 예약 가능합니다.')
                 return;
@@ -573,8 +516,6 @@ function ReservingPage() {
 
         setIsEndTimeBtnClicked(!isEndTimeBtnClicked);
         setEndTime(time);
-
-        setSelectedTimeLine(startTime, time);
 
     }
 
@@ -595,9 +536,11 @@ function ReservingPage() {
 
     const onClickReserveBtn = async () => {
         let reserveData;
+        let selectedDay = transFormDate(new Date(selectedDate).getDay());
+
         reserveData = {
-            is_scheduled: false,
-            day: ['MON', 'FRI'],
+            is_scheduled: true,
+            day: [selectedDay],
             date: `${format(selectedDate, 'yyyy')}-${format(selectedDate, 'MM')}-${format(selectedDate, 'dd')}`,
             start: startTime,
             end: endTime,
@@ -615,22 +558,17 @@ function ReservingPage() {
             alert('회의끝나는 시간을 설정하세요');
         }
         await dispatch(makeReservation(reserveData));
-        navigate('/main')
+
     }
 
-    const getTimeLineColor = (time) => {
-        if (divideTime.includes(time)) {
-            return '#FF5A5A'
-        } else if (selectedTimeBlock.includes(time)) {
-            return '#2B41B4'
-        } else {
-            return '#45D700'
-        }
-    }
+    // 1. 월 선택 시,
+
+    // 선택한 요일에 해당하는 모든 정기예약과 비교
+    // 선택한 요일의 주차부터 선택한 주차까지의 모든 일반예약 표시
 
 
     useEffect(() => {
-        dispatch(getRoomReservation(selectedRoom.id, [], `${format(selectedDate, 'yyyy')}-${format(selectedDate, 'MM')}-${format(selectedDate, 'dd')}`));
+        dispatch(getReservationByDate(selectedRoom.id, [], `${format(selectedDate, 'yyyy')}-${format(selectedDate, 'MM')}-${format(selectedDate, 'dd')}`));
 
     }, [dispatch, selectedDate, selectedRoom]);
     return (
@@ -659,12 +597,12 @@ function ReservingPage() {
                 <PartTwo>
                     <DatePickWrapper>
                         <DatePickButton>
-                            {format(selectedDate, 'yyyy')}년 {format(selectedDate, 'M')}월 {format(selectedDate, 'dd')}일</DatePickButton>
+                            {format(selectedDate, 'yyyy')}년 {format(selectedDate, 'M')}월 {format(selectedDate, 'dd')}일<DropdownIcon></DropdownIcon></DatePickButton>
                     </DatePickWrapper>
 
                     <TimeLineWrapper>
                         {
-                            TimeLineList.map((time) => (<TimeLineBlock color={getTimeLineColor(time)}>{time}</TimeLineBlock>))
+                            TimeLineList.map((time) => (<TimeLineBlock color={divideTime.includes(time) ? '#FF5A5A' : '#45D700'}>{time}</TimeLineBlock>))
                         }
                     </TimeLineWrapper>
                     <TimePickbtn><TimeTitle onClick={() => setIsStartTimeBtnClicked(!isStartTimeBtnClicked)}>{startTime}</TimeTitle>{
@@ -704,6 +642,7 @@ function ReservingPage() {
 
 
 
+
                 <PartFour>
                     <WarningTitle><WarningIcon></WarningIcon>유의사항</WarningTitle>
                     <Warning>
@@ -716,4 +655,4 @@ function ReservingPage() {
     );
 }
 
-export default ReservingPage;
+export default ScheduleReservingPage;

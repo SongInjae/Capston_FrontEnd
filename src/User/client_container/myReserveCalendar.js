@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
+import { useSelector, useDispatch } from "react-redux";
+import { pickDate } from '../user_store/date';
+import moment from 'moment';
 import {
   format,
   addMonths,
@@ -65,17 +68,22 @@ const Day = styled.div`
   width: 8.4rem;
   height: 90px;
   border-radius: 6px;
-  padding-left: 0.5rem;
   padding-top: 0.3rem;
+  border-style: solid;
+  border-color : lightgray;
   background-color: ${(props) => props.color};
 `;
-
+const DateText = styled.div`
+  margin-left:0.5rem;
+`
 const ReserveTimeBlock = styled.div`
   width: 100%;
   height: 25%;
+  font-size: 13px;
   display: block;
   color: white;
-
+  margin-top: 1px;
+  padding-left: 0.5rem;
   ${(props) =>
     props.reser &&
     css`
@@ -105,12 +113,12 @@ function DaysComponent() {
   );
 }
 
-function Bodys({ infos, currentMonth, selectedDate, onDateClick }) {
+function Bodys({ currentMonth, selectedDate, onDateClick }) {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
-
+  const infos = useSelector(state => state.reservation.myReservationInfo);
   const rows = [];
   let days = [];
   let day = startDate;
@@ -123,38 +131,73 @@ function Bodys({ infos, currentMonth, selectedDate, onDateClick }) {
       let reserveTime = '';
       let reser = false;
 
-      infos.forEach((info) => {
-        if (
-          info.month === cloneday.getMonth() + 1 &&
-          info.day === cloneday.getDate()
-        ) {
-          reserveTime = info.time;
-          reser = true;
+      infos && infos.forEach((info) => {
+        if (new Date(info.date).getMonth() === cloneday.getMonth() &&
+          new Date(info.date).getDate() === cloneday.getDate()) {
+          if (info.is_scheduled === false) {
+            reserveTime = `${info.start.split(':')[0]}:${info.start.split(':')[1]}-${info.end.split(':')[0]}:${info.end.split(':')[1]}`;
+            reser = true;
+          }
+
         }
+
+
       });
+      // infos.forEach((info) => {
+      //   if (
+      //     new Date(info.date).getMonth() === cloneday.getMonth() + 1 &&
+      //     new Date(info.date).getDate() === cloneday.getDate()
+      //   ) {
+      //     reserveTime = info.start + info.end;
+      //     reser = true;
+      //   }
+
+      // });
+
+      // infos.forEach((info) => {
+      //   if (
+      //     info.month === cloneday.getMonth() + 1 &&
+      //     info.day === cloneday.getDate()
+      //   ) {
+      //     reserveTime = info.start + info.end;
+      //     reser = true;
+      //   }
+
+      // });
+      // infos.forEach((info) => {
+      //   if (
+      //     info.month === cloneday.getMonth() + 1 &&
+      //     info.day === cloneday.getDate()
+      //   ) {
+      //     reserveTime = info.start + info.end;
+      //     reser = true;
+      //   }
+
+      // });
+
 
       if (day.getDay() === 0 || day.getDay() === 6) {
         if (!isSameMonth(currentMonth, day)) {
           days.push(
             <OtherMonthDay
-              color={isSameDay(selectedDate, cloneday) ? 'red' : 'white'}
+              color={isSameDay(selectedDate, cloneday) ? '#FFEDC0' : 'white'}
               onClick={() => {
                 onDateClick(cloneday);
               }}
             >
-              {formattedDate}
+              <DateText>{formattedDate}</DateText>
               <ReserveTimeBlock reser={reser}>{reserveTime}</ReserveTimeBlock>
             </OtherMonthDay>,
           );
         } else {
           days.push(
             <HoliDay
-              color={isSameDay(selectedDate, cloneday) ? 'red' : 'white'}
+              color={isSameDay(selectedDate, cloneday) ? '#FFEDC0' : 'white'}
               onClick={() => {
                 onDateClick(cloneday);
               }}
             >
-              {formattedDate}
+              <DateText>{formattedDate}</DateText>
               <ReserveTimeBlock reser={reser}>{reserveTime}</ReserveTimeBlock>
             </HoliDay>,
           );
@@ -163,24 +206,24 @@ function Bodys({ infos, currentMonth, selectedDate, onDateClick }) {
         if (!isSameMonth(currentMonth, day)) {
           days.push(
             <OtherMonthDay
-              color={isSameDay(selectedDate, cloneday) ? 'red' : 'white'}
+              color={isSameDay(selectedDate, cloneday) ? '#FFEDC0' : 'white'}
               onClick={() => {
                 onDateClick(cloneday);
               }}
             >
-              {formattedDate}
+              <DateText>{formattedDate}</DateText>
               <ReserveTimeBlock reser={reser}>{reserveTime}</ReserveTimeBlock>
             </OtherMonthDay>,
           );
         } else {
           days.push(
             <Day
-              color={isSameDay(selectedDate, cloneday) ? 'red' : 'white'}
+              color={isSameDay(selectedDate, cloneday) ? '#FFEDC0' : 'white'}
               onClick={() => {
                 onDateClick(cloneday);
               }}
             >
-              {formattedDate}
+              <DateText>{formattedDate}</DateText>
               <ReserveTimeBlock reser={reser}>{reserveTime}</ReserveTimeBlock>
             </Day>,
           );
@@ -194,9 +237,10 @@ function Bodys({ infos, currentMonth, selectedDate, onDateClick }) {
   return <DayCellsWrapper>{rows}</DayCellsWrapper>;
 }
 
-const MyReserveCalendar = ({ infos }) => {
+const MyReserveCalendar = () => {
+  const dispatch = useDispatch();
   const [current, setCurrent] = useState(new Date());
-  const [selectDate, setSelectedDate] = useState(new Date());
+  const selectDate = useSelector(state => state.dateReducer.date)
 
   const onClickMonthMove = (direction) => {
     if (direction === 'left') {
@@ -207,7 +251,8 @@ const MyReserveCalendar = ({ infos }) => {
   };
 
   const onDateClick = (day) => {
-    setSelectedDate(day);
+    dispatch(pickDate(day));
+    console.log(selectDate)
   };
 
   return (
@@ -232,7 +277,6 @@ const MyReserveCalendar = ({ infos }) => {
         currentMonth={current}
         selectedDate={selectDate}
         onDateClick={onDateClick}
-        infos={infos}
       ></Bodys>
     </CalendarWrapper>
   );

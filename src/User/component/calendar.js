@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, endOfWeek, isSameMonth, isSameDay, addDays, startOfWeek } from "date-fns";
 import { BsFillCaretLeftFill, BsFillCaretRightFill } from "react-icons/bs";
-
+import { useSelector, useDispatch } from "react-redux";
+import { pickDate } from '../user_store/date';
 const CalendarWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -56,7 +57,8 @@ const Day = styled.div`
   border-radius: 6px;
   padding-left: 0.5rem;
   padding-top: 0.3rem;
-  background-color: ${(props) => props.color};
+  border-style: solid;
+  border-color: ${(props) => props.color};
 `;
 
 const HoliDay = styled(Day)`
@@ -156,8 +158,9 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
 
 function UserCalendar() {
   const [current, setCurrent] = useState(new Date());
-  const [selectDate, setSelectedDate] = useState(new Date());
-
+  //const [selectDate, setSelectedDate] = useState(new Date());
+  const selectDate = useSelector(state => state.dateReducer.date)
+  const dispatch = useDispatch();
   const onClickMonthMove = (direction) => {
     if (direction === 'left') {
       setCurrent(subMonths(current, 1));
@@ -167,7 +170,9 @@ function UserCalendar() {
   };
 
   const onDateClick = (day) => {
-    setSelectedDate(day);
+    //setSelectedDate(day);
+    console.log(selectDate)
+    dispatch(pickDate(day));
   };
 
   return (

@@ -1,7 +1,10 @@
 import client from './client';
 import cookie from 'react-cookies';
 
-//로그인
+//회원가입
+export const register = ({ username, password }) =>
+  client.post('http://3.35.38.254:8000/users', { username, password });
+
 export const login = ({ username, password }) =>
   client.post(
     'http://3.35.38.254:8000/users/login',
