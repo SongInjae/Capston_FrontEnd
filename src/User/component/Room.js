@@ -61,23 +61,65 @@ const ReserveBtn = styled.button`
     border-width: 0px;
     background-color: #a31432;
 `;
+
+
+
 function RoomComponent({ roomInfo }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userType = useSelector(state => state.userInfo.myInfo.user_type.id);
     const possible_duration = useSelector(state => state.userInfo.myInfo.user_type.possible_duration);
     const selectDate = useSelector(state => state.dateReducer.date);
+
+
+    const checkCanReserve = (selectedRoom) => {
+        const toolDay = new Date();
+        const today = new Date();
+        const possibleDate = new Date(toolDay.setDate(toolDay.getDate() + possible_duration));
+        if (possible_duration !== 0) {
+            if (selectDate.getFullYear() === today.getFullYear && selectDate.getMonth() === today.getMonth() && selectDate.getDate() === today.getDate()) {
+                console.log(0);
+                navigate('/reserve');
+                dispatch(pickRoom(selectedRoom));
+                return;
+            }
+
+            else if (possibleDate < selectDate) {
+                if (possible_duration === 2) {
+                    alert('학부생은 2일이내 예약만 생성 가능합니다.');
+                }
+                if (possible_duration === 7) {
+                    alert('대학원생은 7일이내 예약만 생성 가능합니다.');
+                }
+
+                return;
+            } else if (selectDate < today && selectDate.getDate() !== today.getDate()) {
+                alert('예약이 불가능한 날짜입니다.');
+                return;
+            }
+        } else {
+            if (selectDate < today && selectDate.getDate() !== today.getDate()) {
+                alert('예약이 불가능한 날짜입니다.');
+                return;
+            }
+        }
+    }
     const clickScheduleReserveBtn = (selectedRoom) => {
+
+        const today = new Date();
         console.log(userType);
         if (userType !== 2) {
             alert('권한이 없습니다.');    //-> 정기예약 기능 개발되면 주석 풀기
             return;
+        } else {
+            if (selectDate < today && selectDate.getDate() !== today.getDate()) {
+                alert('예약이 불가능한 날짜입니다.');
+                return;
+            }
         }
         dispatch(pickRoom(selectedRoom));
         navigate('/schedule_reserve')
     }
-
-
     const clickReserveBtn = (selectedRoom) => {
         const toolDay = new Date();
         const today = new Date();
@@ -91,7 +133,6 @@ function RoomComponent({ roomInfo }) {
             }
 
             else if (possibleDate < selectDate) {
-                console.log(1);
                 alert('예약이 불가능한 날짜입니다.');
                 return;
             } else if (selectDate < today && selectDate.getDate() !== today.getDate()) {

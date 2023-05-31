@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../component/header";
 import format from "date-fns/format";
+import { useNavigate } from "react-router-dom";
 import { makeReservation, getReservationByDate, transFormDate } from "../store/modules/reservation";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserNo, removeMember } from "../store/modules/userInfo";
@@ -368,6 +369,7 @@ function ScheduleReservingPage() {
 
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const alreadyReservedTime = useSelector(state => state.reservation.reservedTime);
     const [isStartTimeBtnClicked, setIsStartTimeBtnClicked] = useState(false);
     const [isEndTimeBtnClicked, setIsEndTimeBtnClicked] = useState(false);
@@ -383,7 +385,7 @@ function ScheduleReservingPage() {
     const memIdList = useSelector(state => state.userInfo.memIdList);
     const myId = useSelector(state => state.userInfo.myInfo.id);
     const divideTime = useSelector(state => state.reservation.divideTime);
-
+    const [selectedTimeBlock, setSelectedTimeBlock] = useState([]);
     const checkReservedTime = (startTime, endTime) => {
         let reservedStartHour;
         let reservedStartMinute;
@@ -428,6 +430,54 @@ function ScheduleReservingPage() {
         return true;
 
     }
+
+    const setSelectedTimeLine = (startTime, endTime) => {
+        let startHour = parseInt(startTime.split(':')[0]);
+        let startMinute = parseInt(startTime.split(':')[1]);
+        let endHour = parseInt(endTime.split(':')[0]);
+        let endMinute = parseInt(endTime.split(':')[1]);
+        let time = [];
+        console.log(startTime, endTime);
+        for (let i = startHour; i <= endHour; i++) {
+            if (i === endHour) {
+                if (endMinute === 30) {
+
+                    time.push(`${endHour}:00-${endHour}:30`)
+                    break;
+                } else {
+                    break;
+                }    //예약있는 날짜의 endtime이랑 예약하려는 날짜의 start time이랑 겹치면 색깔 안변함
+
+            }
+            if (i === startHour) {
+                if (startMinute === 30) {
+                    console.log(`${startHour}:30-${startHour + 1}:00`);
+                    time.push(`${startHour}:30-${startHour + 1}:00`);
+                    continue;
+                }
+                if (startMinute === 0 && endHour > i) {
+
+                    time.push(`${startHour}:00-${startHour}:30`);
+                    time.push(`${startHour}:30-${startHour + 1}:00`);
+                    continue;
+                } if (startMinute === 0 && endHour === i) {
+                    time.push(`${startHour}:00-${startHour + 1}:30`);
+                    continue;
+                }
+
+
+            }
+            if (i < endHour && i > startHour) {
+                time.push(`${i}:00-${i}:30`)
+                time.push(`${i}:30-${i + 1}:00`)
+            }
+        }
+
+        console.log(time);
+        setSelectedTimeBlock(time);
+    }
+
+
     const clickStartTimePickBtn = (time) => {
         let startHour;
         let startMinute;
@@ -450,14 +500,17 @@ function ScheduleReservingPage() {
 
             if (gap <= 120) {
                 setStartTime(time);
-                console.log(time + '!!!!');
                 setIsStartTimeBtnClicked(!isStartTimeBtnClicked);
                 if (!checkReservedTime(time, endTime)) {
                     alert('예약자가 존재합니다.');
+
+                    setSelectedTimeBlock([]);
                     setStartTime('회의시작 시간');
+                    setEndTime('회의끝나는 시간');
                     return;
                 }
                 console.log(isStartTimeBtnClicked);
+                setSelectedTimeLine(time, endTime);
             } else {
                 alert('최대 2시간만 예약 가능합니다.');
                 return;
@@ -468,7 +521,7 @@ function ScheduleReservingPage() {
 
         setIsStartTimeBtnClicked(!isStartTimeBtnClicked);
         setStartTime(time);
-
+        setSelectedTimeLine(time, endTime);
     }
 
 
@@ -502,8 +555,9 @@ function ScheduleReservingPage() {
                 if (!checkReservedTime(startTime, time)) {
                     console.log()
                     alert('예약자가 존재합니다.')
-
+                    setStartTime('회의시작 시간');
                     setEndTime('회의끝나는 시간');
+                    setSelectedTimeBlock([]);
                     return;
                 }
             } else {
@@ -516,6 +570,7 @@ function ScheduleReservingPage() {
 
         setIsEndTimeBtnClicked(!isEndTimeBtnClicked);
         setEndTime(time);
+        setSelectedTimeLine(startTime, time);
 
     }
 
@@ -559,12 +614,17 @@ function ScheduleReservingPage() {
         }
         await dispatch(makeReservation(reserveData));
 
+        navigate('/main')
     }
-
-    // 1. 월 선택 시,
-
-    // 선택한 요일에 해당하는 모든 정기예약과 비교
-    // 선택한 요일의 주차부터 선택한 주차까지의 모든 일반예약 표시
+    const getTimeLineColor = (time) => {
+        if (divideTime.includes(time)) {
+            return '#FF5A5A'
+        } else if (selectedTimeBlock.includes(time)) {
+            return '#2B41B4'
+        } else {
+            return '#45D700'
+        }
+    }
 
 
     useEffect(() => {
@@ -602,7 +662,7 @@ function ScheduleReservingPage() {
 
                     <TimeLineWrapper>
                         {
-                            TimeLineList.map((time) => (<TimeLineBlock color={divideTime.includes(time) ? '#FF5A5A' : '#45D700'}>{time}</TimeLineBlock>))
+                            TimeLineList.map((time) => (<TimeLineBlock color={getTimeLineColor(time)}>{time}</TimeLineBlock>))
                         }
                     </TimeLineWrapper>
                     <TimePickbtn><TimeTitle onClick={() => setIsStartTimeBtnClicked(!isStartTimeBtnClicked)}>{startTime}</TimeTitle>{

@@ -162,8 +162,8 @@ function* getRoomReserve(action) {
 function* makeReserve(action) {
     try {
         console.log(action.reserveData)
-        const response = yield call(reservationApi.makeReservation, action.reserveData);//body 추가해야함
-        console.log(response.data)
+        yield call(reservationApi.makeReservation, action.reserveData);//body 추가해야함
+
         yield put({ type: 'MAKE_RESERVE_RESULT' });
         alert('예약되었습니다.');
     } catch (e) {
@@ -175,11 +175,18 @@ function* authLocate(action) {
     try {
         const response = yield call(reservationApi.authLocate, action.reserveId, action.lat, action.log);
         console.log(response.data);
-        alert('위치인증을 성공하였습니다.')
+
+        if (response.data.message === "complete") {
+            alert('위치인증을 성공했습니다.');
+
+        }
+        if (response.data.message === "time_error") {
+            alert('인증가능 시간이 아닙니다.');
+        }
         yield put({ type: 'AUTH_LOCATE_RESULT' });
 
     } catch (e) {
-        alert('위치인증에 실패했습니다.');
+        alert('위치인증을 실패했습니다.');
         yield put({ type: 'AUTH_LOCATE_RESULT' })
     }
 }
