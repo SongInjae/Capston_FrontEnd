@@ -130,20 +130,37 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
       let reserveTime = '';
       let reser = false;
 
+
       infos &&
         infos.forEach((info) => {
-          if (
-            new Date(info.date).getMonth() === cloneday.getMonth() &&
-            new Date(info.date).getDate() === cloneday.getDate()
-          ) {
+          if (new Date(info.date).getMonth() === cloneday.getMonth() && new Date(info.date).getDate() === cloneday.getDate()) {
             if (info.is_scheduled === false) {
-              reserveTime = `${info.start.split(':')[0]}:${
-                info.start.split(':')[1]
-              }-${info.end.split(':')[0]}:${info.end.split(':')[1]}`;
+              reserveTime = `${info.start.split(':')[0]}:${info.start.split(':')[1]
+                }-${info.end.split(':')[0]}:${info.end.split(':')[1]}`;
               reser = true;
             }
           }
         });
+      infos &&
+        infos.forEach((info) => {
+          if (info.is_scheduled) {
+            if (new Date(info.date).getDay() === i && new Date(info.date) <= cloneday) {
+              reserveTime = `${info.start.split(':')[0]}:${info.start.split(':')[1]
+                }-${info.end.split(':')[0]}:${info.end.split(':')[1]}`;
+              reser = true;
+              console.log(reserveTime);
+            }
+            if (new Date(info.date).getDay() === i && new Date(info.date).getFullYear() === cloneday.getFullYear()
+              && new Date(info.date).getMonth() === cloneday.getMonth()
+              && new Date(info.date).getDate() === cloneday.getDate()) {
+              reserveTime = `${info.start.split(':')[0]}:${info.start.split(':')[1]
+                }-${info.end.split(':')[0]}:${info.end.split(':')[1]}`;
+              reser = true;
+              console.log(reserveTime);
+            }
+          }
+        });
+
       // infos.forEach((info) => {
       //   if (
       //     new Date(info.date).getMonth() === cloneday.getMonth() + 1 &&
