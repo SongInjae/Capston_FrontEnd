@@ -400,6 +400,8 @@ function ReservingPage() {
         let endMinute = parseInt(endTime.split(':')[1]);
         let start;
         let end;
+        console.log('예약된 시간');
+        console.log(alreadyReservedTime);
         for (let i = 0; i < alreadyReservedTime.length; i++) {
             console.log(alreadyReservedTime[i]);
             start = alreadyReservedTime[i].split('-')[0];
@@ -533,6 +535,8 @@ function ReservingPage() {
         let endHour;
         let endMinute;
         let gap;
+
+        console.log(time);
         if (startTime !== "회의시작 시간") {
             startHour = parseInt(startTime.split(':')[0]);
             startMinute = parseInt(startTime.split(':')[1]);
@@ -597,7 +601,7 @@ function ReservingPage() {
         let reserveData;
         reserveData = {
             is_scheduled: false,
-            day: ['MON', 'FRI'],
+            day: [],
             date: `${format(selectedDate, 'yyyy')}-${format(selectedDate, 'MM')}-${format(selectedDate, 'dd')}`,
             start: startTime,
             end: endTime,
