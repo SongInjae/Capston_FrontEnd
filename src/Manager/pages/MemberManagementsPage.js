@@ -7,6 +7,7 @@ import { take, excel } from '../store/modules/addmember';
 import Pagenation from '../components/Pagenation';
 import sea_img from '../assets/img/search.png';
 import UserTable from './Member/UserTable';
+import Loading from '../components/Loading';
 
 import { CSVLink } from 'react-csv';
 

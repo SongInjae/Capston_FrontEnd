@@ -21,7 +21,7 @@ const RoomCorrectForm = () => {
     rooms: rooms.rooms,
   }));
   let room = null;
-  for (let i = 0; i <= rooms.length; i++) {
+  for (let i = 0; i < rooms.length; i++) {
     if (rooms[i].id === Id) {
       room = rooms[i];
       break;
@@ -50,11 +50,6 @@ const RoomCorrectForm = () => {
     [dispatch],
   );
   const onSubmit = (e) => {
-    let entries = formData.entries();
-    for (const pair of entries) {
-      console.log(pair[0] + ', ' + pair[1]);
-    }
-    console.log(room.id);
     e.preventDefault();
     dispatch(change({ id: room.id, formData }));
     navigate(-1);
