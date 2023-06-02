@@ -10,7 +10,6 @@ const Room = styled.div`
     border-radius: 8px;
     padding : 15px;
     display: flex;
-    width : 29rem;
     margin : 10px;
    
     //flex-direction: column;
@@ -44,7 +43,7 @@ const RoomName = styled.span`
 const ReserveBtnWrapper = styled.div`
     display: flex;
     flex:2;
-    margin: auto 0 0 auto;
+    padding-left: 8rem;
     flex-direction: row;   
 `;
 const ReserveBtn = styled.button`

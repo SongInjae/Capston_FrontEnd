@@ -10,18 +10,17 @@ import { getMyReservation } from '../store/modules/reservation';
 import MyReserveCalendar from './myReserveCalendar';
 
 const MainBodyWrapper = styled.div`
-  
+  display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
 `
 
 const RoomsWrapper = styled.div`
   display: grid;
+  
   grid-template-columns: repeat(2, 0.5fr);
-  padding-left: 17%;
-  padding-right: 17%;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
 `;
 
 

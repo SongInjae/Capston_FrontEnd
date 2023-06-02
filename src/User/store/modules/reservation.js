@@ -180,13 +180,20 @@ function* authLocate(action) {
             alert('위치인증을 성공했습니다.');
 
         }
-        if (response.data.message === "time_error") {
-            alert('인증가능 시간이 아닙니다.');
-        }
+
         yield put({ type: 'AUTH_LOCATE_RESULT' });
 
     } catch (e) {
-        alert('위치인증을 실패했습니다.');
+        if (e.response.status === 400) {
+            if (e.response.data.message === "not available time") {
+                alert('위치인증가능 시간이 아닙니다.');
+            } else {
+                alert('현재위치를 확인해주세요.');
+            }
+        } else {
+            alert('위치인증을 실패하였습니다.');
+        }
+
         yield put({ type: 'AUTH_LOCATE_RESULT' })
     }
 }

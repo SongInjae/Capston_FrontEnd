@@ -10,7 +10,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineAddCircle } from "react-icons/md";
 import { AiFillWarning } from "react-icons/ai"
 import { GrClose } from 'react-icons/gr';
-
+import projector from '../assets/projector.png';
 const PartOne = styled.div`
     padding: 10px;
     margin-top: 10px;
@@ -70,6 +70,7 @@ const ToolWrapper = styled.div`
     width : 40vw;
 `
 
+
 const Tool = styled.div`
     width : 5rem;
     display: flex;
@@ -79,12 +80,22 @@ const Tool = styled.div`
     margin-right : 0.2rem;
 `
 
-const ToolImage = styled.div`
+const ToolImageBorder = styled.div`
+    display: flex;
     border-radius: 5px;
     border-style: solid; 
     border-color : lightgray;
+    justify-content: center;
+    align-items: center;
     width : 4rem;
     height : 4rem;
+
+`;
+
+const ToolImage = styled.img`
+    border-radius: 5px;
+    width : 2.5rem;
+    height : 2.5rem;
 
 `;
 const ToolTitle = styled.div`
@@ -648,7 +659,9 @@ function ScheduleReservingPage() {
                         </Tool>
                     ))} */
                             <Tool>
-                                <ToolImage></ToolImage>
+                                <ToolImageBorder>
+                                    <ToolImage src={projector}></ToolImage>
+                                </ToolImageBorder>
                                 <ToolTitle>{selectedRoom.amenities}</ToolTitle>
                             </Tool>
                         }
