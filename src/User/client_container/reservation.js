@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../component/header";
@@ -11,6 +11,7 @@ import { MdOutlineAddCircle } from "react-icons/md";
 import { AiFillWarning } from "react-icons/ai"
 import { GrClose } from 'react-icons/gr';
 import projector from '../assets/projector.png';
+import { getRooms, pickRoom } from "../store/modules/room";
 const PartOne = styled.div`
     padding: 10px;
     margin-top: 10px;
@@ -339,7 +340,11 @@ const ModalAddMemeberBtn = styled.button`
         background-color: #EF9090;
     }
 `;
+
+
 function ReservingPage() {
+
+    const outside = useRef();
     const TimeList = [
         "9:00",
         "9:30",
@@ -650,19 +655,13 @@ function ReservingPage() {
     return (
         <div>
             <Header></Header>
-            <ReserveWrapper>
+            <ReserveWrapper >
                 <RoomImage src={selectedRoom.images.image}></RoomImage>
                 <PartOne>
 
                     <RoomTitle>{selectedRoom.name}</RoomTitle>
                     <ToolWrapper>
-                        {/* {toolList.map((tool) => (
-
-                        <Tool>
-                            <ToolImage></ToolImage>
-                            <ToolTitle>{tool}</ToolTitle>
-                        </Tool>
-                    ))} */
+                        {
                             <Tool>
                                 <ToolImageBorder>
                                     <ToolImage src={projector}></ToolImage>
@@ -694,7 +693,7 @@ function ReservingPage() {
                 <PartThree>
                     <MemberTitle>참석멤버</MemberTitle>
                     {isAddMemeberClicked === true ?
-                        <Background>
+                        <Background ref={outside} onClick={(e) => { if (e.target === outside.current) setIsAddMemeberClicked(!isAddMemeberClicked) }}>
                             <ModalContainer>
                                 <ModalHeader>
                                     <ModalMainTitle>참석멤버 추가</ModalMainTitle>

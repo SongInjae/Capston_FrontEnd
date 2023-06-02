@@ -7,7 +7,7 @@ const token = cookie.load('token');
 
 export const getMyInformation = () => client.get('http://3.35.38.254:8000/users/mine', {
     headers: {
-        Authorization: 'Token ' + token,
+        Authorization: `Token ${cookie.load('token')}`,
     }
 });
 export const changeUserInfo = (id, data) => client.patch('http://3.35.38.254:8000/users/' + id, data, {
