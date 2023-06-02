@@ -120,7 +120,7 @@ const MeetingRoomPage = () => {
   const onConfirm = useCallback(() => {
     setModal(false);
     dispatch(remove(id));
-  }, []);
+  }, [id]);
 
   let roomsInfos = [];
   let cnt = 0;

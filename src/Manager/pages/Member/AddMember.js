@@ -20,7 +20,7 @@ const FormBlock = styled.div`
   font-family: 'InterBold';
   font-weight: 400;
   ${(props) =>
-    props.display &&
+    props.temp &&
     css`
       display: none;
     `}
@@ -107,7 +107,7 @@ const AddMember = ({ error, onChange, onTypeChange, onSubmit }) => {
             required
           />
         </FormBlock>
-        <FormBlock display={true}>
+        <FormBlock temp={true}>
           <LabelBlock htmlFor="pwd">비밀번호</LabelBlock>
           <NameInputBlock
             type="password"
@@ -117,7 +117,7 @@ const AddMember = ({ error, onChange, onTypeChange, onSubmit }) => {
             //required
           />
         </FormBlock>
-        <FormBlock display={true}>
+        <FormBlock temp={true}>
           <LabelBlock htmlFor="pwdCheck">비밀번호 확인</LabelBlock>
           <NameInputBlock
             type="password"
