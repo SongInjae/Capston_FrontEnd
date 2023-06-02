@@ -651,18 +651,12 @@ function ReservingPage() {
         <div>
             <Header></Header>
             <ReserveWrapper>
-                <RoomImage src={selectedRoom.images.image}></RoomImage>
+                <RoomImage src={selectedRoom.images.image ?? ''}></RoomImage>
                 <PartOne>
 
                     <RoomTitle>{selectedRoom.name}</RoomTitle>
                     <ToolWrapper>
-                        {/* {toolList.map((tool) => (
-
-                        <Tool>
-                            <ToolImage></ToolImage>
-                            <ToolTitle>{tool}</ToolTitle>
-                        </Tool>
-                    ))} */
+                        {
                             <Tool>
                                 <ToolImageBorder>
                                     <ToolImage src={projector}></ToolImage>
