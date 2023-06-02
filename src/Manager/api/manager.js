@@ -37,12 +37,12 @@ export const addInfo = ({
   manager.post(
     'http://3.35.38.254:8000/users',
     { user_type, name, user_no, email, password: 12345678, department },
-    { headers: { Authorization: `Token ${token}` } },
+    { headers: { Authorization: `Token ${cookie.load('token')}` } },
   );
 //회원 삭제하기
 export const removeInfo = (id) =>
   manager.delete(`http://3.35.38.254:8000/users/${id}`, {
-    headers: { Authorization: `Token ${token}` },
+    headers: { Authorization: `Token ${cookie.load('token')}` },
   });
 //회원 변경하기
 export const changeInfo = ({
@@ -57,6 +57,6 @@ export const changeInfo = ({
     `http://3.35.38.254:8000/users/${id}`,
     { user_type, user_no, email, name, department },
     {
-      headers: { Authorization: `Token ${token}` },
+      headers: { Authorization: `Token ${cookie.load('token')}` },
     },
   );
