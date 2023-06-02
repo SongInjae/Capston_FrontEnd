@@ -7,6 +7,7 @@ import { remove } from '../store/modules/rooms';
 import { take } from '../store/modules/rooms';
 import Pagenation from '../components/Pagenation';
 import LogoutModal from '../components/LogoutModal';
+import Loading from '../components/Loading';
 
 const FliterAddBlock = styled.div`
   width: 100%;
@@ -99,11 +100,18 @@ const RoomInfoCorrectBtn = styled(Link)`
 `;
 
 const MeetingRoomPage = () => {
+  const dispatch = useDispatch();
+  const { loading_insert, loading_take, loading_remove, loading_change } =
+    useSelector(({ loading }) => ({
+      loading_insert: loading['rooms/INSERT'],
+      loading_take: loading['rooms/take'],
+      loading_remove: loading['rooms/REMOVE'],
+      loading_change: loading['rooms/CHANGE'],
+    }));
   useEffect(() => {
     dispatch(take());
-  }, []);
+  }, [dispatch, loading_remove, loading_change, loading_insert]);
   const rooms = useSelector(({ rooms }) => rooms.rooms);
-  const dispatch = useDispatch();
 
   const [page, setPage] = useState(1);
   const offset = (page - 1) * 6;
@@ -152,6 +160,10 @@ const MeetingRoomPage = () => {
       }
       roomsInfos.push(<RoomRowBlock key={i}>{room}</RoomRowBlock>);
     }
+  }
+
+  if (loading_insert || loading_take || loading_remove || loading_change) {
+    return <Loading />;
   }
 
   return (

@@ -145,10 +145,22 @@ const CsvLinkStyled = styled(CSVLink)`
 
 const MemberManagementsPage = () => {
   const dispatch = useDispatch(); //redux dispatch 불러오기
+  const {
+    loading_excel,
+    loading_insert,
+    loading_take,
+    loading_remove,
+    loading_change,
+  } = useSelector(({ loading }) => ({
+    loading_excel: loading['addmembers/EXCEL'],
+    loading_insert: loading['addmembers/INSERT'],
+    loading_take: loading['addmembers/take'],
+    loading_remove: loading['addmembers/REMOVE'],
+    loading_change: loading['addmembers/CHANGE'],
+  }));
   useEffect(() => {
     dispatch(take());
-  }, [dispatch]);
-
+  }, [dispatch, loading_excel, loading_remove, loading_change, loading_insert]);
   const infos = useSelector(({ addmembers }) => addmembers.info); //info 불러오기
   const excelInfo = useSelector(({ addmembers }) => addmembers.excelInfo);
   const [userInput, setUserInput] = useState(''); //필터링 input
@@ -204,6 +216,15 @@ const MemberManagementsPage = () => {
     };
     reader.readAsBinaryString(input.files[0]);*/
   };
+  if (
+    loading_excel ||
+    loading_insert ||
+    loading_take ||
+    loading_remove ||
+    loading_change
+  ) {
+    return <Loading />;
+  }
   return (
     <>
       <FliterAddBlock>
