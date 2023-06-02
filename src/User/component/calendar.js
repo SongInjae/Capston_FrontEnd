@@ -158,7 +158,6 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
 
 function UserCalendar() {
   const [current, setCurrent] = useState(new Date());
-  //const [selectDate, setSelectedDate] = useState(new Date());
   const selectDate = useSelector(state => state.dateReducer.date)
   const dispatch = useDispatch();
   const onClickMonthMove = (direction) => {
@@ -170,7 +169,6 @@ function UserCalendar() {
   };
 
   const onDateClick = (day) => {
-    //setSelectedDate(day);
     console.log(selectDate)
     dispatch(pickDate(day));
   };

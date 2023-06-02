@@ -36,7 +36,10 @@ const divideTime = (alreadyReservedTime) => {
             if (i === parseInt(start[0])) {
                 if (start[1] === '30') {
                     time.push(`${parseInt(start[0])}:30-${parseInt(start[0]) + 1}:00`);
-                    continue;
+
+                } else {
+                    time.push(`${parseInt(start[0])}:00-${parseInt(start[0])}:30`);
+                    time.push(`${parseInt(start[0])}:30-${parseInt(start[0]) + 1}:00`);
                 }
             }
             if (i < parseInt(end[0]) && i > parseInt(start[0])) {
@@ -75,7 +78,6 @@ export const transFormDate = (num) => {
 
 const checkScheduledOrNot = (allData, pickDay) => {
     let scheduleDay = new Date(pickDay).getDay();
-    let date;
     let scheduledTime = []
     console.log(allData.length);
     console.log(scheduleDay);
@@ -99,6 +101,7 @@ const checkScheduledOrNot = (allData, pickDay) => {
 
         }
     }
+    console.log(scheduledTime);
     return scheduledTime;
 }
 
@@ -119,8 +122,8 @@ function* deleteMyReservationSaga(action) {
     console.log(action.id)
     try {
 
-        let response = yield call(reservationApi.deleteMyReservation(action.id));
-        console.log(response);
+        yield call(reservationApi.deleteMyReservation, action.id);
+
         yield put({ type: 'DELETE_RESERVE_RESULT' });
 
     } catch (e) {
@@ -146,8 +149,9 @@ function* getRoomReserve(action) {
                 alreadyReservedTime.push(reserveList[i].start + "-" + reserveList[i].end);
             }
         }
-
+        console.log(alreadyReservedTime);
         let divideReservedTime = divideTime(alreadyReservedTime);
+        console.log(divideReservedTime);
 
         yield put({ type: 'GET_ROOMRESERVE_RESULT', reservedTime: alreadyReservedTime, divideTime: divideReservedTime });
     } catch (e) {
@@ -158,8 +162,8 @@ function* getRoomReserve(action) {
 function* makeReserve(action) {
     try {
         console.log(action.reserveData)
-        const response = yield call(reservationApi.makeReservation, action.reserveData);//body 추가해야함
-        console.log(response.data)
+        yield call(reservationApi.makeReservation, action.reserveData);//body 추가해야함
+
         yield put({ type: 'MAKE_RESERVE_RESULT' });
         alert('예약되었습니다.');
     } catch (e) {
@@ -171,11 +175,25 @@ function* authLocate(action) {
     try {
         const response = yield call(reservationApi.authLocate, action.reserveId, action.lat, action.log);
         console.log(response.data);
-        alert('위치인증을 성공하였습니다.')
+
+        if (response.data.message === "complete") {
+            alert('위치인증을 성공했습니다.');
+
+        }
+
         yield put({ type: 'AUTH_LOCATE_RESULT' });
 
     } catch (e) {
-        alert('위치인증에 실패했습니다.');
+        if (e.response.status === 400) {
+            if (e.response.data.message === "not available time") {
+                alert('위치인증가능 시간이 아닙니다.');
+            } else {
+                alert('현재위치를 확인해주세요.');
+            }
+        } else {
+            alert('위치인증을 실패하였습니다.');
+        }
+
         yield put({ type: 'AUTH_LOCATE_RESULT' })
     }
 }
@@ -187,13 +205,13 @@ function* getReserveByDate(action) {
     try {
         const response = yield call(reservationApi.getRoomReservation, action.roomId);
 
-        let reserveList = [...response.data.results];
-        let alreadyReservedTime = []
-        // for (let i = 0; i < response.data.count; i++) {
-        //     if (reserveList[i].date === action.pickDay) {
-        //         alreadyReservedTime.push(reserveList[i].start + "-" + reserveList[i].end);
-        //     }
-        // }
+        let reserveList = response.data.results; //예약된 리스트
+        let alreadyReservedTime = [] // 이미 예약된 시간
+        for (let i = 0; i < response.data.count; i++) {
+            if (reserveList[i].date === action.pickDay) {
+                alreadyReservedTime.push(reserveList[i].start + "-" + reserveList[i].end);
+            }
+        }
         console.log('정기')
         console.log(response.data.results);
         alreadyReservedTime = checkScheduledOrNot(response.data.results, action.pickDay);

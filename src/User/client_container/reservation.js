@@ -10,7 +10,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineAddCircle } from "react-icons/md";
 import { AiFillWarning } from "react-icons/ai"
 import { GrClose } from 'react-icons/gr';
-
+import projector from '../assets/projector.png';
 const PartOne = styled.div`
     padding: 10px;
     margin-top: 10px;
@@ -79,12 +79,22 @@ const Tool = styled.div`
     margin-right : 0.2rem;
 `
 
-const ToolImage = styled.div`
+const ToolImageBorder = styled.div`
+    display: flex;
     border-radius: 5px;
     border-style: solid; 
     border-color : lightgray;
+    justify-content: center;
+    align-items: center;
     width : 4rem;
     height : 4rem;
+
+`;
+
+const ToolImage = styled.img`
+    border-radius: 5px;
+    width : 2.5rem;
+    height : 2.5rem;
 
 `;
 const ToolTitle = styled.div`
@@ -400,6 +410,8 @@ function ReservingPage() {
         let endMinute = parseInt(endTime.split(':')[1]);
         let start;
         let end;
+        console.log('예약된 시간');
+        console.log(alreadyReservedTime);
         for (let i = 0; i < alreadyReservedTime.length; i++) {
             console.log(alreadyReservedTime[i]);
             start = alreadyReservedTime[i].split('-')[0];
@@ -533,6 +545,8 @@ function ReservingPage() {
         let endHour;
         let endMinute;
         let gap;
+
+        console.log(time);
         if (startTime !== "회의시작 시간") {
             startHour = parseInt(startTime.split(':')[0]);
             startMinute = parseInt(startTime.split(':')[1]);
@@ -597,7 +611,7 @@ function ReservingPage() {
         let reserveData;
         reserveData = {
             is_scheduled: false,
-            day: ['MON', 'FRI'],
+            day: [],
             date: `${format(selectedDate, 'yyyy')}-${format(selectedDate, 'MM')}-${format(selectedDate, 'dd')}`,
             start: startTime,
             end: endTime,
@@ -650,7 +664,9 @@ function ReservingPage() {
                         </Tool>
                     ))} */
                             <Tool>
-                                <ToolImage></ToolImage>
+                                <ToolImageBorder>
+                                    <ToolImage src={projector}></ToolImage>
+                                </ToolImageBorder>
                                 <ToolTitle>{selectedRoom.amenities}</ToolTitle>
                             </Tool>
                         }

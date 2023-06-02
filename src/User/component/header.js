@@ -329,6 +329,10 @@ function Header() {
     navigate('/main/board');
 
   }
+  const clickInconfidence = () => {
+
+    navigate('/main/inconfidence');
+  }
 
   const clickMyPageBtn = () => {
     setModal(true);
@@ -360,6 +364,7 @@ function Header() {
           <LogoutBtn onClick={onLogout}>로그아웃</LogoutBtn>
         </LogoutWrapper>
         <TabWrapper>
+          <HeaderTab onClick={clickInconfidence}>불편사항</HeaderTab>
           <HeaderTab onClick={clickNotice}>공지사항</HeaderTab>
           <HeaderTab onClick={clickSearchMyReservation}>내 예약현황 조회</HeaderTab>
           <HeaderTab onClick={clickMyPageBtn}>마이페이지</HeaderTab>

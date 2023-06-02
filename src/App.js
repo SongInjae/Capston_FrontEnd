@@ -10,6 +10,7 @@ import NotifyInfoPage from './User/client_container/Notify/NotifyInfoPage';
 import NotifyMainPage from './User/client_container/Notify/NotifyMainPage';
 
 import ScheduleReservingPage from './User/client_container/scheduleReservePage';
+import InconfidencePage from './User/client_container/inconvenience';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
       <Route path="/schedule_reserve" element={<ScheduleReservingPage />} />
       <Route path="/main/*" element={<UserMain />} />
       <Route path="/main/reserve" element={<MyReservation />} />
+      <Route path="/main/inconfidence" element={<InconfidencePage />} />
       <Route path="/main/board">
         <Route index element={<NotifyMainPage />} />
         <Route path=":id" element={<NotifyInfoPage />} />

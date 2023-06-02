@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import logo from '../assets/sejong.png';
 import MyReserveCalendar from './myReserveCalendar';
 import Button from '../../Manager/components/Button';
 import { useEffect, useState } from 'react';
@@ -51,10 +50,14 @@ const Roomtext = styled.div`
     props.weight &&
     css`
       font-weight: bold;
-      font-size: 1.5rem;
+      font-size: 1.1rem;
       color: black;
     `}
 `;
+const ButtonWrapper = styled.div`
+  margin-top: 10px;
+  
+`
 const CancelButton = styled(Button)`
     margin-top: auto;
     margin-left : 3px;
@@ -72,7 +75,7 @@ const CancelButton = styled(Button)`
 `;
 
 const LocationAuthBtn = styled(Button)`
- margin-top: auto;
+  margin-top: auto;
     float : right;
     bottom: 10px;
     right : 10px;
@@ -158,9 +161,10 @@ const MyReservation = () => {
               일정 : {info.date}
             </Roomtext>
             <Roomtext>시간 : {info.start.split(':')[0]}:{info.start.split(':')[1]}-{info.end.split(':')[0]}:{info.end.split(':')[1]}</Roomtext>
-            <CancelButton onClick={() => onClickDeleteBtn(info.id)}>예약 취소</CancelButton>
-
-            <LocationAuthBtn onClick={() => onClickLocationAuthBtn(info.id)}>인증하기</LocationAuthBtn>
+            <ButtonWrapper>
+              <CancelButton onClick={() => onClickDeleteBtn(info.id)}>예약 취소</CancelButton>
+              <LocationAuthBtn onClick={() => onClickLocationAuthBtn(info.id)}>인증하기</LocationAuthBtn>
+            </ButtonWrapper>
           </RoomTextBlock>
         </RoomInfoBlock>
       </ReserveInfoBlock> : <Dummy></Dummy>
@@ -174,12 +178,15 @@ const MyReservation = () => {
           <RoomTextBlock>
             <Roomtext weight={true}>{info.room.name}</Roomtext>
             <Roomtext>
-              일정 : {info.date}
+              시작날짜 : {info.date}
             </Roomtext>
-            <Roomtext>시간 : {info.start.split(':')[0]}:{info.start.split(':')[1]}-{info.end.split(':')[0]}:{info.end.split(':')[1]}</Roomtext>
-            <CancelButton onClick={() => onClickDeleteBtn(info.id)}>예약 취소</CancelButton>
+            <Roomtext>예약시간 : {info.start.split(':')[0]}:{info.start.split(':')[1]}-{info.end.split(':')[0]}:{info.end.split(':')[1]}</Roomtext>
 
-            <LocationAuthBtn onClick={() => onClickLocationAuthBtn(info.id)}>인증하기</LocationAuthBtn>
+            <ButtonWrapper>
+              <CancelButton onClick={() => onClickDeleteBtn(info.id)}>예약 취소</CancelButton>
+              <LocationAuthBtn onClick={() => onClickLocationAuthBtn(info.id)}>인증하기</LocationAuthBtn>
+            </ButtonWrapper>
+
             {/* <Roomtext weight={true}>{info.location}</Roomtext>
         <Roomtext>
           일정 : {info.year}년 {info.month}월 {info.day}일
@@ -204,9 +211,6 @@ const MyReservation = () => {
 
         <InfoBlock>
           <TitleBlock>나의 일반예약목록</TitleBlock>
-          {
-
-          }
           {commoninfoList}
         </InfoBlock>
         <InfoBlock>
