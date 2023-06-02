@@ -4,7 +4,7 @@ import * as roomAPI from '../../api/roomApi';
 import { takeLatest, call, put } from 'redux-saga/effects';
 
 
-const initialState = { room: null, roomsInfo: [] } // 초기상태
+const initialState = { room: null, roomsInfo: [], } // 초기상태
 
 export const getRooms = roomsInfo => ({ type: 'GET_ROOM', roomsInfo })
 
@@ -19,7 +19,7 @@ function* getRoomsSaga() {
         yield put({ type: 'GET_ROOM_RESULT', roomsInfo: response.data.results });
 
     } catch (e) {
-        yield put({ type: 'GET_ROOM_RESULT', roomInfo: [] });
+        yield put({ type: 'GET_ROOM_RESULT' });
     }
 }
 
