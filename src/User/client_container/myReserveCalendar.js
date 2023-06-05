@@ -21,6 +21,7 @@ const CalendarWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+ 
 `;
 const CalendarHeader = styled.div`
   display: flex;
@@ -31,15 +32,24 @@ const CalendarHeader = styled.div`
 const MonthText = styled.div`
   font-weight: bold;
   font-size: 1.5rem;
+  @media screen and (max-width: 500px){
+    font-size: 1.2rem;
+  }
 `;
 
 const MoveRight = styled(BsFillCaretRightFill)`
   font-size: 1.1rem;
   margin-left: 10px;
+  @media screen and (max-width: 500px){
+    font-size: 2rem;
+  }
 `;
 const MoveLeft = styled(BsFillCaretLeftFill)`
   font-size: 1.1rem;
   margin-right: 10px;
+  @media screen and (max-width: 500px){
+    font-size: 2rem;
+  }
 `;
 const DaysWrapper = styled.div`
   display: flex;
@@ -55,11 +65,15 @@ const Days = styled.div`
   padding-left: 0.5rem;
   padding-top: 3px;
   padding-bottom: 3px;
+  @media screen and (max-width: 500px){
+    width: 13vw;
+  }
 `;
 
 const DayCellsWrapper = styled.div`
   display: flex;
   flex-direction: column;
+
 `;
 
 const Day = styled.div`
@@ -71,6 +85,13 @@ const Day = styled.div`
   border-style: solid;
   border-color: lightgray;
   background-color: ${(props) => props.color};
+  @media screen and (max-width: 500px){
+    width: 13vw;
+    height: 13vw;
+    font-size:0.8rem;
+    border-width: 1px;
+  }
+  
 `;
 const DateText = styled.div`
   margin-left: 0.5rem;
@@ -88,6 +109,10 @@ const ReserveTimeBlock = styled.div`
     css`
       background: rgba(195, 0, 47, 0.5);
     `}
+
+  @media screen and (max-width: 500px){
+    display : none
+  }
 `;
 
 const HoliDay = styled(Day)`

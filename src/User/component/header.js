@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import logo from '../assets/sejong.png';
-import { GrClose } from 'react-icons/gr';
+import { GrClose, GrMenu } from 'react-icons/gr';
 import { useDispatch, useSelector } from 'react-redux';
-
 import cookie from 'react-cookies';
 import { useNavigate } from 'react-router-dom';
 import auth from '../store/modules/auth';
@@ -17,8 +16,13 @@ const HeaderWrapper = styled.header`
   width: 100%;
   background-color: #a31432;
   justify-content: space-between;
-  display: flex;
   align-items: center;
+  @media screen and (max-width: 500px){
+    width : 100vw;
+    flex-direction: row;
+    justify-content :center;
+    align-items: center;
+  }
 `;
 
 const SejongLogo = styled.img`
@@ -33,8 +37,12 @@ const MainTitle = styled.div`
   margin-left: 130px;
   display: flex;
   align-items: center;
-
   cursor : pointer;
+  @media screen and (max-width: 500px){
+      font-size:4rem;
+      margin-left: 0px;
+      margin : 12px 0 12px 0;
+  }
 `;
 
 const UserInfo = styled.div`
@@ -42,6 +50,10 @@ const UserInfo = styled.div`
   color: white;
   font-weight: 600;
   font-size: 12px;
+  @media screen and (max-width: 500px){
+    margin-right: 5px;
+
+  }
 `;
 
 const LogoutBtn = styled.button`
@@ -58,11 +70,46 @@ const LogoutBtn = styled.button`
   margin-bottom: 15px;
 
   cursor : pointer;
+  @media screen and (max-width: 500px){
+    margin: 0;
+    margin-right: 50px;
+    color : white;
+    font-size: 8px;
+    padding : 3px;
+  }
 `;
 
-const LogoutWrapper = styled.div``;
+const MenuIcon = styled(GrMenu)`
+  display: none;
+ @media screen and (max-width: 480px){
+    display : flex;
+    font-size: 5rem;
+    position: absolute;
+    right : 10px;
+  }
+`
 
-const TabWrapper = styled.div``;
+const CloseIcon = styled(GrClose)`
+  font-size : 4rem;
+`
+
+const LogoutWrapper = styled.div`
+  @media screen and (max-width: 500px){
+    display: flex;
+    text-align: center;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+const TabWrapper = styled.div`
+@media screen and (max-width: 500px){
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
+`;
 
 const HeaderTab = styled.li`
   display: inline-block;
@@ -72,12 +119,21 @@ const HeaderTab = styled.li`
   margin-left: 15px;
   margin-right: 15px;
   cursor : pointer;
+
+  @media screen and (max-width: 500px){
+   color: black;
+   margin-top: 10px;
+  }
+  
 `;
 const RightComponent = styled.div`
   text-align: right;
   margin-top: 20px;
   margin-bottom: 10px;
   margin-right: 130px;
+  @media screen and (max-width: 500px){
+    display: none;
+  }
 `;
 
 const Background = styled.div`
@@ -100,6 +156,27 @@ const ModalContainer = styled.div`
   height: 90%;
   background: white;
   text-align: center;
+  @media screen and (max-width: 500px){
+    width : 90%;
+    height: 75%;
+  }
+`;
+
+const SideBarWrap = styled.div`
+  z-index: 5;
+  padding: 12px;
+  border-radius: 15px 0 0 15px;
+  background-color: #e7e4e1;
+  height: 100%;
+  width: 55%;
+  right: -55%;
+  top: 0;
+  position: fixed;
+  transition: 0.5s ease;
+  &.open {
+    right: 0;
+    transition: 0.5s ease;
+  }
 `;
 
 const ModalHeader = styled.div`
@@ -108,6 +185,9 @@ const ModalHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 20px;
+  @media screen and (max-width: 500px){
+    justify-content: center;
+  }
 `;
 
 const ModalMainTitle = styled.div`
@@ -116,6 +196,9 @@ const ModalMainTitle = styled.div`
   font-size: 26px;
   display: flex;
   align-items: center;
+  @media screen and (max-width: 500px){
+    font-size: 5rem;
+  }
 `;
 
 const TitleWrapper = styled.div`
@@ -125,11 +208,17 @@ const TitleWrapper = styled.div`
 
   padding-left: 30px;
   align-items: baseline;
+ 
 `;
 
 const InfoTitle = styled.span`
   font-size: 1.3rem;
   font-weight: bold;
+  @media screen and (max-width: 500px){
+    font-size: 3rem;
+   
+  }
+ 
 `
 
 const PwdInfoTitle = styled.span`
@@ -149,18 +238,9 @@ const TextFieldWrapper = styled.div`
   margin-bottom: 10px;
   align-items: center;
   justify-content: center;
-`;
-
-const GoogleConnectionBtn = styled.div`
-  font-size: 11px;
-  border-style: solid;
-  border-color: lightgray;
-  margin-left: 3px;
-  padding-top: 3px;
-  padding-bottom: 3px;
-  padding-left: 3px;
-  padding-right: 3px;
-  text-align: center;
+  @media screen and (max-width: 500px){
+    padding-top: 5px;
+  }
 `;
 
 const TextFieldClass = styled.div`
@@ -169,6 +249,11 @@ const TextFieldClass = styled.div`
   display: flex;
   align-items: center;
   justify-content: baseline;
+  @media screen and (max-width: 500px){
+    font-size: 10px;
+    width : 20%;
+    padding-top: 5px;
+  }
 `;
 const TextField = styled.input`
   ::placeholder {
@@ -197,6 +282,10 @@ const PwdChageBtn = styled.button`
   :hover {
     background-color: grey;
   }
+  @media screen and (max-width: 500px){
+    font-size: 3rem;
+    width : 40%
+  }
 `;
 
 const UserInfoChageBtn = styled.button`
@@ -213,7 +302,42 @@ const UserInfoChageBtn = styled.button`
   :hover {
     background-color: grey;
   }
+  @media screen and (max-width: 500px){
+    font-size: 3rem;
+    width : 40%
+  }
 `;
+
+const ShowHamburgerMenu = styled.div`
+  z-index: 5;
+  border-radius: 15px 0 0 15px;
+  background-color: white;
+  height: 100%;
+  width: 55%;
+  right: 0%;
+  top: 0;
+  position: fixed;
+  transition: 0.5s ease;
+  transition: 1s;
+  
+`
+const HideHamburgerMenu = styled.div`
+z-index: 5;
+  padding: 12px;
+  border-radius: 15px 0 0 15px;
+  background-color: #e7e4e1;
+  height: 100%;
+  width: 55%;
+  right: -55%;
+  top: 0;
+  position: fixed;
+  transition: 0.5s ease;
+`
+const HamburgerHeader = styled.div`
+  background-color:  #a31432;
+  border-top-left-radius: 15px;
+  padding: 10px;
+`
 
 function MyPage(props) {
   const userInfo = useSelector(state => state.userInfo.myInfo);
@@ -318,9 +442,9 @@ function MyPage(props) {
 }
 
 function Header() {
-
   const userInfo = useSelector(state => state.userInfo.myInfo);
   const [modal, setModal] = useState(false);
+  const [isHamburgerClicked, setHamburger] = useState(false);
   const navigate = useNavigate();
   const clickSearchMyReservation = () => {
     navigate('/main/reserve');
@@ -345,6 +469,10 @@ function Header() {
     console.log('click')
     navigate('/main')
   }
+  const clickHambuger = () => {
+    setHamburger(!isHamburgerClicked);
+    console.log(isHamburgerClicked);
+  }
 
   const dispatch = useDispatch();
   const onLogout = () => {
@@ -358,13 +486,36 @@ function Header() {
       <MainTitle onClick={clickSejongLogo}>
         <SejongLogo src={logo}></SejongLogo> &nbsp;세종대학교 예약시스템
       </MainTitle>
+      <MenuIcon onClick={clickHambuger}></MenuIcon>
+
+      {
+        isHamburgerClicked ?
+          <ShowHamburgerMenu>
+            <HamburgerHeader>
+              <LogoutWrapper>
+                <UserInfo>{userInfo.user_no} {userInfo.name}</UserInfo>
+                <LogoutBtn onClick={onLogout}>로그아웃</LogoutBtn>
+                <CloseIcon onClick={() => setHamburger(false)}></CloseIcon>
+              </LogoutWrapper>
+            </HamburgerHeader>
+
+            <TabWrapper>
+              <HeaderTab onClick={clickNotice}>공지사항</HeaderTab>
+              <HeaderTab onClick={clickSearchMyReservation}>내 예약현황 조회</HeaderTab>
+              <HeaderTab onClick={clickMyPageBtn}>마이페이지</HeaderTab>
+              {modal === true ? (
+                <MyPage onXbtnClick={clickXModalBtn}></MyPage>
+              ) : null}
+            </TabWrapper></ShowHamburgerMenu> : <HideHamburgerMenu>
+          </HideHamburgerMenu>
+      }
       <RightComponent>
+
         <LogoutWrapper>
           <UserInfo>{userInfo.user_no} {userInfo.name}</UserInfo>
           <LogoutBtn onClick={onLogout}>로그아웃</LogoutBtn>
         </LogoutWrapper>
         <TabWrapper>
-          <HeaderTab onClick={clickInconfidence}>불편사항</HeaderTab>
           <HeaderTab onClick={clickNotice}>공지사항</HeaderTab>
           <HeaderTab onClick={clickSearchMyReservation}>내 예약현황 조회</HeaderTab>
           <HeaderTab onClick={clickMyPageBtn}>마이페이지</HeaderTab>
