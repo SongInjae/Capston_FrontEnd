@@ -54,7 +54,7 @@ const RoomInfoBlock = styled.div`
 `;
 const RoomImage = styled.img`
     width : 8rem;
-    height : 100em;
+    height : 8rem;
     border-radius: 8px;
     @media screen and (max-width: 500px){
       width: 15rem;
