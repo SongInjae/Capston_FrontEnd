@@ -6,6 +6,7 @@ import { take } from '../store/modules/regular';
 import sea_img from '../assets/img/search.png';
 import RegularUserTable from './Regular/RegularUserTable';
 import Pagenation from '../components/Pagenation';
+import Loading from '../components/Loading';
 
 const FliterBlock = styled.div`
   display: flex;
@@ -64,9 +65,13 @@ const ContentBlock = styled.div`
 
 const RegularReservagionPage = () => {
   const dispatch = useDispatch();
+  const { loading_take, loading_remove } = useSelector(({ loading }) => ({
+    loading_take: loading['regular/take'],
+    loading_remove: loading['regular/REMOVE'],
+  }));
   useEffect(() => {
     dispatch(take());
-  }, [dispatch]);
+  }, [dispatch, loading_remove]);
   const infos = useSelector(({ regular }) => regular.regularInfo); //info 불러오기
   const [filterInfo, setFilterInfo] = useState(infos);
   const [userInput, setUserInput] = useState(''); //필터링 input
@@ -87,6 +92,10 @@ const RegularReservagionPage = () => {
         .slice(offset, offset + 12),
     );
   }, [userInput, infos, offset]);
+
+  if (loading_take || loading_remove) {
+    return <Loading />;
+  }
 
   return (
     <>

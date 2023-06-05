@@ -10,6 +10,7 @@ import cal_img from '../assets/img/data-table.png';
 import ReservationTable from './Reserve/ReservationTable';
 import CalendarModals from '../components/CalendarModals';
 import Pagenation from '../components/Pagenation';
+import Loading from '../components/Loading';
 
 const FliterAddBlock = styled.div`
   display: flex;
@@ -76,9 +77,13 @@ const SearchBlock = styled.input`
 
 const ReservationPage = () => {
   const dispatch = useDispatch();
+  const { loading_take, loading_remove } = useSelector(({ loading }) => ({
+    loading_take: loading['reserve/take'],
+    loading_remove: loading['reserve/REMOVE'],
+  }));
   useEffect(() => {
     dispatch(take());
-  }, []);
+  }, [dispatch, loading_remove]);
 
   const [modal, setModal] = useState(false); //팝업창 여부
 
@@ -123,6 +128,10 @@ const ReservationPage = () => {
       }),
     );
   }, [date]);
+
+  if (loading_take || loading_remove) {
+    return <Loading />;
+  }
 
   return (
     <>

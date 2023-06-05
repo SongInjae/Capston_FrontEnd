@@ -7,6 +7,7 @@ import { remove, take } from '../../store/modules/notify';
 import LogoutModal from '../../components/LogoutModal';
 import Button from '../../components/Button';
 import Pagenation from '../../components/Pagenation';
+import Loading from '../../components/Loading';
 
 const StyledBlock = styled.div`
   width: 70rem;
@@ -119,11 +120,18 @@ const DeleteButton = styled(Button)`
 `;
 
 const Notify = () => {
+  const dispatch = useDispatch();
+  const { loading_insert, loading_take, loading_remove, loading_change } =
+    useSelector(({ loading }) => ({
+      loading_insert: loading['notify/INSERT'],
+      loading_take: loading['notify/Take'],
+      loading_remove: loading['notify/REMOVE'],
+      loading_change: loading['notify/CHANGE'],
+    }));
   useEffect(() => {
     dispatch(take());
-  }, []);
+  }, [dispatch, loading_remove, loading_change, loading_insert]);
   const infos = useSelector(({ notify }) => notify.infos);
-  const dispatch = useDispatch();
 
   //모달 구현
   const [id, setId] = useState();
@@ -164,6 +172,10 @@ const Notify = () => {
   ));
 
   const onePageInfo = infoList.slice(offset, offset + 5);
+
+  if (loading_insert || loading_take || loading_remove || loading_change) {
+    return <Loading />;
+  }
 
   return (
     <StyledBlock>

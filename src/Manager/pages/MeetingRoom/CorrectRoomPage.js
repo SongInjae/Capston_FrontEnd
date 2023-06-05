@@ -96,7 +96,6 @@ const CorrectRoomPage = ({
   setDiscriptiona,
   onSubmit,
 }) => {
-  let id = room.id;
   let [name, setName] = useState(room.name);
   let [amenities, setAmenities] = useState(room.amenities);
   let [discription, setDiscription] = useState(room.discription);
