@@ -9,7 +9,7 @@ const initialState = { myReservationInfo: null, time: '', roomId: '', member: []
 export const getMyReservation = (userId, myReservationInfo) => ({ type: 'GET_MYRESERVE', userId, myReservationInfo });
 export const getRoomReservation = (roomId, reservedTime, pickDay) => ({ type: 'GET_ROOMRESERVE', roomId: roomId, reservedTime: reservedTime, pickDay: pickDay });
 export const makeReservation = (reserveData) => ({ type: 'MAKE_RESERVE', reserveData: reserveData });
-export const deleteMyReservation = (id) => ({ type: 'DELETE_RESERVE', id });
+export const deleteMyReservation = (id, userId) => ({ type: 'DELETE_RESERVE', id, userId });
 export const authLocation = (reserveId, lat, log) => ({ type: 'AUTH_LOCATE', reserveId, lat, log });
 export const getReservationByDate = (roomId, reserveByDateData, pickDay) => ({ type: 'GET_RESERVE_DATE', reserveByDateData, roomId, pickDay });
 
@@ -82,10 +82,7 @@ const checkScheduledOrNot = (allData, pickDay) => {
     console.log(allData.length);
     console.log(scheduleDay);
     for (let i = 0; i < allData.length; i++) {
-        console.log(i);
-        console.log(transFormDate(scheduleDay));
-        console.log(allData[i].day);
-        console.log(allData[i].day.includes(transFormDate(scheduleDay)));
+
 
         if (allData[i].day.includes(transFormDate(scheduleDay)) || new Date(allData[i].date).getDay() === scheduleDay) { // 선택한 날짜의 요일을 가지고 있으면
             if (allData[i].is_scheduled) {
@@ -106,8 +103,6 @@ const checkScheduledOrNot = (allData, pickDay) => {
 }
 
 function* getMyReservationSaga(action) {
-    console.log(action);
-    console.log(action.userId);
     try {
         const response = yield call(reservationApi.getMyReservation, action.userId);
         yield put({ type: 'GET_MYRESERVE_RESULT', myReservationInfo: response.data.results });
@@ -119,12 +114,12 @@ function* getMyReservationSaga(action) {
 }
 
 function* deleteMyReservationSaga(action) {
-    console.log(action.id)
     try {
 
         yield call(reservationApi.deleteMyReservation, action.id);
+        const response = yield call(reservationApi.getMyReservation, action.userId);
         alert('예약이 취소되었습니다.');
-        yield put({ type: 'DELETE_RESERVE_RESULT', });
+        yield put({ type: 'DELETE_RESERVE_RESULT', myReservationInfo: response.data.results });
 
 
     } catch (e) {
@@ -250,6 +245,7 @@ function reservation(currentState = initialState, action) { //리듀서 선언
         case 'DELETE_RESERVE_RESULT':
             return {
                 ...currentState,
+                myReservationInfo: action.myReservationInfo
             }
 
         case 'GET_ROOMRESERVE_RESULT': {

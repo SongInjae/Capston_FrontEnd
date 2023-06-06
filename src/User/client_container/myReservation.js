@@ -170,16 +170,15 @@ const MyReservation = () => {
     return new Promise((resolve, reject) => { geolocation.getCurrentPosition(resolve, reject, geolocationOptions) });
   }
 
+
   useEffect(() => {
     dispatch(getMyInfo());
     dispatch(getMyReservation(myId));
-    if (loading_insert) {
-      return <Loading />;
-    }
+
   }, [dispatch, myId]);
 
   const onClickDeleteBtn = (id) => {
-    dispatch(deleteMyReservation(id));
+    dispatch(deleteMyReservation(id, myId));
     dispatch(getMyReservation(myId));
   }
 
