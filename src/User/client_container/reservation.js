@@ -747,6 +747,7 @@ function ReservingPage() {
 
 
     useEffect(() => {
+        console.log('useeffect');
         dispatch(getRoomReservation(selectedRoom.id, [], `${format(selectedDate, 'yyyy')}-${format(selectedDate, 'MM')}-${format(selectedDate, 'dd')}`));
 
     }, [dispatch, selectedDate, selectedRoom]);

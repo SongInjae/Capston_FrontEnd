@@ -41,7 +41,7 @@ function UserMain() {
     dispatch(getMyReservation(myId));
     if (roomsInfo !== []) return;
 
-  }, [dispatch, myId],);
+  }, [dispatch, myId, roomsInfo],);
 
 
   const roomInfo = [

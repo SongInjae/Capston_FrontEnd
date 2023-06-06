@@ -6,7 +6,21 @@ import { useNavigate } from 'react-router-dom';
 //import { useCookies } from 'react-cookie';
 import cookie from 'react-cookies';
 
-const LoginFormBlock = styled.div``;
+const LoginFormBlock = styled.div`
+ @media screen and (max-width: 480px){
+      width : 80%
+  }
+`;
+
+const FormBlock = styled.div`
+   @media screen and (max-width: 480px){
+      display: flex;
+      margin-top : 10px;
+      flex-direction : column;
+      align-items : center;
+      justify-content : center;
+  }
+`
 
 const StyledInput = styled.input`
   font-size: 1rem;
@@ -21,6 +35,13 @@ const StyledInput = styled.input`
   & + & {
     margin-top: 1rem;
   }
+  @media screen and (max-width: 480px){
+      display: flex;
+      align-items : center;
+      justify-content : center;
+      width : 100%;
+  }
+  
 `;
 const StyledButton = styled.button`
   background-color: #c3002f;
@@ -39,6 +60,12 @@ const StyledButton = styled.button`
   :hover {
     background-color: black;
   }
+  @media screen and (max-width: 500px){
+    margin-top : 15px;
+    width : 60%;
+    height : 20px;
+    text-align : center;
+  }
 `;
 
 const ErrorMessage = styled.div`
@@ -46,6 +73,9 @@ const ErrorMessage = styled.div`
   text-align: center;
   font-size: 0.7rem;
   margin-top: 1rem;
+  @media screen and (max-width: 500px){
+      font-size : 0.5rem;
+  }
 `;
 
 const LoginForm = () => {
@@ -92,7 +122,7 @@ const LoginForm = () => {
   return (
     <>
       <LoginFormBlock>
-        <form onSubmit={onSubmit}>
+        <FormBlock onSubmit={onSubmit}>
           <StyledInput
             autoComplete="username"
             name="username"
@@ -110,7 +140,7 @@ const LoginForm = () => {
           />
           {error && <ErrorMessage>{error}</ErrorMessage>}
           <StyledButton>로그인</StyledButton>
-        </form>
+        </FormBlock>
       </LoginFormBlock>
     </>
   );

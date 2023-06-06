@@ -394,7 +394,6 @@ const TimeLineWrapper = styled.div`
         display: grid;
         flex-direction : column;
         grid-template-columns: repeat(6, 0.5fr);
-        margin-top: 20px;
 }
 `
 const TimeLineBlock = styled.div`

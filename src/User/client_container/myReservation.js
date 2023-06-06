@@ -6,6 +6,7 @@ import { getMyReservation, deleteMyReservation, authLocation } from '../store/mo
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '../component/header';
 import { getMyInfo } from '../store/modules/userInfo';
+import Loading from '../../Manager/components/Loading';
 
 const Dummy = styled.div`
   height:0px;
@@ -152,7 +153,7 @@ const MyReservation = () => {
     timeout: 1000 * 10,
     maximumAge: 1000 * 3600 * 24,
   }
-
+  const { loading_insert } = useSelector(({ loading }) => ({ loading_insert: loading['GET_ROOMRESERVE'] }))
 
   const [locationInfo, setLocationInfo] = useState({});
 
@@ -172,12 +173,14 @@ const MyReservation = () => {
   useEffect(() => {
     dispatch(getMyInfo());
     dispatch(getMyReservation(myId));
-
+    if (loading_insert) {
+      return <Loading />;
+    }
   }, [dispatch, myId]);
 
   const onClickDeleteBtn = (id) => {
     dispatch(deleteMyReservation(id));
-
+    dispatch(getMyReservation(myId));
   }
 
   const onClickLocationAuthBtn = async (id) => {
