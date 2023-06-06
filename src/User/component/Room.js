@@ -11,16 +11,22 @@ const Room = styled.div`
     padding : 15px;
     display: flex;
     margin : 10px;
-   
-    //flex-direction: column;
-    //justify-content: center;
-    /* align-items: center; */
+    @media screen and (max-width: 480px){
+        padding: 10px;
+        border-width: 1px;
+        
+    }
+    
 `;
 const RoomImage = styled.img`
     width : 8rem;
     height : 8rem;
     border-radius: 8px;
     flex : 1;
+    @media screen and (max-width: 480px){
+        width : 50px;
+        height : 80px;
+  }
 `;
 
 const RoomNameWrapper = styled.div`
@@ -37,6 +43,10 @@ const RoomName = styled.span`
     font-weight: bold;
     padding-left: 10px;
     flex:1;
+    @media screen and (max-width: 480px){
+        font-size: 3rem;
+    }
+    
 `;
 
 
@@ -44,7 +54,8 @@ const ReserveBtnWrapper = styled.div`
     display: flex;
     flex:2;
     padding-left: 8rem;
-    flex-direction: row;   
+    flex-direction: row;
+    justify-content: end;
 `;
 const ReserveBtn = styled.button`
     margin-top: auto;
@@ -59,6 +70,13 @@ const ReserveBtn = styled.button`
     border-radius: 8px;
     border-width: 0px;
     background-color: #a31432;
+    @media screen and (max-width: 480px){
+        width : 13rem;
+        height : auto;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
 `;
 
 

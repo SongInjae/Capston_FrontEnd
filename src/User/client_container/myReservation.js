@@ -16,8 +16,13 @@ const TitleBlock = styled.h2`
   width: 29rem;
   font-size: 1.3rem;
   margin-top: 1rem;
+  @media screen and (max-width: 480px){
+    font-size: 3rem;
+    margin-left: 0.5rem;
+  }
 `;
 const ReserveInfoBlock = styled.div`
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,15 +34,32 @@ const ReserveInfoBlock = styled.div`
   margin : 10px;
   padding-left: 10px;
   padding-right: 10px;
+  @media screen and (max-width: 480px){
+    width : 90vw;
+    height : auto;
+    margin-left: 0.5rem;
+    margin-top: 3px;
+    margin-bottom: 3px;
+  }
 `;
 const RoomInfoBlock = styled.div`
   width: 33rem;
   display: flex;
+  @media screen and (max-width: 500px){
+   width : 100%;
+   align-items: center;
+   margin-top: 3px;
+   margin-bottom: 3px;
+  }
 `;
 const RoomImage = styled.img`
-    width : 7rem;
-    height : 7rem;
+    width : 8rem;
+    height : 8rem;
     border-radius: 8px;
+    @media screen and (max-width: 500px){
+      width: 15rem;
+      height: 15rem;
+  }
 `;
 const RoomTextBlock = styled.div`
   margin-left: 1rem;
@@ -50,7 +72,7 @@ const Roomtext = styled.div`
     props.weight &&
     css`
       font-weight: bold;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       color: black;
     `}
 `;
@@ -72,6 +94,13 @@ const CancelButton = styled(Button)`
     border-radius: 8px;
     border-width: 0px;
     background-color: #a31432;
+    @media screen and (max-width: 500px){
+      width : 13rem;
+      height : auto;
+      padding : 1rem;
+      margin-top: 3px;
+      margin-bottom: 3px;
+    }
 `;
 
 const LocationAuthBtn = styled(Button)`
@@ -87,17 +116,30 @@ const LocationAuthBtn = styled(Button)`
     border-radius: 8px;
     border-width: 0px;
     background-color: #a31432;
+    @media screen and (max-width: 500px){
+      width : 13rem;
+      height : auto;
+      padding : 1rem;
+      margin-top: 3px;
+      margin-bottom: 3px;
+    }
 `
 
 const MyReserveBlock = styled.div`
   display : flex;
   flex-direction: row;
   justify-content: center;
+  @media screen and (max-width: 480px){
+    flex-direction: column;
+    align-items: center;
+  }
+  
 `
 
 const InfoBlock = styled.div`
   display : flex;
   flex-direction: column;
+  
 `
 
 

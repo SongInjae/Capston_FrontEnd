@@ -5,13 +5,13 @@ const token = cookie.load('token');
 
 //엑셀 회원 불러오기
 export const excelInfo = (formData) =>
-  manager.post('http://3.35.38.254:8000/users/bulk', formData, {
+  manager.post('http://localhost/api/users/bulk', formData, {
     headers: { Authorization: `Token ${token}` },
   });
 //회원 bulk 삭제하기
 export const bulkDelete = (data) =>
   manager.delete(
-    'http://3.35.38.254:8000/users/bulk',
+    'http://localhost/api/users/bulk',
     { data },
     {
       headers: {
@@ -22,7 +22,7 @@ export const bulkDelete = (data) =>
   );
 //회원정보 불러오기
 export const takeAllInfo = () =>
-  manager.get('http://3.35.38.254:8000/users', {
+  manager.get('http://localhost/api/users', {
     headers: { Authorization: `Token ${cookie.load('token')}` },
   });
 //회원 추가하기
@@ -35,13 +35,13 @@ export const addInfo = ({
   department,
 }) =>
   manager.post(
-    'http://3.35.38.254:8000/users',
+    'http://localhost/api/users',
     { user_type, name, user_no, email, password: 12345678, department },
     { headers: { Authorization: `Token ${cookie.load('token')}` } },
   );
 //회원 삭제하기
 export const removeInfo = (id) =>
-  manager.delete(`http://3.35.38.254:8000/users/${id}`, {
+  manager.delete(`http://localhost/api/users/${id}`, {
     headers: { Authorization: `Token ${cookie.load('token')}` },
   });
 //회원 변경하기
@@ -54,7 +54,7 @@ export const changeInfo = ({
   department,
 }) =>
   manager.patch(
-    `http://3.35.38.254:8000/users/${id}`,
+    `http://localhost/api/users/${id}`,
     { user_type, user_no, email, name, department },
     {
       headers: { Authorization: `Token ${cookie.load('token')}` },

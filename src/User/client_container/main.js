@@ -21,6 +21,11 @@ const RoomsWrapper = styled.div`
   display: grid;
   
   grid-template-columns: repeat(2, 0.5fr);
+  @media screen and (max-width: 500px){
+    display: flex;
+    width : 100vw;
+    flex-direction: column;
+  }
 `;
 
 

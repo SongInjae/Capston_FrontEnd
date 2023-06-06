@@ -123,7 +123,7 @@ function* deleteMyReservationSaga(action) {
     try {
 
         yield call(reservationApi.deleteMyReservation, action.id);
-
+        alert('예약이 취소되었습니다.');
         yield put({ type: 'DELETE_RESERVE_RESULT' });
 
     } catch (e) {
@@ -162,9 +162,10 @@ function* getRoomReserve(action) {
 function* makeReserve(action) {
     try {
         console.log(action.reserveData)
-        yield call(reservationApi.makeReservation, action.reserveData);//body 추가해야함
+        const response = yield call(reservationApi.makeReservation, action.reserveData);//body 추가해야함
 
         yield put({ type: 'MAKE_RESERVE_RESULT' });
+        console.log(response);
         alert('예약되었습니다.');
     } catch (e) {
         yield put({ type: 'MAKE_RESERVE_RESULT' });

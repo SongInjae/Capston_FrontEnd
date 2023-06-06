@@ -54,6 +54,11 @@ const RoomTitle = styled.div`
     font-size: 1.5rem;
     font-weight: bold;
     width : 40vw;
+    @media screen and (max-width: 480px){
+       
+        font-size: 4rem;
+    }
+    
 `
 const RoomImage = styled.img`
     margin-top: 0.5rem;
@@ -62,14 +67,22 @@ const RoomImage = styled.img`
     height : 30vw;
     border-radius: 10px;
     background-color: lightgray;
+    @media screen and (max-width: 480px){
+        width : 95vw;
+        height : 80vw;
+        font-size: 3rem;
+    }
 `
 const ToolWrapper = styled.div`
     display: inline-block;
     flex-direction: row;
     align-content: flex-start;
     width : 40vw;
+    @media screen and (max-width: 480px){
+        width : 90vw;
+        margin-top:10px;
+    }
 `
-
 
 const Tool = styled.div`
     width : 5rem;
@@ -78,6 +91,11 @@ const Tool = styled.div`
     align-items: center;
     margin-left : 0.2rem;
     margin-right : 0.2rem;
+    @media screen and (max-width: 480px){
+       width : 18rem;
+
+    }
+   
 `
 
 const ToolImageBorder = styled.div`
@@ -89,6 +107,10 @@ const ToolImageBorder = styled.div`
     align-items: center;
     width : 4rem;
     height : 4rem;
+    @media screen and (max-width: 480px){
+        width : 10rem;
+        height : 10rem;
+    }
 
 `;
 
@@ -96,7 +118,10 @@ const ToolImage = styled.img`
     border-radius: 5px;
     width : 2.5rem;
     height : 2.5rem;
-
+    @media screen and (max-width: 480px){
+        width : 7rem;
+        height : 7rem;
+    }
 `;
 const ToolTitle = styled.div`
     width: 5rem;
@@ -104,6 +129,10 @@ const ToolTitle = styled.div`
     text-align: center;
     font-size: 12px;   
     font-weight: 500;
+    @media screen and (max-width: 480px){
+        width : auto;
+        font-size: 8px;
+    }
 `
 const DatePickWrapper = styled.div`
     display: flex;
@@ -122,6 +151,9 @@ const DatePickButton = styled.div`
     border-radius: 10px;
     font-weight: bold;
     font-size: 15px;
+    @media screen and (max-width: 480px){
+        font-size: 3rem;
+    }
 `
 const DropdownIcon = styled(IoIosArrowDown)`
 
@@ -133,6 +165,10 @@ const TimePickbtn = styled.div`
     border-color: lightgray;
     border-radius: 10px;
     margin-bottom: 5px;
+    @media screen and (max-width: 480px){
+        width : 90vw;
+        border-radius: 5px;
+    }
 `
 const TimeTitle = styled.div`
     padding-top: 10px;
@@ -157,6 +193,13 @@ const MeetingNameInput = styled.input`
     border-style: solid;
     border-color: lightgrey;
     outline : none;
+    @media screen and (max-width: 480px){
+        width : 90vw;
+        height : auto;
+        padding-top : 10px;
+        padding-bottom: 10px;
+        border-radius: 5px;
+    }
 `;
 
 const MemberTitle = styled.div`
@@ -165,15 +208,26 @@ const MemberTitle = styled.div`
     width: 40vw;
     font-size: 1.2rem;
     font-weight: bold;
+    @media screen and (max-width: 480px){
+        width : 90vw;
+        font-size: 3.5rem;
+    }
 `
 const AddMemberButton = styled.div`
     align-items: center;
     font-size: 13px;
+    @media screen and (max-width: 480px){
+
+    }
 `
 const AddMemberIcon = styled(MdOutlineAddCircle)`
     width : 1.4rem;
     height : 1.4rem;
     margin-left : 10px;
+    @media screen and (max-width: 480px){
+        width : 4rem;
+        height : 4rem;
+    }
 `
 const MemberWrapper = styled.div`
     display: flex;
@@ -189,6 +243,10 @@ const MemeberContainer = styled.div`
     background-color: #FFFCB1;
     padding: 5px;
     border-radius: 10px;
+    justify-content: center;
+    @media screen and (max-width: 480px){
+       font-size: 2rem;
+    }
 `
 
 
@@ -209,6 +267,9 @@ const WarningTitle = styled.div`
     font-size: 1.2rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
+    @media screen and (max-width: 480px){
+        font-size: 3.5rem;
+    }
 `
 const Warning = styled.div`
     display: flex;
@@ -218,7 +279,11 @@ const Warning = styled.div`
     font-size: 14px;
     padding : 1rem;
     border-radius: 10px;
-    
+    @media screen and (max-width: 480px){
+        width : 90vw;
+        font-size: 3rem;
+        padding:3rem;
+    }
 `
 const WarningMsg = styled.span`
     margin-top : 0.3rem;
@@ -242,6 +307,10 @@ const ReservationButton = styled.button`
     border: none;
     :hover{
         background-color: #EF9090;
+    }
+    @media screen and (max-width: 480px){
+        width : 90vw;
+        margin: 10px;
     }
 `;
 const Background = styled.div`
@@ -268,6 +337,10 @@ const ModalContainer = styled.div`
     border-radius: 10px;
     background: white;
     text-align: center;
+    @media screen and (max-width: 480px){
+        width : 80vw;
+        height : 35vw;
+    }
 `;
 const ModalHeader = styled.div`
     display: flex;
@@ -280,7 +353,10 @@ const ModalHeader = styled.div`
     padding: 10px;
 `;
 const ModalXBtn = styled(GrClose)`
-
+     @media screen and (max-width: 480px){
+        width : 3.5rem;
+        height : 3.5rem;
+    }
 `;
 const ModalMainTitle = styled.div`
   color: white;
@@ -305,11 +381,21 @@ const AddMemberInput = styled.input`
     border-color: lightgrey;
     align-items: center;
     outline : none;
+    @media screen and (max-width: 480px){
+        width :55vw;
+        height : 8vw;
+    }
 `;
 const TimeLineWrapper = styled.div`
     display: flex;
     flex-direction: row;
     margin-bottom: 12px;
+    @media screen and (max-width: 480px){
+        display: grid;
+        flex-direction : column;
+        grid-template-columns: repeat(6, 0.5fr);
+        margin-top: 20px;
+}
 `
 const TimeLineBlock = styled.div`
     font-size: 0.6rem;
@@ -323,6 +409,11 @@ const TimeLineBlock = styled.div`
     text-align: center;
     border-radius: 7px;
     margin : 1px;
+    @media screen and (max-width: 480px){
+        width : 20px;
+        height: 20rem;
+        border-radius: 2px;
+    }
 `
 const ModalAddMemeberBtn = styled.button`
     background-color: #a31432;
@@ -339,7 +430,13 @@ const ModalAddMemeberBtn = styled.button`
     :hover{
         background-color: #EF9090;
     }
+    @media screen and (max-width: 480px){
+        width : 10vw;
+        height : 8vw;
+        border-radius: 3px;
+    }
 `;
+
 function ScheduleReservingPage() {
     const TimeList = [
         "9:00",
