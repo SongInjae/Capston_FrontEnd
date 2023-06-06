@@ -7,13 +7,13 @@ export const register = ({ username, password }) =>
 
 export const login = ({ username, password }) =>
   client.post(
-    'http://localhost/api/users/login',
+    'http://localhost:8000/api/users/login',
     { username, password },
     { withCredentials: true },
   );
 //로그아웃
 export const mine = () =>
-  client.get('http://localhost/api/users/mine', {
+  client.get('http://localhost:8000/api/users/mine', {
     headers: { Authorization: `Token ${cookie.load('token')}` },
   });
 
