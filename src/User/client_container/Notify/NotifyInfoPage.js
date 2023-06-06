@@ -5,7 +5,6 @@ import Header from '../../component/header';
 
 //헤더
 
-
 //본문
 const ContentBlock = styled.div`
   width: 80%;
@@ -38,7 +37,6 @@ const BoardTitle = styled.div`
   font-weight: 600;
   border-top: 2px solid rgb(195, 0, 47);
   padding: 1.5rem 1rem;
-  overflow: scroll;
 `;
 const BoardContent = styled.div`
   border-top: 1px solid gray;

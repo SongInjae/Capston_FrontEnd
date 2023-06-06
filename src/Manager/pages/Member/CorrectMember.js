@@ -75,7 +75,7 @@ const CorrectMember = ({ info, onChange, onSubmit }) => {
   let [user_no, setUser_no] = useState(info.user_no);
   let [email, setEmail] = useState(info.email);
   let [user_type, setUser_type] = useState(info.user_type.id);
-  let [department, setDepartment] = useState(info.department);
+  let [department, setDepartment] = useState(info.department.id);
 
   useEffect(() => {
     onChange('id', id);
