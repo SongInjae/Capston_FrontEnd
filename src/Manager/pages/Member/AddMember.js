@@ -154,7 +154,7 @@ const AddMember = ({ error, onChange, onTypeChange, onSubmit }) => {
               onChange={onTypeChange}
               value="2"
             />
-            <CheckNameBlock>교직원</CheckNameBlock>
+            <CheckNameBlock>교수</CheckNameBlock>
             <CheckBlock
               type="radio"
               name="user_type"
