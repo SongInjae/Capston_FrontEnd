@@ -7,7 +7,7 @@ export const register = ({ username, password }) =>
 
 export const login = ({ username, password }) =>
   client.post(
-    'http://localhost/api/users/login',
+    'http://172.31.8.177/api/users/login',
     { username, password },
     { withCredentials: true },
   );

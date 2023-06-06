@@ -63,5 +63,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://3.38.253.177:8000"
+  "proxy": "http://3.38.253.177/api"
 }
