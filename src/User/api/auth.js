@@ -7,13 +7,13 @@ export const register = ({ username, password }) =>
 
 export const login = ({ username, password }) =>
   client.post(
-    'http://172.31.8.177/api/users/login',
+    'http://172.31.2.43/api/users/login',
     { username, password },
     { withCredentials: true },
   );
 //로그아웃
 export const mine = () =>
-  client.get('http://172.31.8.177/api/users/mine', {
+  client.get('http://172.31.2.43/api/users/mine', {
     headers: { Authorization: `Token ${cookie.load('token')}` },
   });
 
