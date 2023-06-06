@@ -13,7 +13,7 @@ export const login = ({ username, password }) =>
   );
 //로그아웃
 export const mine = () =>
-  client.get('http://localhost/api/users/mine', {
+  client.get('http://172.31.8.177/api/users/mine', {
     headers: { Authorization: `Token ${cookie.load('token')}` },
   });
 
