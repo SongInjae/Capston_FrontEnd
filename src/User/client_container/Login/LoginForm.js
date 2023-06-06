@@ -12,7 +12,7 @@ const LoginFormBlock = styled.div`
   }
 `;
 
-const FormBlock = styled.div`
+const FormBlock = styled.form`
    @media screen and (max-width: 480px){
       display: flex;
       margin-top : 10px;

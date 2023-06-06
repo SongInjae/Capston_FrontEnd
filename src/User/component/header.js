@@ -465,6 +465,7 @@ function Header() {
     setModal(false);
   };
 
+
   const clickSejongLogo = () => {
     console.log('click')
     navigate('/main')
@@ -516,6 +517,7 @@ function Header() {
           <LogoutBtn onClick={onLogout}>로그아웃</LogoutBtn>
         </LogoutWrapper>
         <TabWrapper>
+          <HeaderTab onClick={clickSejongLogo}>메인페이지</HeaderTab>
           <HeaderTab onClick={clickNotice}>공지사항</HeaderTab>
           <HeaderTab onClick={clickSearchMyReservation}>내 예약현황 조회</HeaderTab>
           <HeaderTab onClick={clickMyPageBtn}>마이페이지</HeaderTab>
