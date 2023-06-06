@@ -12,13 +12,13 @@ export const getMyInformation = () =>
 export const changeUserInfo = (id, data) =>
   client.patch('users/' + id, data, {
     headers: {
-      Authorization: 'Token ' + token,
+      Authorization: `Token ${cookie.load('token')}`,
     },
   });
 export const changePassword = (changedInfo) =>
   client.patch('users/password', changedInfo, {
     headers: {
-      Authorization: 'Token ' + token,
+      Authorization: `Token ${cookie.load('token')}`,
     },
   });
 
@@ -28,7 +28,7 @@ export const connectGoogle = (user_no) =>
 
     {
       headers: {
-        Authorization: `Token ${token}`,
+        Authorization: `Token ${cookie.load('token')}`,
       },
 
       withCredentials: true,
@@ -39,7 +39,7 @@ export const connectGoogle = (user_no) =>
 export const revokeGoogle = () => {
   client.post('users/google-revoke', {
     headers: {
-      Authorization: 'Token ' + token,
+      Authorization: `Token ${cookie.load('token')}`,
     },
   });
 };
@@ -47,6 +47,6 @@ export const revokeGoogle = () => {
 export const existUserNo = (userNumber) =>
   client.get('users?user_no=' + userNumber, {
     headers: {
-      Authorization: 'Token ' + token,
+      Authorization: `Token ${cookie.load('token')}`,
     },
   });

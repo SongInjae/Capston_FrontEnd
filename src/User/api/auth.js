@@ -6,10 +6,10 @@ export const register = ({ username, password }) =>
   client.post('users', { username, password });
 
 export const login = ({ username, password }) =>
-  client.post('http://3.35.38.254:8000/api/users/login', { username, password }, { withCredentials: true });
+  client.post('users/login', { username, password }, { withCredentials: true });
 //로그아웃
 export const mine = () =>
-  client.get('http://3.35.38.254:8000/api/users/mine', {
+  client.get('users/mine', {
     headers: { Authorization: `Token ${cookie.load('token')}` },
   });
 
