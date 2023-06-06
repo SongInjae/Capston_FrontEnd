@@ -3,7 +3,7 @@ import cookie from 'react-cookies';
 
 //회원가입
 export const register = ({ username, password }) =>
-  client.post('http://localhost/api/users', { username, password });
+  client.post('users', { username, password });
 
 export const login = ({ username, password }) =>
   client.post('users/login', { username, password }, { withCredentials: true });
