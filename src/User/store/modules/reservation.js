@@ -124,7 +124,8 @@ function* deleteMyReservationSaga(action) {
 
         yield call(reservationApi.deleteMyReservation, action.id);
         alert('예약이 취소되었습니다.');
-        yield put({ type: 'DELETE_RESERVE_RESULT' });
+        yield put({ type: 'DELETE_RESERVE_RESULT', });
+
 
     } catch (e) {
         console.log(e);

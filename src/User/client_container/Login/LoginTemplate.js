@@ -54,6 +54,14 @@ const WhiteBox = styled.div`
   width: 20rem;
   background: white;
   border-radius: 2px;
+  @media screen and (max-width: 480px){
+    display: flex;
+    width : 180px;
+    height : 120px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 const LinkBlock = styled(Link)`
   text-decoration: none;
