@@ -5,12 +5,12 @@ const token = cookie.load('token');
 
 //회원정보 불러오기
 export const takeAllInfo = () =>
-  regular.get('http://localhost/api/rooms/my-reservations', {
+  regular.get('rooms/my-reservations', {
     params: { is_scheduled: true },
     headers: { Authorization: `Token ${token}` },
   });
 
 export const removeInfo = (id) =>
-  regular.delete(`http://localhost/api/rooms/my-reservations/${id}`, {
+  regular.delete(`rooms/my-reservations/${id}`, {
     headers: { Authorization: `Token ${token}` },
   });

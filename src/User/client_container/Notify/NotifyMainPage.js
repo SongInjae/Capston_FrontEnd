@@ -8,7 +8,6 @@ import Pagenation from '../../../Manager/components/Pagenation';
 import Header from '../../component/header';
 //헤더
 
-
 //본문
 const ContentBlock = styled.div`
   width: 80%;
@@ -112,7 +111,7 @@ const Td2 = styled.td`
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.2);
   text-align: start;
   padding-left: 1rem;
-  overflow: scroll;
+  text-overflow: ellipsis;
 `;
 const Td3 = styled.td`
   width: 20%;
