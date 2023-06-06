@@ -6,14 +6,10 @@ export const register = ({ username, password }) =>
   client.post('http://localhost/api/users', { username, password });
 
 export const login = ({ username, password }) =>
-  client.post(
-    'http://localhost/api/users/login',
-    { username, password },
-    { withCredentials: true },
-  );
+  client.post('users/login', { username, password }, { withCredentials: true });
 //로그아웃
 export const mine = () =>
-  client.get('http://localhost/api/users/mine', {
+  client.get('users/mine', {
     headers: { Authorization: `Token ${cookie.load('token')}` },
   });
 
