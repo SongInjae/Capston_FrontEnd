@@ -8,7 +8,7 @@ const initialState = { myReservationInfo: null, time: '', roomId: '', member: []
 
 export const getMyReservation = (userId, myReservationInfo) => ({ type: 'GET_MYRESERVE', userId, myReservationInfo });
 export const getRoomReservation = (roomId, reservedTime, pickDay) => ({ type: 'GET_ROOMRESERVE', roomId: roomId, reservedTime: reservedTime, pickDay: pickDay });
-export const makeReservation = (reserveData) => ({ type: 'MAKE_RESERVE', reserveData: reserveData });
+export const makeReservation = (reserveData, userId) => ({ type: 'MAKE_RESERVE', reserveData: reserveData, userId });
 export const deleteMyReservation = (id, userId) => ({ type: 'DELETE_RESERVE', id, userId });
 export const authLocation = (reserveId, lat, log) => ({ type: 'AUTH_LOCATE', reserveId, lat, log });
 export const getReservationByDate = (roomId, reserveByDateData, pickDay) => ({ type: 'GET_RESERVE_DATE', reserveByDateData, roomId, pickDay });
@@ -158,11 +158,12 @@ function* getRoomReserve(action) {
 function* makeReserve(action) {
     try {
         console.log(action.reserveData)
-        const response = yield call(reservationApi.makeReservation, action.reserveData);//body 추가해야함
+        yield call(reservationApi.makeReservation, action.reserveData);//body 추가해야함
+        const response = yield call(reservationApi.getMyReservation, action.userId);//body 추가해야함
 
-        yield put({ type: 'MAKE_RESERVE_RESULT' });
-        console.log(response);
         alert('예약되었습니다.');
+        yield put({ type: 'MAKE_RESERVE_RESULT', myReservationInfo: response.data.results });
+
     } catch (e) {
         yield put({ type: 'MAKE_RESERVE_RESULT' });
     }
@@ -260,6 +261,7 @@ function reservation(currentState = initialState, action) { //리듀서 선언
         case 'MAKE_RESERVE_RESULT':
             return {
                 ...currentState,
+                myReservationInfo: action.myReservationInfo,
             }
 
         case 'GET_RESERVE_DATE_RESULT':

@@ -1,7 +1,6 @@
 import client from './client';
 import cookie from 'react-cookies';
 
-const token = cookie.load('token');
 
 export const getRoomsInfo = () =>
   client.get('rooms', {
@@ -11,7 +10,7 @@ export const getRoomsInfo = () =>
   });
 
 export const getRoomInfo = (id) =>
-  client.get('rooms' + id, {
+  client.get('rooms/' + id, {
     headers: {
       Authorization: `Token ${cookie.load('token')}`,
     },

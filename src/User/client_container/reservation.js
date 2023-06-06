@@ -731,7 +731,7 @@ function ReservingPage() {
         } if (endTime === "회의끝나는 시간") {
             alert('회의끝나는 시간을 설정하세요');
         }
-        await dispatch(makeReservation(reserveData));
+        await dispatch(makeReservation(reserveData, myId));
         navigate('/main')
     }
 
