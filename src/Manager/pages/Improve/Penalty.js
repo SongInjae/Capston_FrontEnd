@@ -1,11 +1,10 @@
 import styled, { css } from 'styled-components';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { remove } from '../../store/modules/noshow';
 
-import Button from '../../components/Button';
+import { take, takeType } from '../../store/modules/noshow';
+import Loading from '../../components/Loading';
 import UserIcon from '../../assets/img/Penaltiy_User.png';
-import LogoutModal from '../../components/LogoutModal';
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
@@ -53,8 +52,6 @@ const UserCategory = styled.div`
 const ButtonStyled = styled.div`
   color: rgb(81, 98, 111);
   padding: 1rem;
-  //border-right: 1px solid rgb(81, 98, 111);
-  //border-bottom: 1px solid rgb(81, 98, 111);
   &:hover {
     background-color: rgb(81, 98, 111);
     color: white;
@@ -103,63 +100,45 @@ const InfoBlock = styled.div`
       font-weight: 600;
     `}
 `;
-const DeleteButton = styled(Button)`
-  width: 5rem;
-  height: 2.5rem;
-  font-family: 'InterLight';
-  font-size: 0.9rem;
-  font-weight: 900;
-  text-decoration: none;
-  border-radius: 0.25rem;
-  margin-top: 1rem;
-  cursor: pointer;
-  color: #5f6d73;
-  background-color: rgb(209, 217, 226);
-  &:hover {
-    background-color: rgb(81, 98, 111);
-    color: white;
-  }
-`;
 
 const Penalty = () => {
+  const dispatch = useDispatch();
+  const { loading_take, loading_takeType } = useSelector(({ loading }) => ({
+    loading_take: loading['noshow/take'],
+    loading_takeType: loading['noshow/takeType'],
+  }));
+  useEffect(() => {
+    dispatch(takeType());
+    dispatch(take());
+  }, [dispatch]);
   const { infos, stateData } = useSelector(({ noshow }) => ({
     infos: noshow.infos,
     stateData: noshow.data,
   }));
-  const dispatch = useDispatch();
+
   const [cnt1, setCnt1] = useState(0);
   const [cnt2, setCnt2] = useState(0);
   const [cnt3, setCnt3] = useState(0);
 
   useEffect(() => {
-    setCnt1(stateData[0]);
-    setCnt2(stateData[1]);
-    setCnt3(stateData[2]);
+    console.log(stateData, stateData.length);
+    for (let i = 0; i < stateData.length; i++) {
+      if (stateData[i].user_type_name === '교수') setCnt1(stateData[i].noshow);
+      else if (stateData[i].user_type_name === '대학원생')
+        setCnt2(stateData[i].noshow);
+      else if (stateData[i].user_type_name === '학부생')
+        setCnt3(stateData[i].noshow);
+    }
   }, [stateData]);
 
-  //모달 구현
-  const [id, setId] = useState();
-  const [modal, setModal] = useState(false);
-  const onRemoveClick = (infoId) => {
-    setModal(true);
-    setId(infoId);
-  };
-  const onCancel = () => {
-    setModal(false);
-  };
-  const onConfirm = useCallback(() => {
-    setModal(false);
-    dispatch(remove(id));
-  }, []);
-
   const [filterInfo, setFilterInfo] = useState(infos);
-  const [userType, setUserType] = useState(2);
+  const [userType, setUserType] = useState('교수');
   const [infoListSet, setInfoList] = useState();
 
   useEffect(() => {
     setFilterInfo(
       infos.filter((info) => {
-        return info.booker.user_type === userType;
+        return info.user_type_name === userType;
       }),
     );
   }, [infos, userType]);
@@ -174,47 +153,22 @@ const Penalty = () => {
             <ImageIcon />
             <TextBlock>
               <InfoBlock bold={true}>
-                {filterInfo[i].name}({filterInfo[i].number})
+                {filterInfo[i].name}({filterInfo[i].user_no})
               </InfoBlock>
-              <InfoBlock>{filterInfo[i].designation}</InfoBlock>
-              <InfoBlock>Panalty : {filterInfo[i].count}</InfoBlock>
+              <InfoBlock>{filterInfo[i].user_type_name}</InfoBlock>
+              <InfoBlock>Panalty : {filterInfo[i].noshow}</InfoBlock>
               <InfoBlock>Email : {filterInfo[i].email}</InfoBlock>
             </TextBlock>
           </ImageInfoBlock>
-          <DeleteButton onClick={() => onRemoveClick(filterInfo[i].id)}>
-            Delete
-          </DeleteButton>
         </UserBlock>,
       );
     }
     setInfoList(InfoLists);
   }, [filterInfo, filterInfo.length, infos]);
-  /*
-  let InfoLists = [];
-  for (let i = 0; i < filterInfo.length; i++) {
-    InfoLists.push(
-      <UserBlock key={infos[i].id}>
-        <ImageInfoBlock>
-          <ImageIcon />
-          <TextBlock>
-            <InfoBlock bold={true}>
-              {infos[i].name}({infos[i].number})
-            </InfoBlock>
-            <InfoBlock>{infos[i].designation}</InfoBlock>
-            <InfoBlock>Panalty : {infos[i].count}</InfoBlock>
-            <InfoBlock>Email : {infos[i].email}</InfoBlock>
-          </TextBlock>
-        </ImageInfoBlock>
-        <DeleteButton onClick={() => onRemoveClick(infos[i].id)}>
-          Delete
-        </DeleteButton>
-      </UserBlock>,
-    );
-  }*/
 
   //차트 데이터
   const data = {
-    labels: ['교직원', '대학원생', '학부생'],
+    labels: ['교수', '대학원생', '학부생'],
     datasets: [
       {
         label: '노쇼 횟수',
@@ -234,6 +188,10 @@ const Penalty = () => {
     ],
   };
 
+  if (loading_take || loading_takeType) {
+    return <Loading />;
+  }
+
   return (
     <StyledBlock>
       <TitleBlock>사용자별 노쇼 회원 목록</TitleBlock>
@@ -241,20 +199,19 @@ const Penalty = () => {
         <DoughnutStyled data={data} />
         <UserListBlock>
           <UserCategory>
-            <ButtonStyled onClick={() => setUserType(2)}>교직원</ButtonStyled>
-            <ButtonStyled onClick={() => setUserType(3)}>대학원생</ButtonStyled>
-            <ButtonStyled onClick={() => setUserType(4)}>학부생</ButtonStyled>
+            <ButtonStyled onClick={() => setUserType('교수')}>
+              교직원
+            </ButtonStyled>
+            <ButtonStyled onClick={() => setUserType('대학원생')}>
+              대학원생
+            </ButtonStyled>
+            <ButtonStyled onClick={() => setUserType('학부생')}>
+              학부생
+            </ButtonStyled>
           </UserCategory>
           {infoListSet}
         </UserListBlock>
       </ContentBlock>
-      <LogoutModal
-        visible={modal}
-        onConfirm={onConfirm}
-        onCancel={onCancel}
-        title="패널티 회원 삭제"
-        description="정말로 삭제하시겠습니까?"
-      />
     </StyledBlock>
   );
 };

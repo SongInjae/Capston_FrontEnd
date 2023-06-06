@@ -1,29 +1,41 @@
 import { createAction, handleActions } from 'redux-actions';
-import { produce } from 'immer';
 import { takeLatest } from 'redux-saga/effects';
-import createRequestSaga, {
+import createRequestNohowSaga, {
   createRequestActionTypes,
-} from '../../saga/createRequestSaga';
+} from '../../saga/createRequestNoshowSaga';
 import * as noshowAPI from '../../api/noshow';
 
 const [TAKE, TAKE_SUCCESS, TAKE_FAILURE] =
-  createRequestActionTypes('remove/take');
-const [REMOVE, REMOVE_SUCCESS, REMOVE_FAILURE] =
-  createRequestActionTypes('remove/REMOVE');
+  createRequestActionTypes('noshow/take');
+const [TAKETYPE, TAKETYPE_SUCCESS, TAKETYPE_FAILURE] =
+  createRequestActionTypes('noshow/takeType');
 
 export const take = createAction(TAKE);
-export const remove = createAction(REMOVE, (id) => id);
+export const takeType = createAction(TAKETYPE);
 
-const takeSaga = createRequestSaga(TAKE, noshowAPI.takeAllInfo);
-const removeSaga = createRequestSaga(REMOVE, noshowAPI.removeInfo);
+const takeSaga = createRequestNohowSaga(TAKE, noshowAPI.takeInfo);
+const takeTypeSaga = createRequestNohowSaga(TAKETYPE, noshowAPI.takeType);
 
 export function* noshowSaga() {
   yield takeLatest(TAKE, takeSaga);
-  yield takeLatest(REMOVE, removeSaga);
+  yield takeLatest(TAKETYPE, takeTypeSaga);
 }
 
 const initialState = {
-  data: [2, 3, 1],
+  data: [
+    {
+      user_type_name: '교수',
+      noshow: 2,
+    },
+    {
+      user_type_name: '대학원생',
+      noshow: 3,
+    },
+    {
+      user_type_name: '학부생',
+      noshow: 1,
+    },
+  ],
   infos: [
     {
       id: 1,
@@ -71,7 +83,7 @@ const initialState = {
     },
   ],
   takeError: null,
-  removeError: null,
+  takeTypeError: null,
 };
 
 const noshow = handleActions(
@@ -85,14 +97,14 @@ const noshow = handleActions(
       ...state,
       takeError: error,
     }),
-    [REMOVE_SUCCESS]: (state, { payload: id }) =>
-      produce(state, (draft) => {
-        const index = draft.infos.findIndex((info) => info.id === id);
-        draft.infos.splice(index, 1);
-      }),
-    [REMOVE_FAILURE]: (state, { payload: error }) => ({
+    [TAKETYPE_SUCCESS]: (state, { payload: data }) => ({
       ...state,
-      takeError: error,
+      takeTypeError: null,
+      data,
+    }),
+    [TAKETYPE_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      takeTypeError: error,
     }),
   },
   initialState,
