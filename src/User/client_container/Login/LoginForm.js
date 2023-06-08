@@ -7,20 +7,20 @@ import { useNavigate } from 'react-router-dom';
 import cookie from 'react-cookies';
 
 const LoginFormBlock = styled.div`
- @media screen and (max-width: 480px){
-      width : 80%
+  @media screen and (max-width: 480px) {
+    width: 80%;
   }
 `;
 
 const FormBlock = styled.form`
-   @media screen and (max-width: 480px){
-      display: flex;
-      margin-top : 10px;
-      flex-direction : column;
-      align-items : center;
-      justify-content : center;
+  @media screen and (max-width: 480px) {
+    display: flex;
+    margin-top: 10px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
-`
+`;
 
 const StyledInput = styled.input`
   font-size: 1rem;
@@ -35,13 +35,12 @@ const StyledInput = styled.input`
   & + & {
     margin-top: 1rem;
   }
-  @media screen and (max-width: 480px){
-      display: flex;
-      align-items : center;
-      justify-content : center;
-      width : 100%;
+  @media screen and (max-width: 480px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
-  
 `;
 const StyledButton = styled.button`
   background-color: #c3002f;
@@ -60,11 +59,11 @@ const StyledButton = styled.button`
   :hover {
     background-color: black;
   }
-  @media screen and (max-width: 500px){
-    margin-top : 15px;
-    width : 60%;
-    height : 20px;
-    text-align : center;
+  @media screen and (max-width: 500px) {
+    margin-top: 15px;
+    width: 60%;
+    height: 20px;
+    text-align: center;
   }
 `;
 
@@ -73,8 +72,8 @@ const ErrorMessage = styled.div`
   text-align: center;
   font-size: 0.7rem;
   margin-top: 1rem;
-  @media screen and (max-width: 500px){
-      font-size : 0.5rem;
+  @media screen and (max-width: 500px) {
+    font-size: 0.5rem;
   }
 `;
 
@@ -108,15 +107,13 @@ const LoginForm = () => {
       return;
     }
     if (auth) {
-      if (form.username !== '') {
-        if (auth.user_type.id === 1) {
-          navigate('admin');
-        } else {
-          navigate('main');
-        }
-        dispatch(changeField({ key: 'username', value: '' }));
-        dispatch(changeField({ key: 'password', value: '' }));
+      if (auth.user_type.id === 1) {
+        navigate('admin');
+      } else {
+        navigate('main');
       }
+      dispatch(changeField({ key: 'username', value: '' }));
+      dispatch(changeField({ key: 'password', value: '' }));
     }
   }, [auth, authError, dispatch, form.username, navigate]);
   return (
