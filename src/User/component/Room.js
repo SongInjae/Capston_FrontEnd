@@ -140,7 +140,7 @@ function RoomComponent({ roomInfo }) {
         const possibleDate = new Date(toolDay.setDate(toolDay.getDate() + possible_duration));
         if (possible_duration !== 0) {
             if (selectDate.getFullYear() === today.getFullYear && selectDate.getMonth() === today.getMonth() && selectDate.getDate() === today.getDate()) {
-                navigate('/reserve');
+                navigate('/reserve', { state: roomInfo });
                 dispatch(pickRoom(selectedRoom));
                 return;
             }
@@ -159,7 +159,7 @@ function RoomComponent({ roomInfo }) {
             }
         }
 
-        navigate('/reserve');
+        navigate('/reserve', { state: roomInfo });
         dispatch(pickRoom(selectedRoom));
     }
 

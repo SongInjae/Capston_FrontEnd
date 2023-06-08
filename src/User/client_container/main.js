@@ -40,8 +40,7 @@ function UserMain() {
     dispatch(getRooms());
     dispatch(getMyReservation(myId));
     if (roomsInfo !== []) return;
-
-  }, [dispatch, myId],);
+  }, [dispatch],);
 
 
   const roomInfo = [

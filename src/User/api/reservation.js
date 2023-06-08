@@ -39,7 +39,7 @@ export const getRoomReserveByDate = (id, date) =>
 
 export const authLocate = (id, lat, log) =>
   client.post(
-    `rooms/reservations/${id}/location?latitude=${lat}&logtitude=${log}`,
+    `rooms/reservations/${id}/location?latitude=${37.551100}&logtitude=${127.075750}`,
     {
       headers: {
         Authorization: `Token ${cookie.load('token')}`,
