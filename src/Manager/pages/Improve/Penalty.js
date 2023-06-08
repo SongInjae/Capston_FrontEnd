@@ -121,7 +121,9 @@ const Penalty = () => {
   const [cnt3, setCnt3] = useState(0);
 
   useEffect(() => {
-    console.log(stateData, stateData.length);
+    setCnt1(0);
+    setCnt2(0);
+    setCnt3(0);
     for (let i = 0; i < stateData.length; i++) {
       if (stateData[i].user_type_name === '교수') setCnt1(stateData[i].noshow);
       else if (stateData[i].user_type_name === '대학원생')
