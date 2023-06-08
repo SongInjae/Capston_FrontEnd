@@ -506,7 +506,6 @@ function ScheduleReservingPage() {
         let start;
         let end;
         for (let i = 0; i < alreadyReservedTime.length; i++) {
-            console.log(alreadyReservedTime[i]);
             start = alreadyReservedTime[i].split('-')[0];
             end = alreadyReservedTime[i].split('-')[1];
 
@@ -527,9 +526,7 @@ function ScheduleReservingPage() {
                     return false;
                 }
                 if (startHour === reservedEndHour && startMinute < reservedEndMinute) {
-                    console.log(startTime);
-                    console.log(startMinute);
-                    console.log(reservedEndMinute);
+  
                     return false;
                 }
             }
@@ -545,7 +542,6 @@ function ScheduleReservingPage() {
         let endHour = parseInt(endTime.split(':')[0]);
         let endMinute = parseInt(endTime.split(':')[1]);
         let time = [];
-        console.log(startTime, endTime);
         for (let i = startHour; i <= endHour; i++) {
             if (i === endHour) {
                 if (endMinute === 30) {
@@ -559,7 +555,6 @@ function ScheduleReservingPage() {
             }
             if (i === startHour) {
                 if (startMinute === 30) {
-                    console.log(`${startHour}:30-${startHour + 1}:00`);
                     time.push(`${startHour}:30-${startHour + 1}:00`);
                     continue;
                 }
@@ -581,7 +576,6 @@ function ScheduleReservingPage() {
             }
         }
 
-        console.log(time);
         setSelectedTimeBlock(time);
     }
 
@@ -599,7 +593,6 @@ function ScheduleReservingPage() {
             endMinute = parseInt(endTime.split(':')[1]);
 
             gap = (endHour - startHour) * 60 + (endMinute - startMinute);
-            console.log(gap);
             if (gap <= 0) {
 
                 alert('회의 시작시간을 확인해주세요');
@@ -617,7 +610,6 @@ function ScheduleReservingPage() {
                     setEndTime('회의끝나는 시간');
                     return;
                 }
-                console.log(isStartTimeBtnClicked);
                 setSelectedTimeLine(time, endTime);
             } else {
                 alert('최대 2시간만 예약 가능합니다.');
@@ -645,12 +637,7 @@ function ScheduleReservingPage() {
             startMinute = parseInt(startTime.split(':')[1]);
             endHour = parseInt(time.split(':')[0]);
             endMinute = parseInt(time.split(':')[1]);
-            console.log(startHour);
-            console.log(startMinute);
-            console.log(endHour);
-            console.log(endMinute);
             gap = (endHour - startHour) * 60 + (endMinute - startMinute);
-            console.log(gap);
             if (gap <= 0) {
 
                 alert('회의 종료시간을 확인해주세요');
@@ -661,7 +648,6 @@ function ScheduleReservingPage() {
                 setEndTime(time);
                 setIsEndTimeBtnClicked(!isEndTimeBtnClicked);
                 if (!checkReservedTime(startTime, time)) {
-                    console.log()
                     alert('예약자가 존재합니다.')
                     setStartTime('회의시작 시간');
                     setEndTime('회의끝나는 시간');
@@ -684,13 +670,11 @@ function ScheduleReservingPage() {
 
     const onChangeMeetingName = (e) => {
         setMeetingName(e.target.value);
-        console.log(e.target.value);
     }
 
     const onClickAddUserBtn = (userNo) => {
 
         dispatch(getUserNo(userNo, memberList, memIdList));
-        console.log(divideTime);
     }
 
     const onClickRemoveMemeber = (userNo) => {

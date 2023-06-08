@@ -169,7 +169,6 @@ function UserCalendar() {
   };
 
   const onDateClick = (day) => {
-    console.log(selectDate)
     dispatch(pickDate(day));
   };
 

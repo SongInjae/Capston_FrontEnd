@@ -173,7 +173,6 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
               reserveTime = `${info.start.split(':')[0]}:${info.start.split(':')[1]
                 }-${info.end.split(':')[0]}:${info.end.split(':')[1]}`;
               reser = true;
-              console.log(reserveTime);
             }
             if (new Date(info.date).getDay() === i && new Date(info.date).getFullYear() === cloneday.getFullYear()
               && new Date(info.date).getMonth() === cloneday.getMonth()
@@ -181,7 +180,6 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
               reserveTime = `${info.start.split(':')[0]}:${info.start.split(':')[1]
                 }-${info.end.split(':')[0]}:${info.end.split(':')[1]}`;
               reser = true;
-              console.log(reserveTime);
             }
           }
         });
@@ -294,7 +292,6 @@ const MyReserveCalendar = () => {
 
   const onDateClick = (day) => {
     dispatch(pickDate(day));
-    console.log(selectDate);
   };
 
   return (

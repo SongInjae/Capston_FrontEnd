@@ -186,7 +186,6 @@ const MyReservation = () => {
     try {
       let position = await getLocation();
       setLocationInfo(position);
-      console.log(position);
       dispatch(authLocation(id, position.coords.latitude, position.coords.longitude));
     } catch (e) {
       alert(e);

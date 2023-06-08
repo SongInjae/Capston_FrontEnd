@@ -23,8 +23,6 @@ const divideTime = (alreadyReservedTime) => {
 
         start = (alreadyReservedTime[i].split('-')[0]).split(':');
         end = (alreadyReservedTime[i].split('-')[1]).split(':');
-        console.log(start);
-        console.log(end);
         for (let i = parseInt(start[0]); i <= parseInt(end[0]); i++) {
             if (i === parseInt(end[0])) {
                 if (end[1] === '30') {
@@ -81,8 +79,6 @@ export const transFormDate = (num) => {
 const checkScheduledOrNot = (allData, pickDay) => {
     let scheduleDay = new Date(pickDay).getDay();
     let scheduledTime = []
-    console.log(allData.length);
-    console.log(scheduleDay);
     for (let i = 0; i < allData.length; i++) {
 
 
@@ -100,7 +96,6 @@ const checkScheduledOrNot = (allData, pickDay) => {
 
         }
     }
-    console.log(scheduledTime);
     return scheduledTime;
 }
 
@@ -110,7 +105,6 @@ function* getMyReservationSaga(action) {
         yield put({ type: 'GET_MYRESERVE_RESULT', myReservationInfo: response.data.results });
 
     } catch (e) {
-        console.log(e);
         yield put({ type: 'GET_MYRESERVE_RESULT' });
     }
 }
@@ -125,7 +119,6 @@ function* deleteMyReservationSaga(action) {
 
 
     } catch (e) {
-        console.log(e);
         yield put({ type: 'DELETE_RESERVE_RESULT' });
     }
 }
@@ -135,10 +128,9 @@ function* getRoomReserve(action) {
 
     try {
         const response = yield call(reservationApi.getRoomReservation, action.roomId);
-        console.log(response.data.results);
+
         let reserveList = [...response.data.results];
         let alreadyReservedTime = []
-        console.log(action.pickDay);
         for (let i = 0; i < response.data.count; i++) {
             if (reserveList[i].date === action.pickDay) { // 선택한 날짜와 예약되어있는날짜가 같을때
                 alreadyReservedTime.push(reserveList[i].start + "-" + reserveList[i].end);
@@ -147,9 +139,7 @@ function* getRoomReserve(action) {
                 alreadyReservedTime.push(reserveList[i].start + "-" + reserveList[i].end);
             }
         }
-        console.log(alreadyReservedTime);
         let divideReservedTime = divideTime(alreadyReservedTime);
-        console.log(divideReservedTime);
 
         yield put({ type: 'GET_ROOMRESERVE_RESULT', reservedTime: alreadyReservedTime, divideTime: divideReservedTime });
     } catch (e) {
@@ -159,7 +149,6 @@ function* getRoomReserve(action) {
 
 function* makeReserve(action) {
     try {
-        console.log(action.reserveData)
         yield call(reservationApi.makeReservation, action.reserveData);//body 추가해야함
         const response = yield call(reservationApi.getMyReservation, action.userId);//body 추가해야함
 
@@ -174,7 +163,7 @@ function* makeReserve(action) {
 function* authLocate(action) {
     try {
         const response = yield call(reservationApi.authLocate, action.reserveId, action.lat, action.log);
-        console.log(response.data);
+
 
         if (response.data.message === "complete") {
             alert('위치인증을 성공했습니다.');
@@ -212,11 +201,8 @@ function* getReserveByDate(action) {
                 alreadyReservedTime.push(reserveList[i].start + "-" + reserveList[i].end);
             }
         }
-        console.log('정기')
-        console.log(response.data.results);
         alreadyReservedTime = checkScheduledOrNot(response.data.results, action.pickDay);
 
-        console.log(alreadyReservedTime);
         let divideReservedTime = divideTime(alreadyReservedTime);
 
         yield put({ type: 'GET_RESERVE_DATE_RESULT', reservedTime: alreadyReservedTime, divideTime: divideReservedTime });
@@ -230,8 +216,7 @@ export function* getExistUserNo(action) {
     let memIdList = action.memIdList;
     try {
         const response = yield call(userInfoAPI.existUserNo, action.data);
-        console.log(action);
-        console.log(action.data);
+
         if (memList.includes(action.data)) {
             alert('이미 추가된 학번입니다.');
             yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
@@ -241,17 +226,12 @@ export function* getExistUserNo(action) {
             alert('존재하지 않는 학번/직번입니다.');
             yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
         } else {
-            console.log(response.data);
             memList.push(action.data);
             memIdList.push(response.data.results[0].id);
             alert('추가되었습니다.');
-            console.log(memList);
-            console.log(memIdList);
             yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
         }
-        console.log('add');
     } catch (e) {
-        console.log(e);
         yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
         alert('존재하지 않는 학번/직번입니다.');
     }
