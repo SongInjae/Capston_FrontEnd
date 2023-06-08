@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../component/header";
 import format from "date-fns/format";
-import { reservation, getRoomReservation, makeReservation } from "../store/modules/reservation";
+import { reservation, getRoomReservation, makeReservation, cleanMemeber } from "../store/modules/reservation";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserNo, removeMember } from "../store/modules/userInfo";
+import { removeMember } from "../store/modules/userInfo";
+import { getUserNo } from "../store/modules/reservation";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineAddCircle } from "react-icons/md";
 import { AiFillWarning } from "react-icons/ai"
@@ -495,8 +496,8 @@ function ReservingPage() {
     const [meetingName, setMeetingName] = useState("");
     const selectedDate = useSelector(state => state.dateReducer.date);
     const selectedRoom = useSelector(state => state.roomReducer.room);
-    const memberList = useSelector(state => state.userInfo.memList);
-    const memIdList = useSelector(state => state.userInfo.memIdList);
+    const memberList = useSelector(state => state.reservation.memList);
+    const memIdList = useSelector(state => state.reservation.memIdList);
     const myId = useSelector(state => state.userInfo.myInfo.id);
     const divideTime = useSelector(state => state.reservation.divideTime);
     const [selectedTimeBlock, setSelectedTimeBlock] = useState([]);
@@ -748,6 +749,7 @@ function ReservingPage() {
 
     useEffect(() => {
         console.log('useeffect');
+        dispatch(cleanMemeber());
         dispatch(getRoomReservation(selectedRoom.id, [], `${format(selectedDate, 'yyyy')}-${format(selectedDate, 'MM')}-${format(selectedDate, 'dd')}`));
 
     }, [dispatch, selectedDate, selectedRoom]);
