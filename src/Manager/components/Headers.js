@@ -6,7 +6,6 @@ function Header() {
   const headers = {
     Authorization: `Token ${token}`,
   };
-  console.log(headers);
   return headers;
 }
 

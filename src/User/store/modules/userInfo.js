@@ -20,7 +20,6 @@ export const googleRevoke = () => ({ type: 'REVOKE_GOOGLE' });
 
 export function* getMine() {
     const response = yield call(userInfoAPI.getMyInformation);
-    console.log(response.data);
     try {
         yield put({ type: 'GET_MYINFO_RESULT', myInfo: response.data });
 
@@ -30,7 +29,6 @@ export function* getMine() {
 }
 
 export function* patchPassword(action) {
-    console.log(action)
     let bodyData = {
         current_password: action.data.currentpwd,
         new_password: action.data.changedpwd,
@@ -43,14 +41,12 @@ export function* patchPassword(action) {
         alert('비밀번호를 변경하였습니다.');
 
     } catch (e) {
-        console.log(e);
         alert('비밀번호를 확인하세요');
         yield put({ type: 'CHANGE_PWD_RESULT' });
     }
 }
 
 export function* patchUserInfo(action) {
-    console.log(action);
     try {
         const response = yield call(userInfoAPI.changeUserInfo(action.user_no, action.data));
         yield put({ type: 'CHANGE_USERINFO_RESULT' });
@@ -68,7 +64,6 @@ export function* removeMem(action) {
     let memList = action.memList;
 
     let memIdList = action.memIdList;
-    console.log('remove');
     let index = memList.indexOf(action.data);
 
     let removed = memList.filter((element) => element !== action.data);
@@ -76,13 +71,11 @@ export function* removeMem(action) {
     memIdList[index] = "0";
     let removedIdList = memIdList.filter((element) => element !== "0");
 
-    console.log(removed);
     yield put({ type: 'REMOVE_MEMBER_RESULT', memList: removed, memIdList: removedIdList });
 }
 
 export function* connectToGoogle(action) {
 
-    console.log(action.user_no)
     try {
         const response = yield call(userInfoAPI.connectGoogle, action.user_no);
         yield put({ type: 'CONNECT_GOOGLE_RESULT' });

@@ -102,8 +102,6 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (authError) {
-      console.log('오류 발생');
-      console.log(authError);
       setError('아이디와 패스워드를 다시 한 번 확인해주세요.');
       return;
     }

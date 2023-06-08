@@ -377,13 +377,7 @@ function MyPage(props) {
       alert('바뀐 정보가 없습니다.')
     }
   }
-  const onClickConnectGoogle = () => {
-    console.log('click');
-    dispatch(googleConnect(userInfo.user_no));
-  }
-  const onClickRevokeGoogle = () => {
-    dispatch(googleConnect());
-  }
+
 
   return (
     <Background>
@@ -467,12 +461,10 @@ function Header() {
 
 
   const clickSejongLogo = () => {
-    console.log('click')
     navigate('/main')
   }
   const clickHambuger = () => {
     setHamburger(!isHamburgerClicked);
-    console.log(isHamburgerClicked);
   }
 
   const dispatch = useDispatch();

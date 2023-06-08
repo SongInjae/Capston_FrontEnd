@@ -95,8 +95,6 @@ function RoomComponent({ roomInfo }) {
         const possibleDate = new Date(toolDay.setDate(toolDay.getDate() + possible_duration));
         if (possible_duration !== 0) {
             if (selectDate.getFullYear() === today.getFullYear && selectDate.getMonth() === today.getMonth() && selectDate.getDate() === today.getDate()) {
-                console.log(0);
-                navigate('/reserve');
                 dispatch(pickRoom(selectedRoom));
                 return;
             }
@@ -124,7 +122,6 @@ function RoomComponent({ roomInfo }) {
     const clickScheduleReserveBtn = (selectedRoom) => {
 
         const today = new Date();
-        console.log(userType);
         if (userType !== 2) {
             alert('권한이 없습니다.');    //-> 정기예약 기능 개발되면 주석 풀기
             return;
@@ -143,7 +140,6 @@ function RoomComponent({ roomInfo }) {
         const possibleDate = new Date(toolDay.setDate(toolDay.getDate() + possible_duration));
         if (possible_duration !== 0) {
             if (selectDate.getFullYear() === today.getFullYear && selectDate.getMonth() === today.getMonth() && selectDate.getDate() === today.getDate()) {
-                console.log(0);
                 navigate('/reserve');
                 dispatch(pickRoom(selectedRoom));
                 return;
