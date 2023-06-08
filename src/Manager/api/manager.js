@@ -1,12 +1,10 @@
 import { manager } from '../../User/api/client';
 import cookie from 'react-cookies';
 
-const token = cookie.load('token');
-
 //엑셀 회원 불러오기
 export const excelInfo = (formData) =>
   manager.post('users/bulk', formData, {
-    headers: { Authorization: `Token ${token}` },
+    headers: { Authorization: `Token ${cookie.load('token')}` },
   });
 //회원 bulk 삭제하기
 export const bulkDelete = (data) =>
@@ -15,7 +13,7 @@ export const bulkDelete = (data) =>
     { data },
     {
       headers: {
-        Authorization: `Token ${token}`,
+        Authorization: `Token ${cookie.load('token')}`,
         'Content-Type': `text/plain`,
       },
     },
