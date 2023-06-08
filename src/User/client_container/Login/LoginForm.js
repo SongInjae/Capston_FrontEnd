@@ -3,10 +3,6 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeField, login } from '../../store/modules/auth';
 import { useNavigate } from 'react-router-dom';
-//import { useCookies } from 'react-cookie';
-import cookie from 'react-cookies';
-import { getMyInfo } from '../../store/modules/userInfo';
-
 const LoginFormBlock = styled.div`
   @media screen and (max-width: 480px) {
     width: 80%;

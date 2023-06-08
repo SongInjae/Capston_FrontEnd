@@ -80,6 +80,7 @@ const Day = styled.div`
   margin: 2px;
   width: 8.4rem;
   height: 90px;
+  border-width: 2px;
   border-radius: 6px;
   padding-top: 0.3rem;
   border-style: solid;
@@ -130,8 +131,8 @@ function DaysComponent() {
   const dayList = ['Sun', 'Mon', 'Tue', 'Wen', 'Thrs', 'Fri', 'Sat'];
   return (
     <DaysWrapper>
-      {dayList.map((day) => (
-        <Days>{day}</Days>
+      {dayList.map((day, index) => (
+        <Days key={index}>{day}</Days>
       ))}
     </DaysWrapper>
   );

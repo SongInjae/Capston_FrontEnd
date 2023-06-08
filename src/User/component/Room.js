@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { pickRoom } from "../store/modules/room";
 import { select } from "react-cookies";
+import { getMyInfo } from "../store/modules/userInfo";
 const Room = styled.div`
     border: solid;
     border-color: lightgray;
+    border-width: 2px;
     border-radius: 8px;
     padding : 15px;
     display: flex;
@@ -84,12 +86,16 @@ const ReserveBtn = styled.button`
 function RoomComponent({ roomInfo }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const userType = useSelector(state => state.userInfo.myInfo.user_type.id);
-    const possible_duration = useSelector(state => state.userInfo.myInfo.user_type.possible_duration);
+    const userInfo = JSON.parse(localStorage.getItem("user"));
+    // const userType = useSelector(state => state.userInfo.myInfo.user_type.id);
+    // const possible_duration = useSelector(state => state.userInfo.myInfo.user_type.possible_duration);
+    // const selectDate = useSelector(state => state.dateReducer.date);
+    const userType = userInfo.user_type.id
+    const possible_duration = userInfo.user_type.possible_duration;
     const selectDate = useSelector(state => state.dateReducer.date);
 
-
     const checkCanReserve = (selectedRoom) => {
+
         const toolDay = new Date();
         const today = new Date();
         const possibleDate = new Date(toolDay.setDate(toolDay.getDate() + possible_duration));

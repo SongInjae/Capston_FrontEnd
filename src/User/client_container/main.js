@@ -33,14 +33,19 @@ function UserMain() {
   const roomsInfo = useSelector(state => state.roomReducer.roomsInfo);
   const myId = useSelector(state => state.userInfo.myInfo.id);
   const reserveRoomInfo = useSelector(state => state.reservation.myReservationInfo);
-  const dispatch = useDispatch();
 
+  const userInfo = localStorage.getItem('user');
+  const dispatch = useDispatch();
   useEffect(() => {
+
+
     dispatch(getMyInfo());
+
     dispatch(getRooms());
     dispatch(getMyReservation(myId));
+
     if (roomsInfo !== []) return;
-  }, [dispatch],);
+  }, [dispatch, myId],);
 
 
   const roomInfo = [
@@ -57,8 +62,8 @@ function UserMain() {
         {/* <UserCalendar></UserCalendar> */}
 
         <RoomsWrapper>
-          {roomsInfo && roomsInfo.map((room) => (
-            <RoomComponent roomInfo={room}></RoomComponent>
+          {roomsInfo && roomsInfo.map((room, index) => (
+            <RoomComponent roomInfo={room} userInfo={userInfo} key={index}></RoomComponent>
           ))}
         </RoomsWrapper>
       </MainBodyWrapper>
