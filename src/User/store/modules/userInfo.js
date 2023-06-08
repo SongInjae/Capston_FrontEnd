@@ -10,7 +10,7 @@ export const changePassword = (data) => ({ type: 'CHANGE_PWD', data: data });
 
 export const changeUserInfo = (user_no, data) => ({ type: 'CHANGE_USERINFO', user_no: user_no, data: data }); //액션 생성함수
 
-export const getUserNo = (data, memList, memIdList) => ({ type: 'GET_USERNO', data: data, memList: memList, memIdList: memIdList }); //액션 생성함수
+
 
 export const removeMember = (data, memList, memIdList) => ({ type: 'REMOVE_MEMBER', data: data, memList: memList, memIdList: memIdList })
 
@@ -62,37 +62,7 @@ export function* patchUserInfo(action) {
     }
 }
 
-export function* getExistUserNo(action) {
-    let memList = action.memList;
-    let memIdList = action.memIdList;
-    try {
-        const response = yield call(userInfoAPI.existUserNo, action.data);
-        console.log(action);
-        console.log(action.data);
-        if (memList.includes(action.data)) {
-            alert('이미 추가된 학번입니다.');
-            yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
-            return;
-        }
-        if (response.data.count === 0) {
-            alert('존재하지 않는 학번/직번입니다.');
-            yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
-        } else {
-            console.log(response.data);
-            memList.push(action.data);
-            memIdList.push(response.data.results[0].id);
-            alert('추가되었습니다.');
-            console.log(memList);
-            console.log(memIdList);
-            yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
-        }
-        console.log('add');
-    } catch (e) {
-        console.log(e);
-        yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
-        alert('존재하지 않는 학번/직번입니다.');
-    }
-}
+
 
 export function* removeMem(action) {
     let memList = action.memList;
@@ -136,7 +106,6 @@ export function* userInfoSaga() {
     yield takeLatest('GET_MYINFO', getMine);
     yield takeLatest('CHANGE_PWD', patchPassword);
     yield takeLatest('CHANGE_USERINFO', patchUserInfo);
-    yield takeLatest('GET_USERNO', getExistUserNo);
     yield takeLatest('REMOVE_MEMBER', removeMem);
     yield takeLatest('CONNECT_GOOGLE', connectToGoogle);
     yield takeLatest('REVOKE_GOOGLE', connectToGoogle);
@@ -161,12 +130,7 @@ function userInfo(currentState = initialState, action) { //리듀서 선언
             return {
                 ...currentState,
             }
-        case 'GET_USERNO_RESULT':
-            return {
-                ...currentState,
-                memList: action.memList,
-                memIdList: action.memIdList,
-            }
+
         case 'REMOVE_MEMBER_RESULT':
             return {
                 ...currentState,

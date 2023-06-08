@@ -2,9 +2,10 @@
 
 import { useNavigate } from 'react-router-dom';
 import * as reservationApi from '../../api/reservation';
+import * as userInfoAPI from '../../api/userInfo';
 import { takeLatest, call, put } from 'redux-saga/effects';
 
-const initialState = { myReservationInfo: null, time: '', roomId: '', member: [], reservedTime: [], pickDay: '', reserveData: {}, userId: '', divideTime: [], reserveByDateData: [] } // 초기상태
+const initialState = { myReservationInfo: null, time: '', roomId: '', member: [], reservedTime: [], pickDay: '', reserveData: {}, userId: '', divideTime: [], reserveByDateData: [], memList: [], memIdList: [], } // 초기상태
 
 export const getMyReservation = (userId, myReservationInfo) => ({ type: 'GET_MYRESERVE', userId, myReservationInfo });
 export const getRoomReservation = (roomId, reservedTime, pickDay) => ({ type: 'GET_ROOMRESERVE', roomId: roomId, reservedTime: reservedTime, pickDay: pickDay });
@@ -12,7 +13,8 @@ export const makeReservation = (reserveData, userId) => ({ type: 'MAKE_RESERVE',
 export const deleteMyReservation = (id, userId) => ({ type: 'DELETE_RESERVE', id, userId });
 export const authLocation = (reserveId, lat, log) => ({ type: 'AUTH_LOCATE', reserveId, lat, log });
 export const getReservationByDate = (roomId, reserveByDateData, pickDay) => ({ type: 'GET_RESERVE_DATE', reserveByDateData, roomId, pickDay });
-
+export const getUserNo = (data, memList, memIdList) => ({ type: 'GET_USERNO', data: data, memList: memList, memIdList: memIdList }); //액션 생성함수
+export const cleanMemeber = () => ({ type: 'CLEAN_MEMBER', memList: [], memIdList: [] })
 const divideTime = (alreadyReservedTime) => {
     let time = [];
     let start;
@@ -223,6 +225,39 @@ function* getReserveByDate(action) {
     }
 }
 
+export function* getExistUserNo(action) {
+    let memList = action.memList;
+    let memIdList = action.memIdList;
+    try {
+        const response = yield call(userInfoAPI.existUserNo, action.data);
+        console.log(action);
+        console.log(action.data);
+        if (memList.includes(action.data)) {
+            alert('이미 추가된 학번입니다.');
+            yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
+            return;
+        }
+        if (response.data.count === 0) {
+            alert('존재하지 않는 학번/직번입니다.');
+            yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
+        } else {
+            console.log(response.data);
+            memList.push(action.data);
+            memIdList.push(response.data.results[0].id);
+            alert('추가되었습니다.');
+            console.log(memList);
+            console.log(memIdList);
+            yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
+        }
+        console.log('add');
+    } catch (e) {
+        console.log(e);
+        yield put({ type: 'GET_USERNO_RESULT', memList: memList, memIdList: memIdList });
+        alert('존재하지 않는 학번/직번입니다.');
+    }
+}
+
+
 export function* reservationSaga() {
     yield takeLatest('GET_MYRESERVE', getMyReservationSaga);
     yield takeLatest('MAKE_RESERVE', makeReserve);
@@ -230,6 +265,7 @@ export function* reservationSaga() {
     yield takeLatest('DELETE_RESERVE', deleteMyReservationSaga);
     yield takeLatest('AUTH_LOCATE', authLocate);
     yield takeLatest('GET_RESERVE_DATE', getReserveByDate);
+    yield takeLatest('GET_USERNO', getExistUserNo);
 }
 
 
@@ -274,8 +310,21 @@ function reservation(currentState = initialState, action) { //리듀서 선언
             return {
                 ...currentState,
             }
+        case 'GET_USERNO_RESULT':
+            return {
+                ...currentState,
+                memList: action.memList,
+                memIdList: action.memIdList,
+            }
+        case 'CLEAN_MEMBER':
+            return {
+                ...currentState,
+                memList: [],
+                memIdList: [],
+            }
         default:
             return currentState;
+
     }
 
 }
