@@ -254,7 +254,7 @@ const MemberManagementsPage = () => {
             Error
           </CsvLinkStyled>
           <LinkBlock to="/admin/member/add">Add</LinkBlock>
-          <LinkBlock to="delete">Delete</LinkBlock>
+          <LinkBlock to="/admin/member/delete">Delete</LinkBlock>
           <LabelCsvBlock htmlFor="memberCsv">CSV</LabelCsvBlock>
           <CsvBlock
             type="file"

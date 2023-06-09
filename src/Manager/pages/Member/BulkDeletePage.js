@@ -53,7 +53,7 @@ const UlStyled = styled.ul`
 `;
 const ButtonSytled = styled(Button)`
   position: relative;
-  top: 10rem;
+  top: 7rem;
   left: 11rem;
   width: 5rem;
   height: 2rem;
