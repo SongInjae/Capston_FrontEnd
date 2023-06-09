@@ -168,13 +168,23 @@ function Bodys({ currentMonth, selectedDate, onDateClick }) {
           }
         });
       infos &&
-        infos.forEach((info) => {
+        infos.forEach((info) => { //정기예약 띠 표기
           if (info.is_scheduled) {
             if (new Date(info.date).getDay() === i && new Date(info.date) <= cloneday) {
-              reserveTime = `${info.start.split(':')[0]}:${info.start.split(':')[1]
-                }-${info.end.split(':')[0]}:${info.end.split(':')[1]}`;
-              reser = true;
+              if (info.schedule_daedline === null) {
+                reserveTime = `${info.start.split(':')[0]}:${info.start.split(':')[1]
+                  }-${info.end.split(':')[0]}:${info.end.split(':')[1]}`;
+                reser = true;
+              }
+              else if (new Date(info.schedule_daedline) > cloneday) {
+                reserveTime = `${info.start.split(':')[0]}:${info.start.split(':')[1]
+                  }-${info.end.split(':')[0]}:${info.end.split(':')[1]}`;
+                reser = true;
+              }
+
             }
+
+
             if (new Date(info.date).getDay() === i && new Date(info.date).getFullYear() === cloneday.getFullYear()
               && new Date(info.date).getMonth() === cloneday.getMonth()
               && new Date(info.date).getDate() === cloneday.getDate()) {

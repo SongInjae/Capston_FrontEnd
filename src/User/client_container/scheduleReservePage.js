@@ -202,6 +202,29 @@ const MeetingNameInput = styled.input`
         border-radius: 5px;
     }
 `;
+const Whatweek = styled.input`
+    ::placeholder{
+        color: gray
+    }
+    font-weight:500;
+    font-size: 1rem;
+    padding-left: 0.5rem;
+    margin-bottom : 10px;
+    width : 40vw;
+    height : 48px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: lightgrey;
+    outline : none;
+    @media screen and (max-width: 480px){
+        width : 90vw;
+        height : auto;
+        padding-top : 10px;
+        padding-bottom: 10px;
+        border-radius: 5px;
+    }
+`;
+
 
 const MemberTitle = styled.div`
     display: flex;
@@ -481,7 +504,7 @@ function ScheduleReservingPage() {
     const alreadyReservedTime = useSelector(state => state.reservation.reservedTime);
     const [isStartTimeBtnClicked, setIsStartTimeBtnClicked] = useState(false);
     const [isEndTimeBtnClicked, setIsEndTimeBtnClicked] = useState(false);
-
+    const [week, setWeek] = useState("몇주간 예약하시겠어요?");
     const [isAddMemeberClicked, setIsAddMemeberClicked] = useState(false);
     const [startTime, setStartTime] = useState("회의시작 시간");
     const [endTime, setEndTime] = useState("회의끝나는 시간");
@@ -526,7 +549,7 @@ function ScheduleReservingPage() {
                     return false;
                 }
                 if (startHour === reservedEndHour && startMinute < reservedEndMinute) {
-  
+
                     return false;
                 }
             }
@@ -672,6 +695,10 @@ function ScheduleReservingPage() {
         setMeetingName(e.target.value);
     }
 
+    const onChangeWhatWeek = (e) => {
+        setWeek(e.target.value);
+    }
+
     const onClickAddUserBtn = (userNo) => {
 
         dispatch(getUserNo(userNo, memberList, memIdList));
@@ -683,12 +710,14 @@ function ScheduleReservingPage() {
 
     const onClickReserveBtn = async () => {
         let reserveData;
+        let cloneday = new Date(selectedDate);
         let selectedDay = transFormDate(new Date(selectedDate).getDay());
-
+        let deadline = new Date(cloneday.setDate(cloneday.getDate() + (parseInt(week) * 7) - 1));
         reserveData = {
             is_scheduled: true,
             day: [selectedDay],
             date: `${format(selectedDate, 'yyyy')}-${format(selectedDate, 'MM')}-${format(selectedDate, 'dd')}`,
+            schedule_daedline: `${format(deadline, 'yyyy')}-${format(deadline, 'MM')}-${format(deadline, 'dd')}`,
             start: startTime,
             end: endTime,
             reason: meetingName,
@@ -760,6 +789,7 @@ function ScheduleReservingPage() {
                             TimeLineList.map((time) => (<TimeLineBlock color={getTimeLineColor(time)}>{time}</TimeLineBlock>))
                         }
                     </TimeLineWrapper>
+                    <Whatweek placeholder="몇주간 예약하시겠어요?" onChange={onChangeWhatWeek}></Whatweek>
                     <TimePickbtn><TimeTitle onClick={() => setIsStartTimeBtnClicked(!isStartTimeBtnClicked)}>{startTime}</TimeTitle>{
                         isStartTimeBtnClicked === true ? TimeList.map((time) => (<TimeTitle onClick={() => clickStartTimePickBtn(time)}>{time}</TimeTitle>)) : null
                     }</TimePickbtn>
