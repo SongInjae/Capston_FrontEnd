@@ -114,14 +114,6 @@ const BulkDeletePage = () => {
               />
             </ExampleBlock>
           </TextBoxBlock>
-          <GuideLineBlock>
-            &spades; 유의사항
-            <UlStyled>
-              <li>- Enter를 쳐서 구분할 것(space bar X)</li>
-              <li>- 학번이 중복되어도 오류가 뜨지 않음</li>
-              <li>- 존재하지 않는 학번을 입력하여도 오류가 뜨지 않음</li>
-            </UlStyled>
-          </GuideLineBlock>
         </Box>
       </ContentStyled>
     </>
