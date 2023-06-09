@@ -1,10 +1,9 @@
 import * as userInfoAPI from '../../api/userInfo';
 import { takeLatest, call, put } from 'redux-saga/effects';
 
-
 const initialState = { myInfo: {}, userInfo: [], changedName: '', changedEmail: '', user_no: '', memList: [], memIdList: [], data: {} } // 초기상태
 
-export const getMyInfo = (myInfo) => ({ type: 'GET_MYINFO', myInfo: myInfo });
+export const getMyInfo = () => ({ type: 'GET_MYINFO' });
 
 export const changePassword = (data) => ({ type: 'CHANGE_PWD', data: data });
 
@@ -19,8 +18,8 @@ export const googleConnect = (user_no) => ({ type: 'CONNECT_GOOGLE', user_no });
 export const googleRevoke = () => ({ type: 'REVOKE_GOOGLE' });
 
 export function* getMine() {
-    const response = yield call(userInfoAPI.getMyInformation);
     try {
+        const response = yield call(userInfoAPI.getMyInformation);
         yield put({ type: 'GET_MYINFO_RESULT', myInfo: response.data });
 
     } catch (e) {

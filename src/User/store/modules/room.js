@@ -17,7 +17,7 @@ function* getRoomsSaga() {
     try {
         const response = yield call(roomAPI.getRoomsInfo);
         yield put({ type: 'GET_ROOM_RESULT', roomsInfo: response.data.results });
-
+        console.log(response);
     } catch (e) {
         yield put({ type: 'GET_ROOM_RESULT' });
     }

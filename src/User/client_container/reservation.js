@@ -535,7 +535,7 @@ function ReservingPage() {
                     return false;
                 }
                 if (startHour === reservedEndHour && startMinute < reservedEndMinute) {
-               
+
                     return false;
                 }
             }
@@ -647,9 +647,9 @@ function ReservingPage() {
             startMinute = parseInt(startTime.split(':')[1]);
             endHour = parseInt(time.split(':')[0]);
             endMinute = parseInt(time.split(':')[1]);
-        
+
             gap = (endHour - startHour) * 60 + (endMinute - startMinute);
-   
+
             if (gap <= 0) {
 
                 alert('회의 종료시간을 확인해주세요');
@@ -660,7 +660,7 @@ function ReservingPage() {
                 setEndTime(time);
                 setIsEndTimeBtnClicked(!isEndTimeBtnClicked);
                 if (!checkReservedTime(startTime, time)) {
-      
+
                     alert('예약자가 존재합니다.')
 
                     setStartTime('회의시작 시간');

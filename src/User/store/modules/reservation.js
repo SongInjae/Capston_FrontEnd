@@ -101,8 +101,11 @@ const checkScheduledOrNot = (allData, pickDay) => {
 
 function* getMyReservationSaga(action) {
     try {
-        const response = yield call(reservationApi.getMyReservation, action.userId);
-        yield put({ type: 'GET_MYRESERVE_RESULT', myReservationInfo: response.data.results });
+        const response1 = yield call(userInfoAPI.getMyInformation);
+        //const response = yield call(reservationApi.getMyReservation, action.userId);
+        const response = yield call(reservationApi.getMyReservation, response1.data.id);
+        //yield put({ type: 'GET_MYRESERVE_RESULT', myReservationInfo: response.data.results, userId: action.userId });
+        yield put({ type: 'GET_MYRESERVE_RESULT', myReservationInfo: response.data.results, userId: response1.data.id });
 
     } catch (e) {
         yield put({ type: 'GET_MYRESERVE_RESULT' });
@@ -256,7 +259,7 @@ function reservation(currentState = initialState, action) { //리듀서 선언
         case 'GET_MYRESERVE_RESULT':
             return {
                 ...currentState,
-
+                userId: action.userId,
                 myReservationInfo: action.myReservationInfo,
             }
         case 'DELETE_RESERVE_RESULT':

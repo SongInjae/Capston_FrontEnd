@@ -184,11 +184,12 @@ const MyReservation = () => {
 
   const onClickLocationAuthBtn = async (id) => {
     try {
-      let position = await getLocation();
-      setLocationInfo(position);
-      dispatch(authLocation(id, position.coords.latitude, position.coords.longitude));
+      // let position = await getLocation();
+      // setLocationInfo(position);
+      //dispatch(authLocation(id, position.coords.latitude, position.coords.longitude));
+      dispatch(authLocation(id, 37.551100, 127.075750));
     } catch (e) {
-      alert(e);
+      //alert(e);
     }
 
   }
