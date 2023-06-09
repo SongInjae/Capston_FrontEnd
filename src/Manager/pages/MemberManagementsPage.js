@@ -151,16 +151,25 @@ const MemberManagementsPage = () => {
     loading_take,
     loading_remove,
     loading_change,
+    loading_bulkrm,
   } = useSelector(({ loading }) => ({
     loading_excel: loading['addmembers/EXCEL'],
     loading_insert: loading['addmembers/INSERT'],
     loading_take: loading['addmembers/take'],
     loading_remove: loading['addmembers/REMOVE'],
     loading_change: loading['addmembers/CHANGE'],
+    loading_bulkrm: loading['addmembers/BULKRM'],
   }));
   useEffect(() => {
     dispatch(take());
-  }, [dispatch, loading_excel, loading_remove, loading_change, loading_insert]);
+  }, [
+    dispatch,
+    loading_excel,
+    loading_remove,
+    loading_change,
+    loading_insert,
+    loading_bulkrm,
+  ]);
   const infos = useSelector(({ addmembers }) => addmembers.info); //info 불러오기
   const excelInfo = useSelector(({ addmembers }) => addmembers.excelInfo);
   const [userInput, setUserInput] = useState(''); //필터링 input
@@ -221,7 +230,8 @@ const MemberManagementsPage = () => {
     loading_insert ||
     loading_take ||
     loading_remove ||
-    loading_change
+    loading_change ||
+    loading_bulkrm
   ) {
     return <Loading />;
   }
