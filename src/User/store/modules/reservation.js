@@ -77,14 +77,14 @@ export const transFormDate = (num) => {
 }
 
 const checkScheduledOrNot = (allData, pickDay) => {
-    let scheduleDay = new Date(pickDay).getDay();
+    let scheduleDay = new Date(pickDay).getDay(); //선택한 날짜의 요일
     let scheduledTime = []
     for (let i = 0; i < allData.length; i++) {
 
 
-        if (allData[i].day.includes(transFormDate(scheduleDay)) || new Date(allData[i].date).getDay() === scheduleDay) { // 선택한 날짜의 요일을 가지고 있으면
-            if (allData[i].is_scheduled) {
-                if (new Date(allData[i].date) <= new Date(pickDay)) {
+        if (new Date(allData[i].date).getDay() === scheduleDay) { // 비교하는 날짜와 선택된 날짜의 요일이 같고
+            if (allData[i].is_scheduled) { //비교대상이 정기 예약이면
+                if (new Date(allData[i].date) <= new Date(pickDay) && new Date(allData[i].schedule_daedline) > new Date(pickDay)) {//비교대상의 날짜< 선택한 날짜 < deadline
                     scheduledTime.push(allData[i].start + '-' + allData[i].end);
                 }
             } else {
@@ -127,19 +127,25 @@ function* deleteMyReservationSaga(action) {
 }
 
 function* getRoomReserve(action) {
-
-
     try {
         const response = yield call(reservationApi.getRoomReservation, action.roomId);
-
-        let reserveList = [...response.data.results];
+        console.log(response.data);
+        let reserveList = [...response.data.results]; //전체 예약 데이터
         let alreadyReservedTime = []
         for (let i = 0; i < response.data.count; i++) {
+            console.log(reserveList[i]);
             if (reserveList[i].date === action.pickDay) { // 선택한 날짜와 예약되어있는날짜가 같을때
                 alreadyReservedTime.push(reserveList[i].start + "-" + reserveList[i].end);
                 continue;
-            } if (reserveList[i].is_scheduled === true && reserveList[i].day.includes(transFormDate(new Date(action.pickDay).getDay())) === true && new Date(reserveList[i].date) <= new Date(action.pickDay)) { //정기 예약이고 산텍된날짜의 요일이 포함되어있을는 예약
-                alreadyReservedTime.push(reserveList[i].start + "-" + reserveList[i].end);
+            }
+            console.log(new Date(reserveList[i].date));
+            console.log(new Date(action.pickDay));
+            if (reserveList[i].is_scheduled === true && new Date(reserveList[i].date) <= new Date(action.pickDay)) { //정기 예약이고 산텍된날짜의 요일이 포함되어있을는 예약
+                if (reserveList[i].schedule_daedline === null) {
+                    alreadyReservedTime.push(reserveList[i].start + "-" + reserveList[i].end); console.log(reserveList[i]);
+                } else if (new Date(reserveList[i].schedule_daedline) >= new Date(action.pickDay)) {
+                    alreadyReservedTime.push(reserveList[i].start + "-" + reserveList[i].end); console.log(reserveList[i]);
+                }
             }
         }
         let divideReservedTime = divideTime(alreadyReservedTime);
