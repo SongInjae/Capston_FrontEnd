@@ -113,7 +113,10 @@ const initialState = {
       },
     },
   ],
-  excelInfo: [],
+  excelInfo: {
+    results: [],
+    error_occured: false,
+  },
   deleteNumber: null,
   excelError: null,
   bulkrmError: null,
@@ -188,7 +191,10 @@ const addmembers = handleActions(
     }),
     [EMPTY]: (state) => ({
       ...state,
-      excelInfo: [],
+      excelInfo: {
+        results: [],
+        error_occured: false,
+      },
     }),
   },
   initialState,

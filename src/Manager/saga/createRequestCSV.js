@@ -27,7 +27,7 @@ export default function createRequestCSVSaga(type, request) {
       }
       yield put({
         type: SUCCESS,
-        payload: response.data.results,
+        payload: response.data,
       });
     } catch (e) {
       yield put({

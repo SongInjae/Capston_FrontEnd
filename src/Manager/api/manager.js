@@ -24,14 +24,7 @@ export const takeAllInfo = () =>
     headers: { Authorization: `Token ${cookie.load('token')}` },
   });
 //회원 추가하기
-export const addInfo = ({
-  user_type,
-  name,
-  user_no,
-  email,
-  password,
-  department,
-}) =>
+export const addInfo = ({ user_type, name, user_no, email, department }) =>
   manager.post(
     'users',
     { user_type, name, user_no, email, password: 12345678, department },

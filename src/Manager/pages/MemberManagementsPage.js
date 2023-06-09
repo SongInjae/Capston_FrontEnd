@@ -247,9 +247,9 @@ const MemberManagementsPage = () => {
         </NameFliterBlock>
         <ButtonsBlock>
           <CsvLinkStyled
-            data={excelInfo}
+            data={excelInfo.results}
             filename="Error_Reason.csv"
-            disabled={excelInfo.length === 0}
+            disabled={excelInfo.error_occured === false}
           >
             Error
           </CsvLinkStyled>
